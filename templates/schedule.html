@@ -45,6 +45,8 @@
 				{% endif %}
 				{% if game.finish %}
 				<td><a href='/box/{{game.id}}/'>BOX</a></td>
+				{% elif game.postpone %}
+				<td>延賽</td>
 				{% else %}
 				<td>{{ game.ps }}</td>
 				{% endif %}

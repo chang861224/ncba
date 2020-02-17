@@ -92,6 +92,8 @@
 				<td>
 					{% if game.finish %}
 					完賽
+					{% elif game.postpone %}
+					延賽
 					{% else %}
 					{{ game.ps }}
 					{% endif %}
