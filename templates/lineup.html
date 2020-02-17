@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 先發陣容</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>先發陣容</legend>
+
+	<div class='index'>
+		<div class='lineup'>
+			<p class='team'>{{ game.guest.team }}</p>
+
+			{% if guest == None %}
+			尚未繳交先發名單
+			{% else %}
+			<div class='starting'>
+				<table>
+					<tr>
+						<th>棒次</th>
+						<th>背號</th>
+						<th>姓名</th>
+						<th>守備位置</th>
+					</tr>
+					{% for player in guestLineup %}
+					<tr>
+						<td>{{ player.order }}</td>
+						<td>{{ player.number }}</td>
+						<td>{{ player.name }}</td>
+						<td>{{ player.pos }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+
+				<div class='pitcher'>先發投手：{{ guestSP.number }} {{ guestSP.name }}</div>
+			</div>
+
+			<div class='substitution'>
+				<table>
+					<tr>
+						<th>背號</th>
+						<th>姓名</th>
+					</tr>
+					{% for player in guestSubstitution %}
+					<tr>
+						<td>{{ player.number }}</td>
+						<td>{{ player.name }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+
+			<div class='submit time'>最後更新時間：{{ guest.submitTime }}</div>
+			{% endif %}
+		</div>
+
+		<div class='lineup'>
+			<p class='team'>{{ game.home.team }}</p>
+
+			{% if home == None %}
+			尚未繳交先發名單
+			{% else %}
+			<div class='starting'>
+				<table>
+					<tr>
+						<th>棒次</th>
+						<th>背號</th>
+						<th>姓名</th>
+						<th>守備位置</th>
+					</tr>
+					{% for player in homeLineup %}
+					<tr>
+						<td>{{ player.order }}</td>
+						<td>{{ player.number }}</td>
+						<td>{{ player.name }}</td>
+						<td>{{ player.pos }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+
+				<div class='pitcher'>先發投手：{{ homeSP.number }} {{ homeSP.name }}</div>
+			</div>
+
+			<div class='substitution'>
+				<table>
+					<tr>
+						<th>背號</th>
+						<th>姓名</th>
+					</tr>
+					{% for player in homeSubstitution %}
+					<tr>
+						<td>{{ player.number }}</td>
+						<td>{{ player.name }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+
+			<div class='submit time'>最後更新時間：{{ home.submitTime }}</div>
+			{% endif %}
+		</div>
+	</div>
+</fieldset>
+{% endblock %}

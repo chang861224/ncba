@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 首頁</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>今日賽程</legend>
+
+	<div class='index'>
+		{% if game != None %}
+		{% if game.finish %}
+		<div class='team'><a href='/box/{{game.id}}/'>{{ game.guest }} {{ game.guestScore }} : {{ game.homeScore }} {{ game.home }}</a></div>
+		{% else %}
+		<div class='team'>{{ game.guest }} vs. {{ game.home }}</div>
+
+		<div class='order'>
+			<table class='starting'>
+				<tr>
+					<td>
+						{% if guest == None %}
+						尚未繳交先發名單
+						{% else %}
+						<table class='lineup'>
+							<tr>
+								<th>棒次</th>
+								<th>背號</th>
+								<th>姓名</th>
+								<th>守備位置</th>
+							</tr>
+							{% for player in guest %}
+							<tr>
+								<td>{{ player.order }}</td>
+								<td>{{ player.number }}</td>
+								<td>{{ player.name }}</td>
+								<td>{{ player.pos }}</td>
+							</tr>
+							{% endfor %}
+						</table>
+
+						<div class='pitcher'>先發投手：{{ guestSP.number }} {{ guestSP.name }}</div>
+
+						<div class='submit time'>最後更新時間：{{ guestSubmit }}</div>
+						{% endif %}
+					</td>
+					<td>
+						{% if home == None %}
+						尚未繳交先發名單
+						{% else %}
+						<table class='lineup'>
+							<tr>
+								<th>棒次</th>
+								<th>背號</th>
+								<th>姓名</th>
+								<th>守備位置</th>
+							</tr>
+							{% for player in home %}
+							<tr>
+								<td>{{ player.order }}</td>
+								<td>{{ player.number }}</td>
+								<td>{{ player.name }}</td>
+								<td>{{ player.pos }}</td>
+							</tr>
+							{% endfor %}
+						</table>
+
+						<div class='pitcher'>先發投手：{{ homeSP.number }} {{ homeSP.name }}</div>
+
+						<div class='submit time'>最後更新時間：{{ homeSubmit }}</div>
+						{% endif %}
+					</td>
+				</tr>
+			</table>
+		</div>
+		{% endif %}
+		{% else %}
+		今日無比賽
+		{% endif %}
+	</div>
+</fieldset>
+
+<fieldset class='field'>
+	<legend class='fieldset_title'>最新消息</legend>
+
+	<div class='index'>
+		{% if datasize == 0 %}
+		目前無最新消息
+		{% else %}
+		<table class='news list home'>
+			{% for news in newslist %}
+			<tr>
+				<td><a href='/news/{{news.id}}'>{{ news.title }}</a></td>
+				<td>{{ news.date }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+		{% if datasize > 5 %}
+		<div class='more'><a href='/newslist/'>查看更多</a></div>
+		{% endif %}
+		{% endif %}
+	</div>
+</fieldset>
+{% endblock %}

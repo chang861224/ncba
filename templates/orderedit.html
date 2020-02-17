@@ -1,0 +1,850 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 先發陣容登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>先發陣容登錄</legend>
+
+	<div class='admin order'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<div class='starting'>
+				<p class='title'>先發球員名單</p>
+
+				<table>
+					<tr>
+						<th>棒次</th>
+						<th>球員</th>
+						<th>守備位置</th>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>
+							<select name='starting1'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup1.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position1'>
+								{% if lineup1.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup1.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup1.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup1.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup1.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup1.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup1.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup1.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup1.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup1.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>
+							<select name='starting2'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup2.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position2'>
+								{% if lineup2.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup2.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup2.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup2.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup2.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup2.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup2.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup2.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup2.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup2.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>
+							<select name='starting3'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup3.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position3'>
+								{% if lineup3.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup3.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup3.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup3.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup3.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup3.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup3.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup3.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup3.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup3.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>
+							<select name='starting4'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup4.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position4'>
+								{% if lineup4.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup4.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup4.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup4.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup4.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup4.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup4.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup4.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup4.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup4.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>
+							<select name='starting5'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup5.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position5'>
+								{% if lineup5.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup5.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup5.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup5.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup5.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup5.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup5.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup5.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup5.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup5.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td>
+							<select name='starting6'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup6.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position6'>
+								{% if lineup6.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup6.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup6.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup6.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup6.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup6.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup6.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup6.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup6.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup6.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>7</td>
+						<td>
+							<select name='starting7'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup7.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position7'>
+								{% if lineup7.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup7.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup7.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup7.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup7.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup7.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup7.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup7.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup7.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup7.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td>
+							<select name='starting8'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup8.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position8'>
+								{% if lineup8.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup8.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup8.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup8.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup8.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup8.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup8.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup8.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup8.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup8.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>
+							<select name='starting9'>
+								<option value=''></option>
+								{% for player in players %}
+								{% if player.id == lineup9.player %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position9'>
+								{% if lineup9.position == 'P' %}
+								<option value='P' selected>投手</option>
+								{% else %}
+								<option value='P'>投手</option>
+								{% endif %}
+								{% if lineup9.position == 'C' %}
+								<option value='C' selected>捕手</option>
+								{% else %}
+								<option value='C'>捕手</option>
+								{% endif %}
+								{% if lineup9.position == '1B' %}
+								<option value='1B' selected>一壘手</option>
+								{% else %}
+								<option value='1B'>一壘手</option>
+								{% endif %}
+								{% if lineup9.position == '2B' %}
+								<option value='2B' selected>二壘手</option>
+								{% else %}
+								<option value='2B'>二壘手</option>
+								{% endif %}
+								{% if lineup9.position == '3B' %}
+								<option value='3B' selected>三壘手</option>
+								{% else %}
+								<option value='3B'>三壘手</option>
+								{% endif %}
+								{% if lineup9.position == 'SS' %}
+								<option value='SS' selected>游擊手</option>
+								{% else %}
+								<option value='SS'>游擊手</option>
+								{% endif %}
+								{% if lineup9.position == 'LF' %}
+								<option value='LF' selected>左外野手</option>
+								{% else %}
+								<option value='LF'>左外野手</option>
+								{% endif %}
+								{% if lineup9.position == 'CF' %}
+								<option value='CF' selected>中外野手</option>
+								{% else %}
+								<option value='CF'>中外野手</option>
+								{% endif %}
+								{% if lineup9.position == 'RF' %}
+								<option value='RF' selected>右外野手</option>
+								{% else %}
+								<option value='RF'>右外野手</option>
+								{% endif %}
+								{% if lineup9.position == 'DH' %}
+								<option value='DH' selected>指定打擊</option>
+								{% else %}
+								<option value='DH'>指定打擊</option>
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+				</table>
+
+				<p class='starting pitcher'>先發投手：
+				<select name='SP'>
+					{% for player in players %}
+					{% if player.id == lineupSP.player %}
+					<option value='{{player.id}}' selected>{{ player.name }}</option>
+					{% else %}
+					<option value='{{player.id}}'>{{ player.name }}</option>
+					{% endif %}
+					{% endfor %}
+				</select>
+				</p>
+			</div>
+
+			<div class='substitute'>
+				<p class='title'>替補球員名單</p>
+
+				<table>
+					<tr>
+						<th>球員</th>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute1'>
+								{% if substitution1 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution1 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute2'>
+								{% if substitution2 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution2 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute3'>
+								{% if substitution3 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution3 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute4'>
+								{% if substitution4 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution4 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute5'>
+								{% if substitution5 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution5 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute6'>
+								{% if substitution6 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution6 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute7'>
+								{% if substitution7 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution7 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute8'>
+								{% if substitution8 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution8 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select name='substitute9'>
+								{% if substitution9 == None %}
+								<option value='' selected></option>
+								{% else %}
+								<option value=''></option>
+								{% endif %}
+
+								{% for player in players %}
+								{% if player.id == substitution9 %}
+								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								{% else %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<p style='width: 100%; text-align: center; font-size: 12px; clear: both;'>更新日期：{{ order.submitTime }}</p>
+
+			<div class='btn'>
+				<input type="submit">
+				<input type='reset'>
+			</div>
+		</form>
+	</div>
+</fieldset>
+{% endblock %}

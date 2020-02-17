@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 球員列表</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>球員列表</legend>
+
+	<div class='index'>
+		<div class='select'>
+			<form action='.' method='POST'>
+				{% csrf_token %}
+				<select name='team'>
+					{% for team in teams %}
+					<option value='{{team.id}}'>{{ team.team }}</option>
+					{% endfor %}
+				</select>
+				<input type='submit'>
+			</form>
+		</div>
+
+		<div class='player list'>
+			<a href='/teams/{{teamid}}/players/' class='btn'>球員列表</a>
+			<a href='/teams/{{teamid}}/hitters/' class='btn'>打擊數據</a>
+			<a href='/teams/{{teamid}}/fielders/' class='btn'>守備數據</a>
+			<a href='/teams/{{teamid}}/picatchers/' class='btn'>投捕數據</a>
+		</div>
+
+		{% if itemtype == 'players' %}
+		<div class='player list'>
+			<table class='player'>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</td>
+					<th>背號</th>
+					<th>系級</th>
+					<th>學號</th>
+					<th>投打</th>
+				</tr>
+				{% for player in players %}
+				<tr>
+					<td><a href='/player/{{player.id}}/'>{{ player.name }}</a></td>
+					<td>{{ player.team }}</td>
+					<td>{{ player.number }}</td>
+					<td>{{ player.dept }}</td>
+					<td>{{ player.studentID }}</td>
+					<td>{{ player.bt }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% elif itemtype == 'hitters' %}
+		<div class='player list'>
+			<table class='hitter'>
+				<tr>
+					<th>姓名</th>
+					<th>打席</td>
+					<th>打數</th>
+					<th>打點</th>
+					<th>得分</th>
+					<th>安打</td>
+					<th>二壘安打</th>
+					<th>三壘安打</th>
+					<th>全壘打</th>
+					<th>壘打數</td>
+					<th>雙殺打</th>
+					<th>犧牲短打</th>
+					<th>犧牲飛球</th>
+					<th>四死球</td>
+					<th>三振</th>
+					<th>盜壘成功</th>
+					<th>盜壘失敗</th>
+					<th>殘壘</th>
+					<th>打擊率</th>
+					<th>上壘率</th>
+					<th>長打率</th>
+				</tr>
+				{% for player in hitters %}
+				<tr>
+					<td><a href='/player/{{player.player.id}}/'>{{ player.player.name }}</a></td>
+					<td>{{ player.PA }}</td>
+					<td>{{ player.AB }}</td>
+					<td>{{ player.RBI }}</td>
+					<td>{{ player.R }}</td>
+					<td>{{ player.H }}</td>
+					<td>{{ player.TwoBH }}</td>
+					<td>{{ player.ThreeBH }}</td>
+					<td>{{ player.HR }}</td>
+					<td>{{ player.TB }}</td>
+					<td>{{ player.DP }}</td>
+					<td>{{ player.SH }}</td>
+					<td>{{ player.SF }}</td>
+					<td>{{ player.Walks }}</td>
+					<td>{{ player.SO }}</td>
+					<td>{{ player.SB }}</td>
+					<td>{{ player.CS }}</td>
+					<td>{{ player.LOB }}</td>
+					<td>{{ player.AVG | floatformat:3 }}</td>
+					<td>{{ player.OBP | floatformat:3 }}</td>
+					<td>{{ player.SLG | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% elif itemtype == 'fielders' %}
+		<div class='player list'>
+			<table class='fielder'>
+				<tr>
+					<th>姓名</th>
+					<th>守備位置</td>
+					<th>刺殺</th>
+					<th>助殺</th>
+					<th>失誤</th>
+					<th>雙殺參與</th>
+					<th>守備率</th>
+				</tr>
+				{% for player in fielders %}
+				<tr>
+					<td><a href='/player/{{player.player.id}}/'>{{ player.player.name }}</a></td>
+					<td>{{ player.pos }}</td>
+					<td>{{ player.PO }}</td>
+					<td>{{ player.A }}</td>
+					<td>{{ player.E }}</td>
+					<td>{{ player.DP }}</td>
+					<td>{{ player.FLD | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% elif itemtype == 'picatchers' %}
+		<div class='player list'>
+			<table class='pitcher'>
+				<tr>
+					<th>姓名</th>
+					<th>勝</td>
+					<th>敗</th>
+					<th>中繼成功</th>
+					<th>救援成功</th>
+					<th>救援失敗</td>
+					<th>局數</th>
+					<th>面對打席</th>
+					<th>面對打數</th>
+					<th>投球數</td>
+					<th>完投</th>
+					<th>完封</th>
+					<th>無四死</th>
+					<th>被安打</td>
+					<th>被全壘打</th>
+					<th>犧牲短打</th>
+					<th>犧牲飛球</th>
+					<th>四壞球</th>
+					<th>敬遠</th>
+					<th>觸身球</th>
+					<th>奪三振</th>
+					<th>暴投</td>
+					<th>犯規</th>
+					<th>失分</th>
+					<th>責失分</th>
+					<th>防禦率</th>
+					<th>WHIP</th>
+					<th>被打擊率</th>
+					<th>被上壘率</th>
+				</tr>
+				{% for player in pitchers %}
+				<tr>
+					<td><a href='/player/{{player.model.player.id}}/'>{{ player.model.player.name }}</a></td>
+					<td>{{ player.model.W }}</td>
+					<td>{{ player.model.L }}</td>
+					<td>{{ player.model.HO }}</td>
+					<td>{{ player.model.S }}</td>
+					<td>{{ player.model.BS }}</td>
+					<td>{% widthratio player.model.inn3 3 1 %} {{ player.innf }}/3</td>
+					<td>{{ player.model.TPAF }}</td>
+					<td>{{ player.model.TBF }}</td>
+					<td>{{ player.model.P }}</td>
+					<td>{{ player.model.CG }}</td>
+					<td>{{ player.model.SHO }}</td>
+					<td>{{ player.model.no_walks }}</td>
+					<td>{{ player.model.H }}</td>
+					<td>{{ player.model.HR }}</td>
+					<td>{{ player.model.SH }}</td>
+					<td>{{ player.model.SF }}</td>
+					<td>{{ player.model.BB }}</td>
+					<td>{{ player.model.IBB }}</td>
+					<td>{{ player.model.DB }}</td>
+					<td>{{ player.model.K }}</td>
+					<td>{{ player.model.WP }}</td>
+					<td>{{ player.model.BK }}</td>
+					<td>{{ player.model.R }}</td>
+					<td>{{ player.model.ER }}</td>
+					<td>{{ player.model.ERA | floatformat:2 }}</td>
+					<td>{{ player.model.WHIP | floatformat:2 }}</td>
+					<td>{{ player.model.AVG | floatformat:3 }}</td>
+					<td>{{ player.model.OBA | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='player list'>
+			<table class='catcher'>
+				<tr>
+					<th>姓名</th>
+					<th>捕逸</td>
+					<th>妨礙打擊</th>
+					<th>被盜壘</th>
+					<th>盜壘阻殺</th>
+					<th>阻殺率</th>
+				</tr>
+				{% for player in catchers %}
+				<tr>
+					<td><a href='/player/{{player.player.id}}/'>{{ player.player.name }}</a></td>
+					<td>{{ player.PB }}</td>
+					<td>{{ player.interference }}</td>
+					<td>{{ player.stolen }}</td>
+					<td>{{ player.CS }}</td>
+					<td>{{ player.CSP | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% endif %}
+	</div>
+</fieldset>
+{% endblock %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		{% block title %}{% endblock %}
+		<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+
+		{% load static %}
+		<link href='{% static "css/base.css" %}' rel='stylesheet' type='text/css' media='all'>
+	</head>
+
+	<body id='index'>
+		<header id='header'>
+			<div class='inner'>
+				<h1 id='title'><a href='/'>National Chengchi University Baseball Association</a></h1>
+			</div>
+		</header>
+
+		<nav id='gnav'> 
+			<ul class='inner'>
+				<li><a href='/newslist/'>最新消息</a></li>
+				<li><a href='/schedule/'>賽程</a></li>
+				<li><a href='/standing/'>戰績</a></li>
+				<li><a href='/teams/'>球隊</a></li>
+				<li><a href='/rank/'>排行榜</a></li>
+			</ul>
+		</nav>
+
+		<div id='contents'>
+			<main class='inner'>
+				{% block content %}{% endblock %}
+			</main>
+		</div>
+
+		<footer id='footer' class='section'>
+			<div class='inner'>
+				<ul class='sns'>
+					<li><a href='https://www.facebook.com/NCCUNCBA/' class='icon-facebook2' title='Facebook'></a></li>
+					<li><a href='mailto:nccuncba@gmail.com' class='icon-envelop' title='Email'></a></li>
+				</ul>
+
+				{% if request.user.is_authenticated %}
+				{% if optionlink != False %}
+				<p class='login'>[ <a href='/option/'>會員操作選項</a> ]</p>
+				{% endif %}
+				<p class='login'>[ <a href='/logout/'>登出</a> ]</p>
+				{% else %}
+				<p class='login'>[ <a href='/login/'>登入</a> ]</p>
+				{% endif %}
+
+				<p class="copyright">
+				<small>Copyright &copy; NCBA All Right Reserved.</small>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

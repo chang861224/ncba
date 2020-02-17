@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 球員登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	{% if teamid == None %}
+	<legend class="fieldset_title">請選擇球隊</legend>
+
+	<div class='form player'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>
+			<select name="team">
+				{% for team in teams %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endfor %}
+			</select>
+			<input type="submit">
+			</p>
+		</form>
+	</div>
+	{% else %}
+	<legend class='fieldset_title'>球員登錄</legend>
+
+	<div class='form player'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>球隊：{{ team.team }}</p>
+			<p>姓名：<input name="name" required></p>
+			<p>學號：<input name="student_id" required></p>
+			<p>系級：<input name="dept" required></p>
+			<p>背號：<input name="number" type='number' min='0' max='99' required></p>
+			<p>投打：
+			<select name="bt">
+				<option value="右投右打">右投右打</option>
+				<option value="右投左打">右投左打</option>
+				<option value="左投右打">左投右打</option>
+				<option value="左投左打">左投左打</option>
+				<option value="右投兩打">右投兩打</option>
+				<option value="左投兩打">左投兩打</option>
+			</select></p>
+			
+			<p><input type="submit"><input type='reset'></p>
+		</form>
+	</div>
+
+	<div class='admin list'>
+		<p class='title'><strong>{{ team.team }}</strong> 球員列表</p>
+		<table class="admin players">
+			<tr>
+				<th>操作</th>
+				<th>球隊</th>
+				<th>背號</th>
+				<th>姓名</th>
+				<th>學號</th>
+				<th>系級</th>
+				<th>投打習慣</th>
+			</tr>
+
+			{% for player in players %}
+			<tr>
+				<td>
+					<a href='/playeredit/edit/{{player.id}}/'>編輯</a>
+					<a href='/playeredit/delete/{{player.id}}'>刪除</a>
+				</td>
+				<td>{{ player.team }}</td>
+				<td>{{ player.number }}</td>
+				<td>{{ player.name }}</td>
+				<td>{{ player.studentID }}</td>
+				<td>{{ player.dept }}</td>
+				<td>{{ player.bt }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+</fieldset>
+{% endblock %}

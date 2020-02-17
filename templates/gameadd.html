@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 賽程更新</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>新增賽程</legend>
+
+	<div class='form game'>
+		<form action='.' method="POST">
+			{% csrf_token %}
+			<p>場次編號：<input name="number" type='number' size="2" required></p>
+			<p>日　　期：<input name="game_date" type='date' placeholder="YYYY-MM-DD" required></p>
+			<p>先　　攻：
+			<select name="guest">
+				{% for team in teams %}
+				<option value='{{team.id}}'>{{ team.team }}</option>
+				{% endfor %}
+			</select></p>
+			<p>後　　攻：
+			<select name="home">
+				{% for team in teams %}
+				<option value='{{team.id}}'>{{ team.team }}</option>
+				{% endfor %}
+			</select></p>
+			<p>壘　　審：
+			<select name="umpire1">
+				<option value=""></option>
+				{% for team in teams %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endfor %}
+				<option value="其他">其他</option>
+			</select>
+			、
+			<select name="umpire2">
+				<option value=""></option>
+				{% for team in teams %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endfor %}
+				<option value="其他">其他</option>
+			</select>
+			、
+			<select name="umpire3">
+				<option value=""></option>
+				{% for team in teams %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endfor %}
+				<option value="其他">其他</option>
+			</select></p>
+			<p>比賽性質：
+			<input name='type' type='radio' value='regular' checked>例行賽
+			<input name='type' type='radio' value='playoff'>季後賽
+			</p>
+			<p>備　　註：<input name="PS"></p>
+			
+			<p><input type="submit"><input type='reset'></p>
+		</form>
+	</div>
+
+	<div class='admin list'>
+		<p class='title'>賽程列表</p>
+		<table class="admin games">
+			<tr>
+				<th>操作</th>
+				<th>編號</th>
+				<th>日期</th>
+				<th>先攻</th>
+				<th>後攻</th>
+				<th>壘審</th>
+				<th>備註</th>
+			</tr>
+
+			{% for game in games %}
+			<tr>
+				<td>
+					<a href='/gameedit/{{game.id}}/edit/'>編輯</a>
+					<a href='/gameedit/{{game.id}}/postpone/'>延賽</a>
+					<a href='/gameedit/{{game.id}}/delete/'>刪除</a>
+				</td>
+				<td>{{ game.number }}</td>
+				<td>{{ game.date }}</td>
+				<td>{{ game.guest }}</td>
+				<td>{{ game.home }}</td>
+				<td>
+					{% if game.regular or game.finish %}
+					{{ game.umpire1 }}、{{ game.umpire2 }}、{{ game.umpire3 }}
+					{% endif %}
+				</td>
+				<td>
+					{% if game.finish %}
+					完賽
+					{% else %}
+					{{ game.ps }}
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</fieldset>
+{% endblock %}

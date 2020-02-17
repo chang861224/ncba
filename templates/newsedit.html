@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 文章更新</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>文章更新</legend>
+
+	<form action='.' method='POST'>
+		{% csrf_token %}
+		<div class='form news'>
+			<p>標　　題：<input name='title' value='{{news.title}}' required></p>
+			<p>日　　期：<input name='date' type='date' value='{{datestr}}' placeholder='YYYY-MM-DD'></p>
+			<p>
+			發　　布：
+			{% if news.publish == True %}
+			<input name='publish' type='radio' value='yes' checked>是
+			<input name='publish' type='radio' value='no'>否
+			{% else %}
+			<input name='publish' type='radio' value='yes'>是
+			<input name='publish' type='radio' value='no' checked>否
+			{% endif %}
+			</p>
+			<p>內　　文：<textarea name='content' cols='100' rows='30' required>{{ news.content }}</textarea></p>
+
+			<div class='btn'>
+				<p>
+				<input type='submit'>
+				</p>
+			</div>
+		</div>
+	</form>	
+</fieldset>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 排行榜</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>排行榜</legend>
+
+	<div class='index'>
+		<div class='rank item'>
+			<p class='title'>打擊排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>打擊率</th>
+				</tr>
+				{% for player in AVG3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.AVG | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='rank item'>
+			<p class='title'>長打排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>長打率</th>
+				</tr>
+				{% for player in SLG3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.SLG | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='rank item'>
+			<p class='title'>打點排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>打點數</th>
+				</tr>
+				{% for player in RBI3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.RBI }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='rank item'>
+			<p class='title'>盜壘排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>盜壘成功數</th>
+				</tr>
+				{% for player in SB3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.SB }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='rank item'>
+			<p class='title'>勝投排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>勝投數</th>
+				</tr>
+				{% for player in W3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.W }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='rank item'>
+			<p class='title'>奪三振排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>奪三振數</th>
+				</tr>
+				{% for player in K3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.K }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='rank item'>
+			<p class='title'>防禦率排行榜</p>
+
+			<table>
+				<tr>
+					<th>姓名</th>
+					<th>球隊</th>
+					<th>防禦率</th>
+				</tr>
+				{% for player in AVG3 %}
+				<tr>
+					<td>{{ player.player.name }}</td>
+					<td>{{ player.player.team }}</td>
+					<td>{{ player.ERA | floatformat:2 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</fieldset>
+{% endblock %}

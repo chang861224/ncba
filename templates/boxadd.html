@@ -1,0 +1,426 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 比賽數據登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>比賽數據登錄</legend>
+
+	<div class='form box'>
+		{% if itemtype == None %}
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>
+			請選擇場次編號：
+			<select name='gameid'>
+				{% for game in games %}
+				{% if game.regular or game.finish %}
+				{% if game.playoff %}
+				<option value='{{game.id}}'>季{{ game.number }}</option>
+				{% else %}
+				<option value='{{game.id}}'>例{{ game.number }}</option>
+				{% endif %}
+				{% endif %}
+				{% endfor %}
+			</select>
+			</p>
+			<p>
+			請選擇登錄項目：
+			<select name='item'>
+				<option value='score'>比數</option>
+				<option value='hitter'>打擊</option>
+				<option value='pitcher'>投手</option>
+				<option value='fielder'>守備</option>
+				<option value='catcher'>捕手</option>
+			</select>
+			</p>
+			<p><input type='submit'></p>
+		</form>
+		{% elif itemtype == 'score' %}
+		<div class='admin list'>
+			<p class='title'>記分板</p>
+			<form action='.' method='POST'>
+				{% csrf_token %}
+				<table class='admin score'>
+					<tr>
+						<th>隊伍</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+						<th>4</th>
+						<th>5</th>
+						<th>6</th>
+						<th>7</th>
+					</tr>
+					<tr>
+						<td>
+							{{ score.game.guest }}
+						</td>
+						<td>
+							<input name='guest1' type='number' value='{{score.guest1}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='guest2' type='number' value='{{score.guest2}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='guest3' type='number' value='{{score.guest3}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='guest4' type='number' value='{{score.guest4}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='guest5' type='number' value='{{score.guest5}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='guest6' type='number' value='{{score.guest6}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='guest7' type='number' value='{{score.guest7}}' min='0' style='width: 30px;'>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{{ score.game.home }}
+						</td>
+						<td>
+							<input name='home1' type='number' value='{{score.home1}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='home2' type='number' value='{{score.home2}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='home3' type='number' value='{{score.home3}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='home4' type='number' value='{{score.home4}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='home5' type='number' value='{{score.home5}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='home6' type='number' value='{{score.home6}}' min='0' style='width: 30px;'>
+						</td>
+						<td>
+							<input name='home7' type='number' value='{{score.home7}}' min='0' style='width: 30px;'>
+						</td>
+					</tr>
+				</table>
+
+				<p>
+				<input type='submit'>
+				<input type='reset'>
+				</p>
+			</form>
+			<p><a href='/gamenotplay/{{game.id}}/'>比賽尚未進行</a></p>
+		</div>
+		{% elif itemtype == 'hitter' %}
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<table class='admin hitter'>
+				<tr>
+					{% for title in titles %}
+					<th>{{ title }}</th>
+					{% endfor %}
+				</tr>
+				{% for i in count %}
+				<tr>
+					{% for item in items %}
+					{% if item == 'player' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value='' selected></option>
+							{% for player in players1 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+							{% for player in players2 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+					{% else %}
+					<td>
+						<input name='{{item}}{{i}}' type='number' value='0' style='width: 30px;'>
+					</td>
+					{% endif %}
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+
+			 <p>
+			<input type='submit'>
+			<input type='reset'>
+			</p>
+		</form>
+		{% elif itemtype == 'pitcher' %}
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<table class='admin pitcher'>
+				<tr>
+					{% for title in titles %}
+					<th>{{ title }}</th>
+					{% endfor %}
+				</tr>
+				{% for i in count %}
+				<tr>
+					{% for item in items %}
+					{% if item == 'player' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value=''></option>
+							{% for player in players1 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+							{% for player in players2 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+					{% elif item == 'conseq' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value=''></option>
+							<option value='W'>勝</option>
+							<option value='L'>敗</option>
+							<option value='H'>中繼成功</option>
+							<option value='S'>救援成功</option>
+							<option value='BS'>救援失敗</option>
+						</select>
+					</td>
+					{% elif item == 'CG' or item == 'SHO' or item == 'no_walks' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value='no'>否</option>
+							<option value='yes'>是</option>
+						</select>
+					</td>
+					{% elif item == 'inn_float' %}
+					<td>
+						<input name='{{item}}{{i}}' type='number' value='0' min='0' max='2' style='width: 30px;'>/3
+					</td>
+					{% else %}
+					<td>
+						<input name='{{item}}{{i}}' type='number' value='0' min='0' style='width: 30px;'>
+					</td>
+					{% endif %}
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+
+			<p>
+			<input type='submit'>
+			<input type='reset'>
+			</p>
+		</form>
+		{% elif itemtype == 'fielder' %}
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<table class='admin fielder'>
+				<tr>
+					{% for title in titles %}
+					<th>{{ title }}</th>
+					{% endfor %}
+				</tr>
+				{% for i in count %}
+				<tr>
+					{% for item in items %}
+					{% if item == 'player' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value=''></option>
+							{% for player in players1 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+							{% for player in players2 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+					{% elif item == 'pos' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value='P'>投手</option>
+							<option value='C'>捕手</option>
+							<option value='1B'>一壘手</option>
+							<option value='2B'>二壘手</option>
+							<option value='3B'>三壘手</option>
+							<option value='SS'>游擊手</option>
+							<option value='LF'>左外野手</option>
+							<option value='CF'>中外野手</option>
+							<option value='RF'>右外野手</option>
+						</select>
+					</td>
+					{% else %}
+					<td>
+						<input name='{{item}}{{i}}' type='number' value='0' style='width: 30px;'>
+					</td>
+					{% endif %}
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+
+			<p>
+			<input type='submit'>
+			<input type='reset'>
+			</p>
+		</form>
+		{% elif itemtype == 'catcher' %}
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<table class='admin catcher'>
+				<tr>
+					{% for title in titles %}
+					<th>{{ title }}</th>
+					{% endfor %}
+				</tr>
+				{% for i in count %}
+				<tr>
+					{% for item in items %}
+					{% if item == 'player' %}
+					<td>
+						<select name='{{item}}{{i}}'>
+							<option value='' selected></option>
+							{% for player in players1 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+							{% for player in players2 %}
+							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+					{% else %}
+					<td>
+						<input name='{{item}}{{i}}' type='number' value='0' style='width: 30px;'>
+					</td>
+					{% endif %}
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+
+			<p>
+			<input type='submit'>
+			<input type='reset'>
+			</p>
+		</form>
+		{% endif %}
+	</div>
+
+	<div class='admin list'>
+		{% if itemtype != None and itemtype != 'score' %}
+		<p class='title'>
+		{% if itemtype == 'hitter' %}
+		第{{ game.number }}場　打擊數據列表
+		{% elif itemtype == 'pitcher' %}
+		第{{ game.number }}場　投手數據列表
+		{% elif itemtype == 'fielder' %}
+		第{{ game.number }}場　守備數據列表
+		{% elif itemtype == 'catcher' %}
+		第{{ game.number }}場　捕手數據列表
+		{% endif %}
+		</p>
+
+		{% if itemtype == 'hitter' %}
+		<table class='admin hitters'>
+		{% elif itemtype == 'pitcher' %}
+		<table class='admin pitchers'>
+		{% elif itemtype == 'fielder' %}
+		<table class='admin fielders'>
+		{% elif itemtype == 'catcher' %}
+		<table class='admin catchers'>
+		{% endif %}
+			<tr>
+				<th>操作</th>
+				{% for title in titles %}
+				<th>{{ title }}</th>
+				{% endfor %}
+			</tr>
+			{% for player in players %}
+			<tr>
+				<td>
+					<a href='/boxedit/{{gameid}}/{{itemtype}}/{{player.id}}/edit/'>編輯</a>
+					<a href='/boxedit/{{gameid}}/{{itemtype}}/{{player.id}}/delete/'>刪除</a>
+				</td>
+				<td>{{ player.player.name }}</td>
+				{% if itemtype == 'hitter' %}
+				<td>{{ player.PA }}</td>
+				<td>{{ player.AB }}</td>
+				<td>{{ player.RBI }}</td>
+				<td>{{ player.R }}</td>
+				<td>{{ player.H }}</td>
+				<td>{{ player.TwoBH }}</td>
+				<td>{{ player.ThreeBH }}</td>
+				<td>{{ player.HR }}</td>
+				<td>{{ player.TB }}</td>
+				<td>{{ player.DP }}</td>
+				<td>{{ player.SH }}</td>
+				<td>{{ player.SF }}</td>
+				<td>{{ player.Walks }}</td>
+				<td>{{ player.SO }}</td>
+				<td>{{ player.SB }}</td>
+				<td>{{ player.CS }}</td>
+				<td>{{ player.LOB }}</td>
+				{% elif itemtype == 'pitcher' %}
+				<td>{{ player.conseq }}</td>
+				<td>{{ player.inn_int }}</td>
+				<td>{{ player.inn_float }}</td>
+				<td>{{ player.TPAF }}</td>
+				<td>{{ player.TBF }}</td>
+				<td>{{ player.P }}</td>
+				{% if player.CG %}
+				<td>是</td>
+				{% else %}
+				<td>否</td>
+				{% endif %}
+				{% if player.SHO %}
+				<td>是</td>
+				{% else %}
+				<td>否</td>
+				{% endif %}
+				{% if player.no_walks %}
+				<td>是</td>
+				{% else %}
+				<td>否</td>
+				{% endif %}
+				<td>{{ player.H }}</td>
+				<td>{{ player.HR }}</td>
+				<td>{{ player.SH }}</td>
+				<td>{{ player.SF }}</td>
+				<td>{{ player.BB }}</td>
+				<td>{{ player.IBB }}</td>
+				<td>{{ player.DB }}</td>
+				<td>{{ player.K }}</td>
+				<td>{{ player.WP }}</td>
+				<td>{{ player.BK }}</td>
+				<td>{{ player.R }}</td>
+				<td>{{ player.ER }}</td>
+				{% elif itemtype == 'fielder' %}
+				<td>{{ player.pos }}</td>
+				<td>{{ player.PO }}</td>
+				<td>{{ player.A }}</td>
+				<td>{{ player.E }}</td>
+				<td>{{ player.DP }}</td>
+				{% elif itemtype == 'catcher' %}
+				<td>{{ player.PB }}</td>
+				<td>{{ player.interference }}</td>
+				<td>{{ player.stolen }}</td>
+				<td>{{ player.CS }}</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+	</div>
+
+	<div class='btn'>
+		{% if itemtype != None %}
+		<p><a href='/boxadd/'>回上一頁</a></p>
+		{% endif %}
+	</div>
+</fieldset>
+{% endblock %}

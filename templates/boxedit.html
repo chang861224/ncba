@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 比賽數據登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>比賽數據登錄</legend>
+
+	<form action='.' method='POST'>
+		{% csrf_token %}
+		<table class='form box edit'>
+			<tr>
+				<td>姓名</td>
+				<td>
+					<select name='player'>
+						{% for player in players1 %}
+						{% if player.id == box.player.id %}
+						<option value='{{player.id}}' selected>{{ player.team }}_{{ player.name }}</option>
+						{% else %}
+						<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+						{% endif %}
+						{% endfor %}
+						{% for player in players2 %}
+						{% if player.id == box.player.id %}
+						<option value='{{player.id}}' selected>{{ player.team }}_{{ player.name }}</option>
+						{% else %}
+						<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+						{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			{% if itemtype == 'hitter' %}
+			<tr>
+				<td>打席</td>
+				<td><input name='PA' type='number' value='{{box.PA}}'></td>
+			</tr>
+			<tr>
+				<td>打數</td>
+				<td><input name='AB' type='number' value='{{box.AB}}'></td>
+			</tr>
+			<tr>
+				<td>打點</td>
+				<td><input name='RBI' type='number' value='{{box.RBI}}'></td>
+			</tr>
+			<tr>
+				<td>得分</td>
+				<td><input name='R' type='number' value='{{box.R}}'></td>
+			</tr>
+			<tr>
+				<td>安打</td>
+				<td><input name='H' type='number' value='{{box.H}}'></td>
+			</tr>
+			<tr>
+				<td>二安</td>
+				<td><input name='2BH' type='number' value='{{box.TwoBH}}'></td>
+			</tr>
+			<tr>
+				<td>三安</td>
+				<td><input name='3BH' type='number' value='{{box.ThreeBH}}'></td>
+			</tr>
+			<tr>
+				<td>全壘打</td>
+				<td><input name='HR' type='number' value='{{box.HR}}'></td>
+			</tr>
+			<tr>
+				<td>壘打數</td>
+				<td><input name='TB' type='number' value='{{box.TB}}'></td>
+			</tr>
+			<tr>
+				<td>雙殺打</td>
+				<td><input name='DP' type='number' value='{{box.DP}}'></td>
+			</tr>
+			<tr>
+				<td>犧牲短打</td>
+				<td><input name='SH' type='number' value='{{box.SH}}'></td>
+			</tr>
+			<tr>
+				<td>犧牲飛球</td>
+				<td><input name='SF' type='number' value='{{box.SF}}'></td>
+			</tr>
+			<tr>
+				<td>四死球</td>
+				<td><input name='Walks' type='number' value='{{box.Walks}}'></td>
+			</tr>
+			<tr>
+				<td>三振</td>
+				<td><input name='SO' type='number' value='{{box.SO}}'></td>
+			</tr>
+			<tr>
+				<td>盜壘成功</td>
+				<td><input name='SB' type='number' value='{{box.SB}}'></td>
+			</tr>
+			<tr>
+				<td>盜壘刺</td>
+				<td><input name='CS' type='number' value='{{box.CS}}'></td>
+			</tr>
+			<tr>
+				<td>殘壘</td>
+				<td><input name='LOB' type='number' value='{{box.LOB}}'></td>
+			</tr>
+			{% elif itemtype == 'pitcher' %}
+			<tr>
+				<td>勝負</td>
+				<td>
+					<select name='conseq'>
+						<option value=''></option>
+						<option value='W'>勝</option>
+						<option value='L'>敗</option>
+						<option value='H'>中繼成功</option>
+						<option value='S'>救援成功</option>
+						<option value='BS'>救援失敗</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>局數（整）</td>
+				<td><input name='inn_int' type='number' value='{{box.inn_int}}'></td>
+			</tr>
+			<tr>
+				<td>局數（分）</td>
+				<td><input name='inn_float' type='number' value='{{box.inn_float}}' min='0' max='2'>/3</td>
+			</tr>
+			<tr>
+				<td>面對打席</td>
+				<td><input name='TPAF' type='number' value='{{box.TPAF}}'></td>
+			</tr>
+			<tr>
+				<td>面對打數</td>
+				<td><input name='TBF' type='number' value='{{box.TBF}}'></td>
+			</tr>
+			<tr>
+				<td>投球數</td>
+				<td><input name='P' type='number' value='{{box.P}}'></td>
+			</tr>
+			<tr>
+				<td>完投</td>
+				<td>
+					<select name='CG'>
+						<option value='no'>否</option>
+						<option value='yes'>是</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>完封</td>
+				<td>
+					<select name='SHO'>
+						<option value='no'>否</option>
+						<option value='yes'>是</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>無四死</td>
+				<td>
+					<select name='no_walks'>
+						<option value='no'>否</option>
+						<option value='yes'>是</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>被安打</td>
+				<td><input name='H' type='number' value='{{box.H}}'></td>
+			</tr>
+			<tr>
+				<td>被全壘打</td>
+				<td><input name='HR' type='number' value='{{box.HR}}'></td>
+			</tr>
+			<tr>
+				<td>犧牲短打</td>
+				<td><input name='SH' type='number' value='{{box.SH}}'></td>
+			</tr>
+			<tr>
+				<td>犧牲飛球</td>
+				<td><input name='SF' type='number' value='{{box.SF}}'></td>
+			</tr>
+			<tr>
+				<td>四壞球</td>
+				<td><input name='BB' type='number' value='{{box.BB}}'></td>
+			</tr>
+			<tr>
+				<td>敬遠</td>
+				<td><input name='IBB' type='number' value='{{box.IBB}}'></td>
+			</tr>
+			<tr>
+				<td>觸身球</td>
+				<td><input name='DB' type='number' value='{{box.DB}}'></td>
+			</tr>
+			<tr>
+				<td>奪三振</td>
+				<td><input name='K' type='number' value='{{box.K}}'></td>
+			</tr>
+			<tr>
+				<td>暴投</td>
+				<td><input name='WP' type='number' value='{{box.WP}}'></td>
+			</tr>
+			<tr>
+				<td>犯規</td>
+				<td><input name='BK' type='number' value='{{box.BK}}'></td>
+			</tr>
+			<tr>
+				<td>失分</td>
+				<td><input name='R' type='number' value='{{box.R}}'></td>
+			</tr>
+			<tr>
+				<td>責失分</td>
+				<td><input name='ER' type='number' value='{{box.ER}}'></td>
+			</tr>
+			{% elif itemtype == 'fielder' %}
+			<tr>
+				<td>守備位置</td>
+				<td>
+					<select name='pos'>
+						<option value='P'>投手</option>
+						<option value='C'>捕手</option>
+						<option value='1B'>一壘手</option>
+						<option value='2B'>二壘手</option>
+						<option value='3B'>三壘手</option>
+						<option value='SS'>游擊手</option>
+						<option value='LF'>左外野手</option>
+						<option value='CF'>中外野手</option>
+						<option value='RF'>右外野手</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>刺殺</td>
+				<td><input name='PO' type='number' value='{{box.PO}}'></td>
+			</tr>
+			<tr>
+				<td>助殺</td>
+				<td><input name='A' type='number' value='{{box.A}}'></td>
+			</tr>
+			<tr>
+				<td>失誤</td>
+				<td><input name='E' type='number' value='{{box.E}}'></td>
+			</tr>
+			<tr>
+				<td>雙殺參與</td>
+				<td><input name='DP' type='number' value='{{box.DP}}'></td>
+			</tr>
+			{% elif itemtype == 'catcher' %}
+			<tr>
+				<td>捕逸</td>
+				<td><input name='PB' type='number' value='{{box.PB}}'></td>
+			</tr>
+			<tr>
+				<td>妨礙打擊</td>
+				<td><input name='interference' type='number' value='{{box.interference}}'></td>
+			</tr>
+			<tr>
+				<td>被盜壘</td>
+				<td><input name='stolen' type='number' value='{{box.stolen}}'></td>
+			</tr>
+			<tr>
+				<td>盜壘阻殺</td>
+				<td><input name='CS' type='number' value='{{box.CS}}'></td>
+			</tr>
+			{% endif %}
+		</table>
+
+		<div class='btn'>
+			<p>
+			<input type='submit'>
+			</p>
+		</div>
+	</form>
+</fieldset>
+{% endblock %}

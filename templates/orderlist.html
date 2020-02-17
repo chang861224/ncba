@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 先發名單登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>請選擇場次</legend>
+
+	<div class='index'>
+		<table class='lineup list'>
+			<tr>
+				<th>場次</th>
+				<th>日期</th>
+				<th>對戰組合</th>
+			</tr>
+			{% for game in games %}
+			<tr>
+				<td>{{ game.number }}</td>
+				<td>{{ game.date }}</td>
+				{% if game.guest.id == teamid %}
+				<td><a href='/order/{{game.id}}/guest/'>{{ game.guest.team }} vs. {{ game.home.team }}</a></td>
+				{% elif game.home.id == teamid %}
+				<td><a href='/order/{{game.id}}/home/'>{{ game.guest.team }} vs. {{ game.home.team }}</a></td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</fieldset>
+{% endblock %}

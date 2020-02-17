@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 球隊登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>球隊登錄</legend>
+
+	<div class='form team'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			請輸入隊伍名稱：<input name="team" value='{{team.team}}' size="10" required>
+			組別：
+			<select name="group">
+				{% if team.group == '' %}
+				<option value='' selected></option>
+				{% else %}
+				<option value=''></option>
+				{% endif %}
+				{% if team.group == 'A' %}
+				<option value='A' selected>A</option>
+				{% else %}
+				<option value='A'>A</option>
+				{% endif %}
+				{% if team.group == 'B' %}
+				<option value='B' selected>B</option>
+				{% else %}
+				<option value='B'>B</option>
+				{% endif %}
+			</select>
+			隊長1：<input name="captain1" value='{{team.captain1}}' size="10" required>
+			隊長2：<input name="captain2" value='{{team.captain2}}' size="10">
+			<input type="submit">
+		</form>
+	</div>
+</fieldset>
+{% endblock %}

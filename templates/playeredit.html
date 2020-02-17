@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟NCBA - 球員資料更新</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>球員資料更新</legend>
+
+	<div class='form player'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>球隊：{{ player.team }}</p>
+			<p>姓名：<input name="name" value='{{player.name}}' required></p>
+			<p>學號：<input name='student_id' value='{{player.studentID}}' required></p>
+			<p>系級：<input name="dept" value='{{player.dept}}' required></p>
+			<p>背號：<input name="number" type='number' value='{{player.number}}' min='0' max='99' required></p>
+			<p>投打：
+			<select name="bt">
+				<option value="右投右打">右投右打</option>
+				<option value="右投左打">右投左打</option>
+				<option value="左投右打">左投右打</option>
+				<option value="左投左打">左投左打</option>
+				<option value="右投兩打">右投兩打</option>
+				<option value="左投兩打">左投兩打</option>
+			</select></p>
+
+			<p><input type="submit"></p>
+		</form>
+	</div>
+</fieldset>
+{% endblock %}
+

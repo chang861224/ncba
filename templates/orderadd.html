@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 先發陣容登錄</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>先發陣容登錄</legend>
+
+	{% if game == None %}
+	<div class='index'>
+		<p>先發名單登錄時間已過！</p>
+	</div>
+	{% else %}
+	<div class='admin order'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<div class='starting'>
+				<p class='title'>先發球員名單</p>
+
+				<table>
+					<tr>
+						<th>棒次</th>
+						<th>球員</th>
+						<th>守備位置</th>
+					</tr>
+					{% for n in number %}
+					<tr>
+						<td>{{ n }}</td>
+						<td>
+							<select name='starting{{n}}'>
+								<option value=''></option>
+								{% for player in players %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<select name='position{{n}}'>
+								<option value=''></option>
+								<option value='P'>投手</option>
+								<option value='C'>捕手</option>
+								<option value='1B'>一壘手</option>
+								<option value='2B'>二壘手</option>
+								<option value='3B'>三壘手</option>
+								<option value='SS'>游擊手</option>
+								<option value='LF'>左外野手</option>
+								<option value='CF'>中外野手</option>
+								<option value='RF'>右外野手</option>
+								<option value='DH'>指定打擊</option>
+							</select>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+
+				<p class='starting pitcher'>先發投手：
+				<select name='SP'>
+					<option value=''></option>
+					{% for player in players %}
+					<option value='{{player.id}}'>{{ player.name }}</option>
+					{% endfor %}
+				</select>
+				</p>
+			</div>
+
+			<div class='substitute'>
+				<p class='title'>替補球員名單</p>
+
+				<table>
+					<tr>
+						<th>球員</th>
+					</tr>
+					{% for n in number %}
+					<tr>
+						<td>
+							<select name='substitute{{n}}'>
+								<option value=''></option>
+								{% for player in players %}
+								<option value='{{player.id}}'>{{ player.name }}</option>
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+
+			<div class='btn'>
+				<input type="submit">
+				<input type='reset'>
+			</div>
+		</form>
+	</div>
+	{% endif %}
+</fieldset>
+{% endblock %}

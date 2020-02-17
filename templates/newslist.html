@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 最新消息</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>最新消息</legend>
+
+	<div class='index'>
+		<table class='news list page'>
+			<tr>
+				<th>標題</th>
+				<th>時間</th>
+				<th>點擊</th>
+			</tr>
+			{% for news in newslist %}
+			<tr>
+				<td><a href='/news/{{news.id}}/'>{{ news.title }}</a></td>
+				<td>{{ news.date }}</td>
+				<td>{{ news.press }}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan='3' style='padding: 10px 0; text-align: center;'>目前沒有任何資料！</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+		<div class='news page btn'>
+			{% if currentpage > 1 %}
+			<a href='/newslist/1/' title='上一頁'>上一頁</a>
+			{% endif %}
+			{% if currentpage < totelpage %}
+			<a href='/newslist/2/' title='下一頁'>下一頁</a>
+			{% endif %}
+		</div>
+	</div>
+</fieldset>
+{% endblock %}

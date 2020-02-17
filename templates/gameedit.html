@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 賽程更新</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>賽程編輯</legend>
+
+	<div class='form game'>
+		<form action='.' method="POST">
+			{% csrf_token %}
+			<p>場次編號：<input name="number" type='number' value='{{game.number}}'></p>
+			<p>日　　期：<input name="game_date" type='date' value='{{datestr}}' placeholder="YYYY-MM-DD"></p>
+			<p>先　　攻：
+			<select name="guest">
+				{% for team in teams %}
+				{% if game.guest.id == team.id %}
+				<option value='{{team.id}}' selected>{{ team.team }}</option>
+				{% else %}
+				<option value='{{team.id}}'>{{ team.team }}</option>
+				{% endif %}
+				{% endfor %}
+			</select></p>
+			<p>後　　攻：
+			<select name="home">
+				{% for team in teams %}
+				{% if game.home.id == team.id %}
+				<option value='{{team.id}}' selected>{{ team.team }}</option>
+				{% else %}
+				<option value='{{team.id}}'>{{ team.team }}</option>
+				{% endif %}
+				{% endfor %}
+			</select></p>
+			<p>壘　　審：
+			<select name="umpire1">
+				<option value=""></option>
+				{% for team in teams %}
+				{% if game.umpire1 == team.team %}
+				<option value='{{team.team}}' selected>{{ team.team }}</option>
+				{% else %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endif %}
+				{% endfor %}
+				<option value="其他">其他</option>
+			</select>
+			、
+			<select name="umpire2">
+				<option value=""></option>
+				{% for team in teams %}
+				{% if game.umpire2 == team.team %}
+				<option value='{{team.team}}' selected>{{ team.team }}</option>
+				{% else %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endif %}
+				{% endfor %}
+				<option value="其他">其他</option>
+			</select>
+			、
+			<select name="umpire3">
+				<option value=""></option>
+				{% for team in teams %}
+				{% if game.umpire3 == team.team %}
+				<option value='{{team.team}}' selected>{{ team.team }}</option>
+				{% else %}
+				<option value='{{team.team}}'>{{ team.team }}</option>
+				{% endif %}
+				{% endfor %}
+				<option value="其他">其他</option>
+			</select></p>
+			<p>比賽性質：
+			{% if game.playoff %}
+			<input name='type' type='radio' value='regular'>例行賽
+			<input name='type' type='radio' value='playoff' checked>季後賽
+			{% else %}
+			<input name='type' type='radio' value='regular' checked>例行賽
+			<input name='type' type='radio' value='playoff'>季後賽
+			{% endif %}
+			</p>
+			<p>狀　　態：
+			<select name='status'>
+				<option value='regular'>正常（尚未比賽）</option>
+				<option value='postpone'>延賽</option>
+			</select></p>
+			<p>備　　註：<input name="PS" value='{{game.ps}}'></p>
+
+			<p><input type="submit"></p>
+		</form>
+	</div>
+</fieldset>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 會員操作選項</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>請選擇操作項目</legend>
+
+	<div class='optionPage'>
+	{% if request.user.is_authenticated %}
+	<p><a href='/teamadd/'>球隊登錄</a></p>
+	<p><a href='/playeradd/'>球員登錄</a></p>
+	<p><a href='/gameadd/'>賽程管理</a></p>
+	<p><a href='/lineup/'>先發名單</a></p>
+	<p><a href='/boxadd/'>比賽數據管理</a></p>
+	<p><a href='/allnews/'>文章管理</a></p>
+	{% else %}
+	尚未登入！請先登入再進行操作！
+	{% endif %}
+	</div>
+</fieldset>
+{% endblock %}

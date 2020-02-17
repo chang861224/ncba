@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 第{{ game.number }}場 攻守數據表</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>
+		{% if game.playoff %}
+		季後賽 第{{ game.number }}場 攻守數據表
+		{% else %}
+		例行賽 第{{ game.number }}場 攻守數據表
+		{% endif %}
+	</legend>
+
+	<div class='index'>
+		<div class='box date'>
+			<p class='date'>{{ game.date }}</p>
+		</div>
+
+		<div class='box score'>
+			<table class='score'>
+				<tr>
+					<th></th>
+					<th>1</th>
+					<th>2</th>
+					<th>3</th>
+					<th>4</th>
+					<th>5</th>
+					<th>6</th>
+					<th>7</th>
+					<th></th>
+					<th>R</th>
+					<th>H</th>
+					<th>E</th>
+				</tr>
+				<tr>
+					<td>{{ game.guest }}</td>
+					{% if score.guest1 != None %}
+					<td>{{ score.guest1 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.guest2 != None %}
+					<td>{{ score.guest2 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.guest3 != None %}
+					<td>{{ score.guest3 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.guest4 != None %}
+					<td>{{ score.guest4 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.guest5 != None %}
+					<td>{{ score.guest5 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.guest6 != None %}
+					<td>{{ score.guest6 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.guest7 != None %}
+					<td>{{ score.guest7 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					<td></td>
+					<td>{{ game.guestScore }}</td>
+					<td>{{ GHit }}</td>
+					<td>{{ GErr }}</td>
+				</tr>
+				<tr>
+					<td>{{ game.home }}</td>
+					{% if score.home1 != None %}
+					<td>{{ score.home1 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.home2 != None %}
+					<td>{{ score.home2 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.home3 != None %}
+					<td>{{ score.home3 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.home4 != None %}
+					<td>{{ score.home4 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.home5 != None %}
+					<td>{{ score.home5 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.home6 != None %}
+					<td>{{ score.home6 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					{% if score.home7 != None %}
+					<td>{{ score.home7 }}</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+					<td></td>
+					<td>{{ game.homeScore }}</td>
+					<td>{{ HHit }}</td>
+					<td>{{ HErr }}</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class='box conseq'>
+			{% for player in WP %}
+			<span><strong>勝利投手</strong>：{{ player.player.name }}</span><br>
+			{% endfor %}
+			{% for player in LP %}
+			<span><strong>敗戰投手</strong>：{{ player.player.name }}</span><br>
+			{% endfor %}
+			{% for player in HO %}
+			<span><strong>中繼成功</strong>：{{ player.player.name }}</span><br>
+			{% endfor %}
+			{% for player in SV %}
+			<span><strong>救援成功</strong>：{{ player.player.name }}</span><br>
+			{% endfor %}
+			{% for player in BS %}
+			<span><strong>救援失敗</strong>：{{ player.player.name }}</span><br>
+			{% endfor %}
+		</div>
+
+		<div class='box detail'>
+			<div class='box team'>
+				<p class='title'>{{ game.guest }}</p>
+
+				<table class='box item'>
+					<tr>
+						<th></th>
+						<th>打數</th>
+						<th>安打</th>
+						<th>打點</th>
+						<th>得分</th>
+						<th>四死球</th>
+						<th>三振</th>
+						<th>盜壘成功</th>
+					</tr>
+					{% for hitter in hitters %}
+					{% if hitter.player.team.id == game.guest.id %}
+					<tr>
+						<td>{{ hitter.player.name }}</td>
+						<td>{{ hitter.AB }}</td>
+						<td>{{ hitter.H }}</td>
+						<td>{{ hitter.RBI }}</td>
+						<td>{{ hitter.R }}</td>
+						<td>{{ hitter.Walks }}</td>
+						<td>{{ hitter.SO }}</td>
+						<td>{{ hitter.SB }}</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+
+				<table class='box item'>
+					<tr>
+						<th></th>
+						<th>局數</th>
+						<th>面對打席</th>
+						<th>被安打</th>
+						<th>四壞球</th>
+						<th>奪三振</th>
+						<th>失分</th>
+						<th>責失分</th>
+					</tr>
+					{% for pitcher in pitchers %}
+					{% if pitcher.player.team.id == game.guest.id %}
+					<tr>
+						<td>{{ pitcher.player.name }}</td>
+						<td>{{ pitcher.inn_int }} {{pitcher.inn_float }}/3</td>
+						<td>{{ pitcher.TPAF }}</td>
+						<td>{{ pitcher.H }}</td>
+						<td>{{ pitcher.BB }}</td>
+						<td>{{ pitcher.K }}</td>
+						<td>{{ pitcher.R }}</td>
+						<td>{{ pitcher.ER }}</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+
+			<div class='box team'>
+				<p class='title'>{{ game.home }}</p>
+
+				<table class='box item'>
+					<tr>
+						<th></th>
+						<th>打數</th>
+						<th>安打</th>
+						<th>打點</th>
+						<th>得分</th>
+						<th>四死球</th>
+						<th>三振</th>
+						<th>盜壘成功</th>
+					</tr>
+					{% for hitter in hitters %}
+					{% if hitter.player.team.id == game.home.id %}
+					<tr>
+						<td>{{ hitter.player.name }}</td>
+						<td>{{ hitter.AB }}</td>
+						<td>{{ hitter.H }}</td>
+						<td>{{ hitter.RBI }}</td>
+						<td>{{ hitter.R }}</td>
+						<td>{{ hitter.Walks }}</td>
+						<td>{{ hitter.SO }}</td>
+						<td>{{ hitter.SB }}</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+
+				<table class='box item'>
+					<tr>
+						<th></th>
+						<th>局數</th>
+						<th>面對打席</th>
+						<th>被安打</th>
+						<th>四壞球</th>
+						<th>奪三振</th>
+						<th>失分</th>
+						<th>責失分</th>
+					</tr>
+					{% for pitcher in pitchers %}
+					{% if pitcher.player.team.id == game.home.id %}
+					<tr>
+						<td>{{ pitcher.player.name }}</td>
+						<td>{{ pitcher.inn_int }} {{pitcher.inn_float }}/3</td>
+						<td>{{ pitcher.TPAF }}</td>
+						<td>{{ pitcher.H }}</td>
+						<td>{{ pitcher.BB }}</td>
+						<td>{{ pitcher.K }}</td>
+						<td>{{ pitcher.R }}</td>
+						<td>{{ pitcher.ER }}</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+</fieldset>
+{% endblock %}

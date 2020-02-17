@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 戰績</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>戰績</legend>
+
+	<div class='index'>
+		<div class='group'>
+			<p class='title'>Group A</p>
+
+			<table class='standing'>
+				<tr>
+					<th></th>
+					<th>G</th>
+					<th>W</th>
+					<th>L</th>
+					<th>PCT</th>
+				</tr>
+				{% for team in groupA %}
+				<tr>
+					<td>{{ team.team }}</td>
+					<td>{{ team.G }}</td>
+					<td>{{ team.W }}</td>
+					<td>{{ team.L }}</td>
+					<td>{{ team.PCT | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div class='group'>
+			<p class='title'>Group B</p>
+
+			<table class='standing'>
+				<tr>
+					<th></th>
+					<th>G</th>
+					<th>W</th>
+					<th>L</th>
+					<th>PCT</th>
+				</tr>
+				{% for team in groupB %}
+				<tr>
+					<td>{{ team.team }}</td>
+					<td>{{ team.G }}</td>
+					<td>{{ team.W }}</td>
+					<td>{{ team.L }}</td>
+					<td>{{ team.PCT | floatformat:3 }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</fieldset>
+{% endblock %}

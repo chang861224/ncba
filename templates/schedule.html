@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 賽程</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>賽程</legend>
+
+	<div class='index'>
+		<table class='games'>
+			<tr>
+				<th>編號</th>
+				<th>日期</th>
+				<th>先攻</th>
+				<th>比數</th>
+				<th>後攻</th>
+				<th>壘審</th>
+				<th>備註</th>
+			</tr>
+			{% for game in games %}
+			<tr>
+				<td>
+					{% if game.playoff %}
+					季
+					{% else %}
+					例
+					{% endif %}
+					{{ game.number }}
+				</td>
+				<td>{{ game.date }}</td>
+				<td>{{ game.guest }}</td>
+				{% if game.finish %}
+				<td>{{ game.guestScore }} : {{ game.homeScore }}</td>
+				{% else %}
+				<td></td>
+				{% endif %}
+				<td>{{ game.home }}</td>
+				{% if game.postpone %}
+				<td></td>
+				{% else %}
+				<td>{{ game.umpire1 }}、{{ game.umpire2 }}、{{ game.umpire3 }}</td>
+				{% endif %}
+				{% if game.finish %}
+				<td><a href='/box/{{game.id}}/'>BOX</a></td>
+				{% else %}
+				<td>{{ game.ps }}</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</fieldset>
+{% endblock %}

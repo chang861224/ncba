@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - {{ news.title }}</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>{{ news.title }}</legend>
+
+	<div class='index'>
+		<div class='news content'>
+			<div class='content'>
+				{{ news.content | linebreaks }}
+			</div>
+
+			<div class='info'>
+				<p>發布日期：{{ news.date }}</p>
+				<p>最後更新：{{ news.modify }}</p>
+			</div>
+		</div>
+	</div>
+</fieldset>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 文章更新</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>文章更新</legend>
+
+	<div class='btn'>
+		<p><a href='/newsadd/'>新增</a></p>
+	</div>
+
+	<table class='admin news'>
+		<tr>
+			<th>操作</th>
+			<th>標題</th>
+			<th>發布</th>
+		</tr>
+		{% for news in newslist %}
+		<tr>
+			<td>
+				<a href='/newsedit/{{news.id}}/edit/'>編輯</a>
+				<a href='/newsedit/{{news.id}}/delete/'>刪除</a>
+			</td>
+			<td>{{ news.title }}</td>
+			{% if news.publish %}
+			<td>是</td>
+			{% else %}
+			<td>否</td>
+			{% endif %}
+		</tr>
+		{% endfor %}
+	</table>
+</fieldset>
+{% endblock %}
