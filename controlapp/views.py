@@ -702,7 +702,7 @@ def boxadd(request, gameid=None, itemtype=None):
                     return redirect('/boxadd/')
             elif itemtype == 'hitter':
                 titles = ['姓名', '打席', '打數', '打點', '得分', '安打', '二安', '三安', '全壘打', '壘打數',
-                        '雙殺打', '犧短', '犧飛', '四死球', '三振', '盜壘', '盜壘次', '殘壘']
+                        '雙殺打', '犧短', '犧飛', '四死球', '三振', '盜壘', '盜壘刺', '殘壘']
                 items = ['player', 'PA', 'AB', 'RBI', 'R', 'H', '2BH', '3BH', 'HR', 'TB',
                         'DP', 'SH', 'SF', 'Walks', 'SO', 'SB', 'CS', 'LOB']
                 players = models.HitterUnit.objects.filter(number__id=gameid).order_by('id')
