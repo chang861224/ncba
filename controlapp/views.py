@@ -144,11 +144,11 @@ def box(request, gameid=None):
         elif fielder.player.team.id == game.home.id:
             HErr += fielder.E
 
-    WP = models.PitcherUnit.objects.filter(conseq='W')
-    LP = models.PitcherUnit.objects.filter(conseq='L')
-    SV = models.PitcherUnit.objects.filter(conseq='S')
-    HO = models.PitcherUnit.objects.filter(conseq='H')
-    BS = models.PitcherUnit.objects.filter(conseq='BS')
+    WP = models.PitcherUnit.objects.filter(number__id=gameid, conseq='W')
+    LP = models.PitcherUnit.objects.filter(number__id=gameid, conseq='L')
+    SV = models.PitcherUnit.objects.filter(number__id=gameid, conseq='S')
+    HO = models.PitcherUnit.objects.filter(number__id=gameid, conseq='H')
+    BS = models.PitcherUnit.objects.filter(number__id=gameid, conseq='BS')
     return render(request, 'box.html', locals())
 
 def standing(request):
