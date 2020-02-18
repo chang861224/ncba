@@ -15,7 +15,11 @@
 				{% csrf_token %}
 				<select name='team'>
 					{% for team in teams %}
+					{% if team.id == teamid %}
+					<option value='{{team.id}}' selected>{{ team.team }}</option>
+					{% else %}
 					<option value='{{team.id}}'>{{ team.team }}</option>
+					{% endif %}
 					{% endfor %}
 				</select>
 				<input type='submit'>
