@@ -163,14 +163,14 @@ def teams(request, teamid=None, itemtype=None):
         return redirect('/teams/' + str(teams[0].id) + '/players/')
     else:
         if itemtype == 'players':
-            players = models.PlayerUnit.objects.filter(team__id=teamid).order_by('player.name')
+            players = models.PlayerUnit.objects.filter(team__id=teamid).order_by('name')
         elif itemtype == 'hitters':
-            hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid).order_by('player.name')
+            hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid).order_by('name')
         elif itemtype == 'fielders':
-            fielders = models.PlayerFielderUnit.objects.filter(player__team__id=teamid).order_by('player.name')
+            fielders = models.PlayerFielderUnit.objects.filter(player__team__id=teamid).order_by('name')
         elif itemtype == 'picatchers':
-            catchers = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid).order_by('player.name')
-            units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid).order_by('player.name')
+            catchers = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid).order_by('name')
+            units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid).order_by('name')
             pitchers = []
             for player in units:
                 pitchers.append({'model': player, 'innf': player.inn3 % 3})
