@@ -1336,14 +1336,12 @@ def newsedit(request, newsid=None, edittype=None):
 
 def orderlist(request, teamid=None):
     if request.user.is_authenticated:
-        optionlink = False
         games = models.GameUnit.objects.filter(Q(postpone=False) & (Q(guest__id=teamid) | Q(home__id=teamid))).order_by('date')
         return render(request, 'orderlist.html', locals())
     return redirect('/optoin/')
 
 def order(request, gameid=None, team=None):
     if request.user.is_authenticated:
-        optionlink = False
         game = models.GameUnit.objects.get(id=gameid)
         now = datetime.datetime.now()
 
