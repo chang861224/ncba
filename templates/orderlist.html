@@ -18,7 +18,11 @@
 			</tr>
 			{% for game in games %}
 			<tr>
-				<td>{{ game.number }}</td>
+				{% if game.playoff %}
+				<td>季 {{ game.number }}</td>
+				{% else %}
+				<td>例 {{ game.number }}</td>
+				{% endif %}
 				<td>{{ game.date }}</td>
 				{% if game.guest.id == teamid %}
 				<td><a href='/order/{{game.id}}/guest/'>{{ game.guest.team }} vs. {{ game.home.team }}</a></td>
