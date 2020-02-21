@@ -41,7 +41,15 @@
 				</ul>
 
 				{% if request.user.is_authenticated %}
-				{% if request.user.username != 'team_1' and request.user.username != 'team_3' and request.user.username != 'team_8' and request.user.username != 'team_10' %}
+				{% if request.user.username == 'team_1' %}
+				<p class='login'>[ <a href='/orderlist/1/'>先發名單登錄</a> ]</p>
+				{% elif request.user.username == 'team_3' %}
+				<p class='login'>[ <a href='/orderlist/3/'>先發名單登錄</a> ]</p>
+				{% elif request.user.username == 'team_8' %}
+				<p class='login'>[ <a href='/orderlist/8/'>先發名單登錄</a> ]</p>
+				{% elif request.user.username == 'team_10' %}
+				<p class='login'>[ <a href='/orderlist/10/'>先發名單登錄</a> ]</p>
+				{% else %}
 				<p class='login'>[ <a href='/option/'>會員操作選項</a> ]</p>
 				{% endif %}
 				<p class='login'>[ <a href='/logout/'>登出</a> ]</p>
