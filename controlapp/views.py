@@ -1278,7 +1278,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
 def allnews(request):
     if request.user.is_authenticated:
-        newslist = models.NewsUnit.objects.all().order_by('date')
+        newslist = models.NewsUnit.objects.all().order_by('-date')
     else:
         return redirect('/option/')
     return render(request, 'allnews.html', locals())
