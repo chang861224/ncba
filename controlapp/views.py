@@ -375,8 +375,9 @@ def gameadd(request):
                 playoff = False
             else:
                 playoff = True
+            ps = request.POST.get('PS', '')
 
-            unit = models.GameUnit.objects.create(number=number, date=date, guest=guest, home=home, umpire1=umpire1, umpire2=umpire2, umpire3=umpire3, playoff=playoff)
+            unit = models.GameUnit.objects.create(number=number, date=date, guest=guest, home=home, umpire1=umpire1, umpire2=umpire2, umpire3=umpire3, playoff=playoff, ps=ps)
             unit.save()
             return redirect('/gameadd/')
     else:
