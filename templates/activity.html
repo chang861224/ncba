@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 活動專區</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>活動專區</legend>
+
+	<div class='index'>
+		{% if eventid == None %}
+
+		{% if count == 0 %}
+		<p>目前沒有活動</p>
+		{% else %}
+		{% for event in events %}
+		<div class='activity item'>
+			<a href='/activity/{{event.id}}/'>活動名稱：{{ event.title }}</a>
+		</div>
+		{% endfor %}
+		{% endif %}
+
+		{% else %}
+
+		{% if event == 'notyet' %}
+		<p>活動尚未開始</p>
+		{% elif event == 'expired' %}
+		<p>活動已截止</p>
+		{% else %}
+
+		{% if event.eventVote %}
+		<div class='event detail'>
+			<p class='title'>{{ event.title }}</p>
+			<div class='description'>{{ event.description | linebreaks }}</div>
+		</div>
+
+		<div class='option detail'>
+			<form action='.' method='POST'>
+				{% csrf_token %}
+				<p class='email'>電子郵件信箱：<input name='email' type='email' required></p>
+
+				{% for item in items %}
+				<div class='item'>
+					<div class='title'>
+						<input name='option' type='checkbox' value='{{item.id}}'>{{ item.title }}
+					</div>
+
+					<div class='status'>
+						<p>得票數：{{ item.votes }}</p>
+						<p>得票率：{{ item.percent | floatformat:2 }}%</p>
+					</div>
+
+					<div class='description'>
+						{{ item.description | linebreaks }}
+					</div>
+				</div>
+				{% endfor %}
+
+				<p><input type="submit"></p>
+			</form>
+		</div>
+		{% endif %}
+
+		{% endif %}
+
+		{% endif %}
+	</div>
+</fieldset>
+{% endblock %}

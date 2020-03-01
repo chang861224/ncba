@@ -33,6 +33,12 @@ urlpatterns = [
     path('teams/<int:teamid>/<str:itemtype>/', views.teams),
     path('player/<int:playerid>/', views.player),
     path('rank/', views.rank),
+    path('activity/', views.activity),
+    path('activity/<int:eventid>/', views.activity),
+    path('repeatvote/', views.repeatvote),
+
+    # Email verification
+    path('mail/vote/<int:eventid>/<str:randomkey>/', views.mailvote),
 
     # Member management
     path('register/', views.register),
@@ -73,5 +79,16 @@ urlpatterns = [
 
     # Team order management
     path('orderlist/<int:teamid>/', views.orderlist),
-    path('order/<int:gameid>/<str:team>/', views.order)
+    path('order/<int:gameid>/<str:team>/', views.order),
+
+    # Events management
+    path('allevents/', views.allevents),
+    path('eventadd/', views.eventadd),
+    path('eventedit/<int:eventid>/<str:edittype>/', views.eventedit),
+
+    # Vote options management
+    path('itemadd/<int:eventid>/', views.itemadd),
+    path('itemedit/<int:eventid>/<int:itemid>/', views.itemedit),
+    path('itemdelete/<int:eventid>/<int:itemid>/', views.itemdelete),
+
 ]

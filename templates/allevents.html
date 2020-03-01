@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 活動管理</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>活動管理</legend>
+
+	<div class='btn'>
+		<p><a href='/eventadd/'>新增</a></p>
+	</div>
+
+	<div class='index'>
+		<table class='admin events'>
+			<tr>
+				<th>操作</th>
+				<th>標題</th>
+				<th>型態</th>
+				<th>開始日期</th>
+				<th>結束日期</th>
+			</tr>
+			{% for event in events %}
+			<tr>
+				<td>
+					<a href='/eventedit/{{event.id}}/edit/'>編輯</a>
+					<a href='/eventedit/{{event.id}}/delete/'>刪除</a>
+				</td>
+				<td>{{ event.title }}</td>
+				{% if event.eventVote %}
+				<td><a href='/itemadd/{{event.id}}/'>投票</a></td>
+				{% else %}
+				<td></td>
+				{% endif %}
+				<td>{{ event.startDate }}</td>
+				<td>{{ event.endDate }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</fieldset>
+{% endblock %}

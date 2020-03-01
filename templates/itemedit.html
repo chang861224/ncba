@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟NCBA - 活動管理</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>編輯投票選項</legend>
+
+	<div class='form option item'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>選項名稱：<input name="title" value='{{item.title}}' required></p>
+			<p>選項敘述：<textarea name='description' cols='40' rows='20' required>{{ item.description }}</textarea></p>
+			
+			<p><input type="submit"></p>
+		</form>
+	</div>
+</fieldset>
+{% endblock %}

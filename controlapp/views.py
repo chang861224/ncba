@@ -4,7 +4,8 @@ from django.contrib import auth
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.db.models import Q
-from controlapp import models
+from controlapp import models, sendmail
+import random, string
 import math
 import datetime
 
@@ -235,6 +236,72 @@ def rank(request):
     if len(ERA3) > 3:
         ERA3 = ERA3[:3]
     return render(request, 'rank.html', locals())
+
+def activity(request, eventid=None):
+    if eventid == None:
+        events = models.EventUnit.objects.all().order_by('-id')
+        count = len(events)
+    else:
+        event = models.EventUnit.objects.get(id=eventid)
+
+        if datetime.datetime.now() - datetime.datetime(event.startDate.year, event.startDate.month, event.startDate.day, 0, 0, 0, 0) < datetime.timedelta(microseconds=0):
+            event = 'notyet'
+        elif datetime.datetime.now() - datetime.datetime(event.endDate.year, event.endDate.month, event.endDate.day, 23, 59, 59, 999999) > datetime.timedelta(microseconds=0):
+            event = 'expired'
+        else:
+            if event.eventVote:
+                items = models.OptionUnit.objects.filter(event__id=eventid)
+
+                if request.method == 'POST':
+                    email = request.POST['email']
+
+                    try:
+                        repeat = models.VoterUnit.objects.get(option__event__id=eventid, email=email, confirm=True)
+                    except:
+                        repeat = None
+
+                    if repeat == None:
+                        unconfirm = models.VoterUnit.objects.filter(option__event__id=eventid, email=email, confirm=False)
+                        for unit in unconfirm:
+                            unit.delete()
+
+                        randomkey = ''.join(random.choice(string.ascii_letters + string.digits) for x in range(10))
+                        checklist = request.POST.getlist('option')
+                        
+                        for item in checklist:
+                            option = models.OptionUnit.objects.get(id=int(item))
+                            vote = models.VoterUnit.objects.create(option=option, email=email, randomkey=randomkey)
+                            vote.save()
+                            sendmail.sendmail(email, str(eventid), randomkey)
+                        return render(request, 'unconfirm.html', locals())
+                    else:
+                        return redirect('/repeatvote/')
+    return render(request, 'activity.html', locals())
+
+def repeatvote(request):
+    return render(request, 'repeatvote.html', locals())
+
+def mailvote(request, eventid=None, randomkey=None):
+    items = models.VoterUnit.objects.filter(option__event__id=eventid, randomkey=randomkey)
+
+    if len(items) != 0:
+        for item in items:
+            if item.confirm == False:
+                option = models.OptionUnit.objects.get(id=item.option.id)
+                option.votes += 1
+                option.save()
+                item.confirm = True
+                item.save()
+
+        options = models.OptionUnit.objects.filter(event__id=eventid).order_by('id')
+        total = sum(option.votes for option in options)
+        if total != 0:
+            for option in options:
+                option.percent = option.votes / total * 100
+                option.save()
+    else:
+        return render(request, 'urlnotexist.html', locals())
+    return render(request, 'mailconfirm.html', locals())
 
 def login(request):
     message = ''
@@ -1549,4 +1616,91 @@ def order(request, gameid=None, team=None):
                     substitution9 = None
                 return render(request, 'orderedit.html', locals())
     return redirect('/optoin/')
+
+def allevents(request):
+    if request.user.is_authenticated:
+        events = models.EventUnit.objects.all().order_by('-id')
+    else:
+        return redirect('/option/')
+    return render(request, 'allevents.html', locals())
+
+def eventadd(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            title = request.POST['title']
+            startDate = datetime.datetime.strptime(request.POST['startDate'], '%Y-%m-%d').date()
+            endDate = datetime.datetime.strptime(request.POST['endDate'], '%Y-%m-%d').date()
+            description = request.POST['description']
+            if request.POST['type'] == 'vote':
+                vote = True
+            
+            unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventVote=vote)
+            unit.save()
+            return redirect('/allevents/')
+    else:
+        return redirect('/option/')
+    return render(request, 'eventadd.html', locals())
+
+def eventedit(request, eventid=None, edittype=None):
+    if request.user.is_authenticated:
+        if edittype == 'delete':
+            event = models.EventUnit.objects.get(id=eventid)
+            event.delete()
+            return redirect('/allevents/')
+        elif edittype == 'edit':
+            event = models.EventUnit.objects.get(id=eventid)
+            start = str(event.startDate)
+            end = str(event.endDate)
+
+            if request.method == 'POST':
+                event.title = request.POST['title']
+                event.startDate = datetime.datetime.strptime(request.POST['startDate'], '%Y-%m-%d').date()
+                event.endDate = datetime.datetime.strptime(request.POST['endDate'], '%Y-%m-%d').date()
+                event.description = request.POST['description']
+                if request.POST['type'] == 'vote':
+                    event.eventVote = True
+                else:
+                    event.eventVote = False
+
+                event.save()
+                return redirect('/allevents/')
+    else:
+        return redirect('/optoin/')
+    return render(request, 'eventedit.html', locals())
+
+def itemadd(request, eventid=None):
+    if request.user.is_authenticated:
+        event = models.EventUnit.objects.get(id=eventid)
+        items = models.OptionUnit.objects.filter(event__id=eventid)
+
+        if request.method == 'POST':
+            title = request.POST['title']
+            description = request.POST['description']
+            
+            option = models.OptionUnit.objects.create(event=event, title=title, description=description)
+            option.save()
+            return redirect('/itemadd/' + str(eventid) + '/')
+    else:
+        return redirect('/option/')
+    return render(request, 'itemadd.html', locals())
+
+def itemedit(request, eventid=None, itemid=None):
+    if request.user.is_authenticated:
+        item = models.OptionUnit.objects.get(id=itemid)
+
+        if request.method == 'POST':
+            item.title = request.POST['title']
+            item.description = request.POST['description']
+            item.save()
+            return redirect('/itemadd/' + str(eventid) + '/')
+    else:
+        return redirect('/option/')
+    return render(request, 'itemedit.html', locals())
+
+def itemdelete(request, eventid=None, itemid=None):
+    if request.user.is_authenticated:
+        item = models.OptionUnit.objects.get(id=itemid)
+        item.delete()
+        return redirect('/itemadd/' + str(eventid) + '/')
+    return redirect('/option/')
 

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 活動管理</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>活動管理</legend>
+
+	<!--div class='index'-->
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<div class='form event'>
+				<p>活動名稱：<input name='title' value='{{event.title}}' required></p>
+				<p>
+				活動型態：
+				{% if event.eventVote == True %}
+				<input name='type' type='radio' value='vote' checked>票選
+				{% else %}
+				<input name='type' type='radio' value='vote'>票選
+				{% endif %}
+				</p>
+				<p>開始日期：<input name='startDate' type='date' value='{{start}}' placeholder='YYYY-MM-DD'></p>
+				<p>結束日期：<input name='endDate' type='date' value='{{end}}' placeholder='YYYY-MM-DD'></p>
+				<p>活動描述：<textarea name='description' cols='50' rows='20' required>{{ event.description }}</textarea></p>
+
+				<div class='btn'>
+					<p>
+					<input type='submit'>
+					</p>
+				</div>
+			</div>
+		</form>
+	<!--/div-->
+</fieldset>
+{% endblock %}

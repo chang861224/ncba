@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 活動管理</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class="fieldset_title">新增投票選項</legend>
+
+	<div class='form option item'>
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>活動名稱：{{ event.title }}</p>
+			<p>選項名稱：<input name="title" required></p>
+			<p>選項敘述：<textarea name='description' cols='40' rows='20' required></textarea></p>
+			
+			<p><input type="submit"><input type='reset'></p>
+		</form>
+	</div>
+
+	<div class='admin item list'>
+		<p class='title'>選項列表</p>
+		<table class="admin option item">
+			<tr>
+				<th>操作</th>
+				<th>選項</th>
+			</tr>
+
+			{% for item in items %}
+			<tr>
+				<td>
+					<a href='/itemedit/{{event.id}}/{{item.id}}/'>編輯</a>
+					<a href='/itemdelete/{{event.id}}/{{item.id}}/'>刪除</a>
+				</td>
+				<td>{{ item.title }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</fieldset>
+{% endblock %}

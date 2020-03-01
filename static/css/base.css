@@ -450,10 +450,14 @@ BASE LAYOUT
 .form.box.edit td:last-child{
 	width: 70%;
 }
-.form.news{
+.form.news,
+.form.event,
+.form.option.item{
 	width: 100%;
 }
-.form.news p{
+.form.news p,
+.form.event p,
+.form.option.item p{
 	padding: 5px 0;
 }
 
@@ -810,6 +814,71 @@ BASE LAYOUT
 	}
 	.admin.order .btn{
 		clear: both;
+	}
+}
+.admin.events{
+	width: 140%;
+	font-size: 12px;
+}
+.admin.events tr:nth-child(2n-1){
+	background-color: rgb(216, 214, 215);
+}
+.admin.events tr:nth-child(2n){
+	background-color: rgb(236, 236, 236);
+}
+.admin.events th{
+	width: 20%;
+	text-align: center;
+	background-color: #70b9dd;
+}
+.admin.events td{
+	width: 20%;
+	text-align: center;
+}
+@media screen and (min-width: 640px){
+	.admin.events{
+		width: 100%;
+		font-size: 16px;
+	}
+}
+.admin.option.item{
+	width: 100%;
+}
+.admin.option.item tr:nth-child(2n-1){
+	background-color: rgb(216, 214, 215);
+}
+.admin.option.item tr:nth-child(2n){
+	background-color: rgb(236, 236, 236);
+}
+.admin.option.item th{
+	font-size: 10px;
+	text-align: center;
+	background-color: #70b9dd;
+}
+.admin.option.item td{
+	padding: 3px 0;
+	font-size: 12px;
+}
+.admin.option.item th:first-child,
+.admin.option.item td:first-child{
+	width: 40%;
+	text-align: center;
+}
+.admin.option.item th:last-child{
+	width: 60%;
+}
+.admin.option.item td:last-child{
+	width: 60%;
+	text-align: left;
+}
+@media screen and (min-width: 640px){
+	.admin.option.item{
+		width: 60%;
+		margin: 0 20%;
+	}
+	.admin.option.item th,
+	.admin.option.item td{
+		font-size: 16px;
 	}
 }
 
@@ -1512,6 +1581,108 @@ BASE LAYOUT
 	}
 	.index .lineup.list td{
 		padding: 5px 0;
+		font-size: 16px;
+	}
+}
+.index .activity.item{
+	width: 90%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 5%;
+	padding-right: 5%;
+	margin: 15px 0;
+	font-weight: bold;
+	text-align: left;
+	background-color: #dddddd;
+}
+@media screen and (min-width: 640px){
+	.index .activity.item{
+		width: 50%;
+		padding-top: 30px;
+		padding-bottom: 30px;
+		padding-left: 5%;
+		padding-right: 5%;
+		margin: 15px 20%;
+		font-size: 20px;
+	}
+}
+.index .event.detail,
+.index .option.detail{
+	width: 90%;
+	padding: 10px 5%;
+	margin-bottom: 10px;
+}
+.index .event.detail .title{
+	width: 100%;
+	color: red;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+}
+.index .event.detail .description{
+	width: 100%;
+}
+.index .event.detail .description p{
+	width: 90%;
+	padding: 0 5%;
+	margin: 10px 0;
+	font-size: 12px;
+	text-align: left;
+}
+.index .option.detail .email{
+	width: 100%;
+	padding: 5px 0;
+	font-size: 12px;
+	text-align: left;
+}
+.index .option.detail .item{
+	width: 90%;
+	padding: 10px 5%;
+	margin: 20px 0;
+	text-align: left;
+	background-color: #dddddd;
+}
+.index .option.detail .item .title{
+	width: 65%;
+	font-weight: bold;
+	float: left;
+}
+.index .option.detail .item .status{
+	width: 35%;
+	float: right;
+}
+.index .option.detail .item .status p{
+	width: 100%;
+	font-size: 10px;
+	text-align: left;
+}
+.index .option.detail .item .description{
+	width: 80%;
+	padding: 0 10%;
+	font-size: 12px;
+	clear: both;
+}
+@media screen and (min-width: 640px){
+	.index .event.detail,
+	.index .option.detail{
+		width: 80%;
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+	.index .event.detail .title{
+		width: 100%;
+		font-size: 20px;
+	}
+	.index .event.detail .description p,
+	.index .option.detail .email{
+		font-size: 16px;
+	}
+	.index .option.detail .item{
+		padding: 20px 5%;
+	}
+	.index .option.detail .item .description{
+		width: 90%;
+		padding: 0 5%;
 		font-size: 16px;
 	}
 }

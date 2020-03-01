@@ -269,3 +269,29 @@ class NewsUnit(models.Model):
     def __str__(self):
         return str(self.date) + ' ' + self.title
 
+class EventUnit(models.Model):
+    title = models.CharField(max_length=100, null=False)
+    description = models.CharField(max_length=500, null=False)
+    startDate = models.DateField(null=False)
+    endDate = models.DateField(null=False)
+    eventVote = models.BooleanField(default=False)
+    def __str__(self):
+        return self.title
+
+class OptionUnit(models.Model):
+    event = models.ForeignKey('EventUnit', on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, null=False)
+    description = models.CharField(max_length=500, null=False)
+    votes = models.IntegerField(default=0)
+    percent = models.FloatField(null=True)
+    def __str__(self):
+        return self.event.title + ' - ' + self.title
+
+class VoterUnit(models.Model):
+    option = models.ForeignKey('OptionUnit', on_delete=models.CASCADE)
+    email = models.EmailField(max_length=254)
+    randomkey = models.CharField(max_length=50, null=False)
+    confirm = models.BooleanField(default=False)
+    def __str__(self):
+        return str(self.email)
+
