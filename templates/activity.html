@@ -24,19 +24,38 @@
 
 		{% else %}
 
-		{% if event == 'notyet' %}
-		<p>活動尚未開始</p>
-		{% elif event == 'expired' %}
-		<p>活動已截止</p>
-		{% else %}
-
 		{% if event.eventVote %}
 		<div class='event detail'>
 			<p class='title'>{{ event.title }}</p>
-			<div class='description'>{{ event.description | linebreaks }}</div>
+			<div class='description'>
+				{{ event.description | linebreaks }}
+
+				<p>活動日期：{{ event.startDate }} ~ {{ event.endDate }}</p>
+			</div>
 		</div>
 
 		<div class='option detail'>
+			{% if status != 'processing' %}
+
+			{% for item in items %}
+			<div class='item'>
+				<div class='title'>
+					{{ item.title }}
+				</div>
+
+				<div class='status'>
+					<p>得票數：{{ item.votes }}</p>
+					<p>得票率：{{ item.percent | floatformat:2 }}%</p>
+				</div>
+
+				<div class='description'>
+					{{ item.description | linebreaks }}
+				</div>
+			</div>
+			{% endfor %}
+
+			{% else %}
+
 			<form action='.' method='POST'>
 				{% csrf_token %}
 				<p class='email'>電子郵件信箱：<input name='email' type='email' required></p>

@@ -245,37 +245,39 @@ def activity(request, eventid=None):
         event = models.EventUnit.objects.get(id=eventid)
 
         if datetime.datetime.now() - datetime.datetime(event.startDate.year, event.startDate.month, event.startDate.day, 0, 0, 0, 0) < datetime.timedelta(microseconds=0):
-            event = 'notyet'
+            status = 'notyet'
         elif datetime.datetime.now() - datetime.datetime(event.endDate.year, event.endDate.month, event.endDate.day, 23, 59, 59, 999999) > datetime.timedelta(microseconds=0):
-            event = 'expired'
+            status = 'expired'
         else:
-            if event.eventVote:
-                items = models.OptionUnit.objects.filter(event__id=eventid)
+            status = 'processing'
 
-                if request.method == 'POST':
-                    email = request.POST['email']
+        if event.eventVote:
+            items = models.OptionUnit.objects.filter(event__id=eventid)
 
-                    try:
-                        repeat = models.VoterUnit.objects.get(option__event__id=eventid, email=email, confirm=True)
-                    except:
-                        repeat = None
+            if request.method == 'POST':
+                email = request.POST['email']
 
-                    if repeat == None:
-                        unconfirm = models.VoterUnit.objects.filter(option__event__id=eventid, email=email, confirm=False)
-                        for unit in unconfirm:
-                            unit.delete()
+                try:
+                    repeat = models.VoterUnit.objects.get(option__event__id=eventid, email=email, confirm=True)
+                except:
+                    repeat = None
 
-                        randomkey = ''.join(random.choice(string.ascii_letters + string.digits) for x in range(10))
-                        checklist = request.POST.getlist('option')
-                        
-                        for item in checklist:
-                            option = models.OptionUnit.objects.get(id=int(item))
-                            vote = models.VoterUnit.objects.create(option=option, email=email, randomkey=randomkey)
-                            vote.save()
-                            sendmail.sendmail(email, str(eventid), randomkey)
-                        return render(request, 'unconfirm.html', locals())
-                    else:
-                        return redirect('/repeatvote/')
+                if repeat == None:
+                    unconfirm = models.VoterUnit.objects.filter(option__event__id=eventid, email=email, confirm=False)
+                    for unit in unconfirm:
+                        unit.delete()
+
+                    randomkey = ''.join(random.choice(string.ascii_letters + string.digits) for x in range(10))
+                    checklist = request.POST.getlist('option')
+                    
+                    for item in checklist:
+                        option = models.OptionUnit.objects.get(id=int(item))
+                        vote = models.VoterUnit.objects.create(option=option, email=email, randomkey=randomkey)
+                        vote.save()
+                        sendmail.sendmail(email, str(eventid), randomkey)
+                    return render(request, 'unconfirm.html', locals())
+                else:
+                    return redirect('/repeatvote/')
     return render(request, 'activity.html', locals())
 
 def repeatvote(request):
