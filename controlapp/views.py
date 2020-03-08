@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.http import HttpResponse
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission, Group
 from django.db.models import Q
 from controlapp import models, sendmail
 import random, string
@@ -34,6 +34,13 @@ def register(request):
                 user.last_name = request.POST['last_name']
                 user.is_staff = False
                 user.save()
+
+                if request.POST['username'].split('_')[0] == 'team':
+                    group = Group.objects.get(name='teams')
+                else:
+                    group = Group.objects.get(name='guest')
+                
+                user.groups.add(group)
         return redirect('/index/')
     return render(request, 'register.html', locals())
 
@@ -254,7 +261,7 @@ def activity(request, eventid=None):
         if event.public == True:
             permit = True
         else:
-            if request.user.is_authenticated and request.user.username.split('_')[0] != 'team':
+            if request.user.is_authenticated and request.user.has_perm('auth.team') == False:
                 permit = True
             else:
                 permit = False
@@ -353,10 +360,13 @@ def login(request):
                 auth.login(request, user)
                 request.session['username'] = username
                 request.session.set_expiry(18000)
-                if username.split('_')[0] == 'team':
+                #if username.split('_')[0] == 'team':
+                if request.user.has_perm('auth.team'):
                     return redirect('/orderlist/' + username.split('_')[1] + '/')
-                else:
+                elif request.user.has_perm('auth.member'):
                     return redirect('/option/')
+                else:
+                    return redirect('/index/')
             else:
                 message = '帳號不存在！'
         else:
