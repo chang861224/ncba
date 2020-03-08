@@ -9,30 +9,43 @@
 <fieldset class='field'>
 	<legend class='fieldset_title'>活動管理</legend>
 
-	<!--div class='index'-->
-		<form action='.' method='POST'>
-			{% csrf_token %}
-			<div class='form event'>
-				<p>活動名稱：<input name='title' value='{{event.title}}' required></p>
-				<p>
-				活動型態：
-				{% if event.eventVote == True %}
-				<input name='type' type='radio' value='vote' checked>票選
-				{% else %}
-				<input name='type' type='radio' value='vote'>票選
-				{% endif %}
-				</p>
-				<p>開始日期：<input name='startDate' type='date' value='{{start}}' placeholder='YYYY-MM-DD'></p>
-				<p>結束日期：<input name='endDate' type='date' value='{{end}}' placeholder='YYYY-MM-DD'></p>
-				<p>活動描述：<textarea name='description' cols='50' rows='20' required>{{ event.description }}</textarea></p>
+	<form action='.' method='POST'>
+		{% csrf_token %}
+		<div class='form event'>
+			<p>活動名稱：<input name='title' value='{{event.title}}' required></p>
+			<p>
+			活動型態：
+			{% if event.eventSelection == True %}
+			<input name='type' type='radio' value='selection' checked>多選
+			{% else %}
+			<input name='type' type='radio' value='selection'>多選
+			{% endif %}
+			{% if event.eventChoice == True %}
+			<input name='type' type='radio' value='choice' checked>單選
+			{% else %}
+			<input name='type' type='radio' value='choice'>單選
+			{% endif %}
+			</p>
+			<p>
+			公　　開：
+			{% if event.public == True %}
+			<input name='public' type='radio' value='yes' checked>是
+			<input name='public' type='radio' value='no'>否
+			{% else %}
+			<input name='public' type='radio' value='yes'>是
+			<input name='public' type='radio' value='no' checked>否
+			{% endif %}
+			</p>
+			<p>開始日期：<input name='startDate' type='date' value='{{start}}' placeholder='YYYY-MM-DD'></p>
+			<p>結束日期：<input name='endDate' type='date' value='{{end}}' placeholder='YYYY-MM-DD'></p>
+			<p>活動描述：<textarea name='description' cols='50' rows='20' required>{{ event.description }}</textarea></p>
 
-				<div class='btn'>
-					<p>
-					<input type='submit'>
-					</p>
-				</div>
+			<div class='btn'>
+				<p>
+				<input type='submit'>
+				</p>
 			</div>
-		</form>
-	<!--/div-->
+		</div>
+	</form>
 </fieldset>
 {% endblock %}

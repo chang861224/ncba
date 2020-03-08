@@ -251,7 +251,15 @@ def activity(request, eventid=None):
         else:
             status = 'processing'
 
-        if event.eventVote:
+        if event.public == True:
+            permit = True
+        else:
+            if request.user.is_authenticated and request.user.username.split('_')[0] != 'team':
+                permit = True
+            else:
+                permit = False
+
+        if event.eventSelection:
             items = models.OptionUnit.objects.filter(event__id=eventid)
 
             if request.method == 'POST':
@@ -275,6 +283,33 @@ def activity(request, eventid=None):
                         vote = models.VoterUnit.objects.create(option=option, email=email, randomkey=randomkey)
                         vote.save()
                         sendmail.sendmail(email, str(eventid), randomkey)
+                    return render(request, 'unconfirm.html', locals())
+                else:
+                    return redirect('/repeatvote/')
+        elif event.eventChoice:
+            items = models.OptionUnit.objects.filter(event__id=eventid)
+
+            if request.method == 'POST':
+                email = request.POST['email']
+
+                try:
+                    repeat = models.VoterUnit.objects.get(option__event__id=eventid, email=email, confirm=True)
+                except:
+                    repeat = None
+
+                if repeat == None:
+                    unconfirm = models.VoterUnit.objects.filter(option__event__id=eventid, email=email, confirm=False)
+                    for unit in unconfirm:
+                        unit.delete()
+
+                    randomkey = ''.join(random.choice(string.ascii_letters + string.digits) for x in range(10))
+
+                    res = request.POST['option']
+                    option = models.OptionUnit.objects.get(id=int(res))
+                    vote = models.VoterUnit.objects.create(option=option, email=email, randomkey=randomkey)
+                    vote.save()
+                    sendmail.sendmail(email, str(eventid), randomkey)
+
                     return render(request, 'unconfirm.html', locals())
                 else:
                     return redirect('/repeatvote/')
@@ -1633,10 +1668,15 @@ def eventadd(request):
             startDate = datetime.datetime.strptime(request.POST['startDate'], '%Y-%m-%d').date()
             endDate = datetime.datetime.strptime(request.POST['endDate'], '%Y-%m-%d').date()
             description = request.POST['description']
-            if request.POST['type'] == 'vote':
-                vote = True
+            if request.POST['public'] == 'yes':
+                public = True
+            else:
+                public = False
             
-            unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventVote=vote)
+            if request.POST['type'] == 'selection':
+                unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventselection=True, public=public)
+            else:
+                unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventChoice=True, public=public)
             unit.save()
             return redirect('/allevents/')
     else:
@@ -1659,10 +1699,16 @@ def eventedit(request, eventid=None, edittype=None):
                 event.startDate = datetime.datetime.strptime(request.POST['startDate'], '%Y-%m-%d').date()
                 event.endDate = datetime.datetime.strptime(request.POST['endDate'], '%Y-%m-%d').date()
                 event.description = request.POST['description']
-                if request.POST['type'] == 'vote':
-                    event.eventVote = True
+                if request.POST['public'] == 'yes':
+                    event.public = True
                 else:
-                    event.eventVote = False
+                    event.public = False
+                if request.POST['type'] == 'selection':
+                    event.eventSelection = True
+                    event.eventChoice = False
+                else:
+                    event.eventSelection = False
+                    event.eventChoice = True
 
                 event.save()
                 return redirect('/allevents/')

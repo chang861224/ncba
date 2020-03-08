@@ -29,8 +29,8 @@
 					<a href='/eventedit/{{event.id}}/delete/'>刪除</a>
 				</td>
 				<td>{{ event.title }}</td>
-				{% if event.eventVote %}
-				<td><a href='/itemadd/{{event.id}}/'>投票</a></td>
+				{% if event.eventSelection or event.eventChoice %}
+				<td><a href='/itemadd/{{event.id}}/'>單選/多選</a></td>
 				{% else %}
 				<td></td>
 				{% endif %}

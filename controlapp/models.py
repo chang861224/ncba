@@ -274,7 +274,9 @@ class EventUnit(models.Model):
     description = models.CharField(max_length=500, null=False)
     startDate = models.DateField(null=False)
     endDate = models.DateField(null=False)
-    eventVote = models.BooleanField(default=False)
+    eventSelection = models.BooleanField(default=False)
+    eventChoice = models.BooleanField(default=False)
+    public = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 

@@ -24,7 +24,6 @@
 
 		{% else %}
 
-		{% if event.eventVote %}
 		<div class='event detail'>
 			<p class='title'>{{ event.title }}</p>
 			<div class='description'>
@@ -37,16 +36,22 @@
 		<div class='option detail'>
 			{% if status != 'processing' %}
 
+			{% if permit == False %}
+			<p class='email'><strong>此活動僅限相關人員參與</strong></p>
+			{% endif %}
+
 			{% for item in items %}
 			<div class='item'>
 				<div class='title'>
 					{{ item.title }}
 				</div>
 
+				{% if event.public or request.user.username == 'ncba' %}
 				<div class='status'>
 					<p>得票數：{{ item.votes }}</p>
 					<p>得票率：{{ item.percent | floatformat:2 }}%</p>
 				</div>
+				{% endif %}
 
 				<div class='description'>
 					{{ item.description | linebreaks }}
@@ -58,17 +63,19 @@
 
 			<form action='.' method='POST'>
 				{% csrf_token %}
+
+				{% if permit %}
 				<p class='email'>電子郵件信箱：<input name='email' type='email' required></p>
+				{% else %}
+				<p class='email'><strong>此活動僅限相關人員參與</strong></p>
+				{% endif %}
+
+				{% if event.eventSelection %}
 
 				{% for item in items %}
 				<div class='item'>
 					<div class='title'>
 						<input name='option' type='checkbox' value='{{item.id}}'>{{ item.title }}
-					</div>
-
-					<div class='status'>
-						<p>得票數：{{ item.votes }}</p>
-						<p>得票率：{{ item.percent | floatformat:2 }}%</p>
 					</div>
 
 					<div class='description'>
@@ -77,10 +84,27 @@
 				</div>
 				{% endfor %}
 
+				{% elif event.eventChoice %}
+
+				{% for item in items %}
+				<div class='item'>
+					<div class='title'>
+						<input name='option' type='radio' value='{{item.id}}'>{{ item.title }}
+					</div>
+
+					<div class='description'>
+						{{ item.description | linebreaks }}
+					</div>
+				</div>
+				{% endfor %}
+				
+				{% endif %}
+
+				{% if permit %}
 				<p><input type="submit"></p>
+				{% endif %}
 			</form>
 		</div>
-		{% endif %}
 
 		{% endif %}
 
