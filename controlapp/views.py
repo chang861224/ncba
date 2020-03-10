@@ -1684,7 +1684,7 @@ def eventadd(request):
                 public = False
             
             if request.POST['type'] == 'selection':
-                unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventselection=True, public=public)
+                unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventSelection=True, public=public)
             else:
                 unit = models.EventUnit.objects.create(title=title, description=description, startDate=startDate, endDate=endDate, eventChoice=True, public=public)
             unit.save()
