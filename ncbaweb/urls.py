@@ -66,6 +66,10 @@ urlpatterns = [
     # Lineup list
     path('lineup/', views.lineup),
     path('lineup/<int:gameid>/', views.lineup),
+
+    # Album url management
+    path('album/', views.album),
+    path('album/<int:gameid>/', views.album),
     
     # Game boxes management
     path('boxadd/', views.boxadd),

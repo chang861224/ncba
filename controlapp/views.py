@@ -546,6 +546,7 @@ def gameedit(request, gameid=None, edittype=None):
                     game.regular = False
                     game.postpone = True
                     game.finish = False
+                game.album = request.POST['album']
                 game.ps = request.POST['PS']
                 game.save()
                 return redirect('/gameadd/')
@@ -745,6 +746,20 @@ def lineup(request, gameid=None):
             
             return render(request, 'lineup.html', locals())
     return redirect('/option/')
+
+def album(request, gameid=None):
+    if request.user.is_authenticated:
+        if gameid == None:
+            games = models.GameUnit.objects.filter(postpone=False).order_by('date')
+        else:
+            if request.method == 'POST':
+                game = models.GameUnit.objects.get(id=gameid)
+                game.album = request.POST['album']
+                game.save()
+                return redirect('/album/')
+    else:
+        return redirect('/option/')
+    return render(request, 'albumlist.html', locals())
 
 def boxadd(request, gameid=None, itemtype=None):
     if request.user.is_authenticated:

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 新增相簿連結</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>新增相簿連結</legend>
+
+	<div class='index'>
+		{% if gameid == None %}
+
+		<table class='lineup list'>
+			<tr>
+				<th>場次</th>
+				<th>日期</th>
+				<th>對戰組合</th>
+			</tr>
+			{% for game in games %}
+			<tr>
+				{% if game.playoff %}
+				<td>季 {{ game.number }}</td>
+				{% else %}
+				<td>例 {{ game.number }}</td>
+				{% endif %}
+				<td>{{ game.date }}</td>
+				<td><a href='/album/{{game.id}}/'>{{ game.guest.team }} vs. {{ game.home.team }}</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+
+		{% else %}
+
+		<form action='.' method='POST'>
+			{% csrf_token %}
+			<p>相簿連結：<input name='album' value='{{game.album}}'></p>
+			<p><input type='submit'></p>
+		</form>
+
+		{% endif %}
+	</div>
+</fieldset>
+{% endblock %}

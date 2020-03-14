@@ -44,7 +44,14 @@
 				<td>{{ game.umpire1 }}、{{ game.umpire2 }}、{{ game.umpire3 }}</td>
 				{% endif %}
 				{% if game.finish %}
-				<td><a href='/box/{{game.id}}/'>BOX</a></td>
+				<td>
+					<a href='/box/{{game.id}}/'>BOX</a>
+
+					{% if game.album != '' %}
+					<a href='{{game.album}}' target='_blank'>相簿連結</a>
+					{% endif %}
+				</td>
+
 				{% elif game.postpone %}
 				<td>延賽</td>
 				{% else %}
