@@ -37,6 +37,7 @@ class GameUnit(models.Model):
     ps = models.CharField(max_length=100, default='')
     guestScore = models.IntegerField(null=True)
     homeScore = models.IntegerField(null=True)
+    album = models.CharField(max_length=200, default='')
     def __str__(self):
         return str(self.date) + '_' + str(self.number) + '_' + self.guest.team + 'vs.' + self.home.team
 
