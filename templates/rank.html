@@ -22,7 +22,7 @@
 				{% for player in AVG3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.AVG | floatformat:3 }}</td>
 				</tr>
 				{% endfor %}
@@ -41,7 +41,7 @@
 				{% for player in SLG3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.SLG | floatformat:3 }}</td>
 				</tr>
 				{% endfor %}
@@ -60,7 +60,7 @@
 				{% for player in RBI3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.RBI }}</td>
 				</tr>
 				{% endfor %}
@@ -79,7 +79,7 @@
 				{% for player in SB3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.SB }}</td>
 				</tr>
 				{% endfor %}
@@ -98,7 +98,7 @@
 				{% for player in W3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.W }}</td>
 				</tr>
 				{% endfor %}
@@ -117,7 +117,7 @@
 				{% for player in K3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.K }}</td>
 				</tr>
 				{% endfor %}
@@ -136,7 +136,7 @@
 				{% for player in ERA3 %}
 				<tr>
 					<td>{{ player.player.name }}</td>
-					<td>{{ player.player.team }}</td>
+					<td>{{ player.player.team.team }}</td>
 					<td>{{ player.ERA | floatformat:2 }}</td>
 				</tr>
 				{% endfor %}

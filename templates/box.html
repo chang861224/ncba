@@ -37,7 +37,7 @@
 					<th>E</th>
 				</tr>
 				<tr>
-					<td>{{ game.guest }}</td>
+					<td>{{ game.guest.team }}</td>
 					{% if score.guest1 != None %}
 					<td>{{ score.guest1 }}</td>
 					{% else %}
@@ -79,7 +79,7 @@
 					<td>{{ GErr }}</td>
 				</tr>
 				<tr>
-					<td>{{ game.home }}</td>
+					<td>{{ game.home.team }}</td>
 					{% if score.home1 != None %}
 					<td>{{ score.home1 }}</td>
 					{% else %}

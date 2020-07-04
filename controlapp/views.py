@@ -125,8 +125,16 @@ def news(request, newsid=None):
     news.save()
     return render(request, 'news.html', locals())
 
-def schedule(request):
-    games = models.GameUnit.objects.all().order_by('date')
+def schedule(request, year=None):
+    if year == None:
+        games = models.GameUnit.objects.all().order_by('date')
+        years = []
+        for game in games:
+            if game.year not in years:
+                years.append(game.year)
+        return redirect('/schedule/' + str(max(years)) + '/')
+
+    games = models.GameUnit.objects.filter(year=year).order_by('date')
     return render(request, 'schedule.html', locals())
 
 def box(request, gameid=None):

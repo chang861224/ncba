@@ -27,6 +27,7 @@ urlpatterns = [
     path('newslist/<str:pageindex>/', views.newslist),
     path('news/<int:newsid>/', views.news),
     path('schedule/', views.schedule),
+    path('schedule/<int:year>/', views.schedule),
     path('box/<int:gameid>/', views.box),
     path('standing/', views.standing),
     path('teams/', views.teams),

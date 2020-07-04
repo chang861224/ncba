@@ -31,13 +31,13 @@
 					{{ game.number }}
 				</td>
 				<td>{{ game.date }}</td>
-				<td>{{ game.guest }}</td>
+				<td>{{ game.guest.team }}</td>
 				{% if game.finish %}
 				<td>{{ game.guestScore }} : {{ game.homeScore }}</td>
 				{% else %}
 				<td></td>
 				{% endif %}
-				<td>{{ game.home }}</td>
+				<td>{{ game.home.team }}</td>
 				{% if game.postpone %}
 				<td></td>
 				{% else %}
