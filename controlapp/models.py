@@ -11,7 +11,7 @@ class TeamUnit(models.Model):
     L = models.IntegerField(default=0)
     PCT = models.FloatField(null=True)
     def __str__(self):
-        return self.team
+        return str(self.year) + '_' + self.team
 
 class PlayerUnit(models.Model):
     team = models.ForeignKey('TeamUnit', on_delete=models.CASCADE)
@@ -21,7 +21,7 @@ class PlayerUnit(models.Model):
     number = models.IntegerField(default=0)
     bt = models.CharField(max_length=50, null=False)
     def __str__(self):
-        return self.team.team + '_' + self.name
+        return str(self.team.year) + '_' + self.team.team + '_' + self.name
 
 class GameUnit(models.Model):
     year = models.IntegerField(default=108)
