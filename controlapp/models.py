@@ -1,6 +1,7 @@
 from django.db import models
 
 class TeamUnit(models.Model):
+    year = models.IntegerField(default=108)
     team = models.CharField(max_length=20, null=False)
     group = models.CharField(max_length=2, default='')
     captain1 = models.CharField(max_length=30, null=False)
@@ -23,6 +24,7 @@ class PlayerUnit(models.Model):
         return self.team.team + '_' + self.name
 
 class GameUnit(models.Model):
+    year = models.IntegerField(default=108)
     number = models.IntegerField(default=0)
     date = models.DateField()
     guest = models.ForeignKey('TeamUnit', related_name='guest', on_delete=models.CASCADE)
