@@ -28,7 +28,7 @@ urlpatterns = [
     path('news/<int:newsid>/', views.news),
     path('schedule/', views.schedule),
     path('schedule/<int:year>/', views.schedule),
-    path('box/<int:year>/<str:datestr>/', views.box),
+    path('box/<int:year>/<str:datestr>/<int:number>/', views.box),
     path('standing/', views.standing),
     path('teams/', views.teams),
     path('teams/<int:teamid>/<str:itemtype>/', views.teams),

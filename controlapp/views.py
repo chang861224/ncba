@@ -144,8 +144,8 @@ def schedule(request, year=None):
     games = models.GameUnit.objects.filter(year=year).order_by('date')
     return render(request, 'schedule.html', locals())
 
-def box(request, year=None, datestr=None):
-    game = models.GameUnit.objects.get(year=year, date=datetime.datetime.strptime(datestr, '%Y-%m-%d'))
+def box(request, year=None, datestr=None, number=None):
+    game = models.GameUnit.objects.get(year=year, number=number, date=datetime.datetime.strptime(datestr, '%Y-%m-%d'))
     score = models.ScoreUnit.objects.get(game__id=game.id)
     hitters = models.HitterUnit.objects.filter(number__id=game.id).order_by('id')
     pitchers = models.PitcherUnit.objects.filter(number__id=game.id).order_by('id')
