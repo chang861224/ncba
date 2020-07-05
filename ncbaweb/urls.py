@@ -35,6 +35,7 @@ urlpatterns = [
     path('teams/<int:teamid>/<str:itemtype>/', views.teams),
     path('player/<int:playerid>/', views.player),
     path('rank/', views.rank),
+    path('rank/<int:year>/', views.rank),
     path('activity/', views.activity),
     path('activity/<int:eventid>/', views.activity),
     path('repeatvote/', views.repeatvote),

@@ -189,8 +189,8 @@ def standing(request, year=None):
         return redirect('/standing/' + str(max(years)) + '/')
 
     years.sort()
-    groupA = models.TeamUnit.objects.filter(group='A').order_by('-PCT')
-    groupB = models.TeamUnit.objects.filter(group='B').order_by('-PCT')
+    groupA = models.TeamUnit.objects.filter(year=year, group='A').order_by('-PCT')
+    groupB = models.TeamUnit.objects.filter(year=year, group='B').order_by('-PCT')
     return render(request, 'standing.html', locals())
 
 def teams(request, teamid=None, itemtype=None):
@@ -243,32 +243,46 @@ def player(request, playerid=None):
 
     return render(request, 'player.html', locals())
 
-def rank(request):
-    AVG3 = models.PlayerHitterUnit.objects.filter(AB__gte=7).order_by('-AVG')
+def rank(request, year=None):
+    if request.method == 'POST':
+        return redirect('/rank/' + request.POST['year'] + '/')
+
+    games = models.GameUnit.objects.all().order_by('date')
+    years = []
+    for game in games:
+        if game.year not in years:
+            years.append(game.year)
+
+    if year == None:
+        return redirect('/rank/' + str(max(years)) + '/')
+
+    years.sort()
+
+    AVG3 = models.PlayerHitterUnit.objects.filter(player__team__year=year, AB__gte=7).order_by('-AVG')
     if len(AVG3) > 3:
         AVG3 = AVG3[:3]
-
-    SLG3 = models.PlayerHitterUnit.objects.filter(AB__gte=7).order_by('-SLG')
+    
+    SLG3 = models.PlayerHitterUnit.objects.filter(player__team__year=year, AB__gte=7).order_by('-SLG')
     if len(SLG3) > 3:
         SLG3 = SLG3[:3]
 
-    RBI3 = models.PlayerHitterUnit.objects.filter().exclude(RBI=0).order_by('-RBI', 'PA')
+    RBI3 = models.PlayerHitterUnit.objects.filter(player__team__year=year).exclude(RBI=0).order_by('-RBI', 'PA')
     if len(RBI3) > 3:
         RBI3 = RBI3[:3]
 
-    SB3 = models.PlayerHitterUnit.objects.filter().exclude(SB=0).order_by('-SB')
+    SB3 = models.PlayerHitterUnit.objects.filter(player__team__year=year).exclude(SB=0).order_by('-SB')
     if len(SB3) > 3:
         SB3 = SB3[:3]
 
-    W3 = models.PlayerPitcherUnit.objects.filter().exclude(W=0).order_by('-W', 'ERA')
+    W3 = models.PlayerPitcherUnit.objects.filter(player__team__year=year).exclude(W=0).order_by('-W', 'ERA')
     if len(W3) > 3:
         W3 = W3[:3]
 
-    K3 = models.PlayerPitcherUnit.objects.filter().exclude(K=0).order_by('-K', 'inn3')
+    K3 = models.PlayerPitcherUnit.objects.filter(player__team__year=year).exclude(K=0).order_by('-K', 'inn3')
     if len(K3) > 3:
         K3 = K3[:3]
 
-    ERA3 = models.PlayerPitcherUnit.objects.filter(inn3__gte=23).order_by('ERA')
+    ERA3 = models.PlayerPitcherUnit.objects.filter(player__team__year=year, inn3__gte=23).order_by('ERA')
     if len(ERA3) > 3:
         ERA3 = ERA3[:3]
     return render(request, 'rank.html', locals())
