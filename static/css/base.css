@@ -1058,6 +1058,10 @@ BASE LAYOUT
 	padding: 5px 0;
 	text-align: left;
 }
+.index .select{
+    width: 100%;
+    margin: 20px 0;
+}
 .index .games{
 	width: 250%;
 }

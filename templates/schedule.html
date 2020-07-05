@@ -10,6 +10,23 @@
 	<legend class='fieldset_title'>賽程</legend>
 
 	<div class='index'>
+        <div class='select'>
+            <form action='.' method='POST'>
+                {% csrf_token %}
+                學年度：
+                <select name='year'>
+                    {% for y in years %}
+                    {% if y == year %}
+                    <option value='{{y}}' selected>{{ y }}</option>
+                    {% else %}
+                    <option value='{{y}}'>{{ y }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <input type='submit'>
+            </form>
+        </div>
+
 		<table class='games'>
 			<tr>
 				<th>編號</th>

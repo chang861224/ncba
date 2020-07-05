@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Custermer pages management
-    path('', views.index),
+    path('', views.homepage),
     path('index/', views.index),
     path('newslist/', views.newslist),
     path('newslist/<str:pageindex>/', views.newslist),

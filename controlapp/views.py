@@ -44,6 +44,9 @@ def register(request):
         return redirect('/index/')
     return render(request, 'register.html', locals())
 
+def homepage(request):
+    return redirect('/index/')
+
 def index(request):
     try:
         game = models.GameUnit.objects.get(date=datetime.date.today(), postpone=False)
@@ -126,12 +129,16 @@ def news(request, newsid=None):
     return render(request, 'news.html', locals())
 
 def schedule(request, year=None):
+    if request.method == 'POST':
+        return redirect('/schedule/' + request.POST['year'] + '/')
+
+    games = models.GameUnit.objects.all().order_by('date')
+    years = []
+    for game in games:
+        if game.year not in years:
+            years.append(game.year)
+
     if year == None:
-        games = models.GameUnit.objects.all().order_by('date')
-        years = []
-        for game in games:
-            if game.year not in years:
-                years.append(game.year)
         return redirect('/schedule/' + str(max(years)) + '/')
 
     games = models.GameUnit.objects.filter(year=year).order_by('date')
