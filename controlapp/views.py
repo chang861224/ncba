@@ -193,27 +193,42 @@ def standing(request, year=None):
     groupB = models.TeamUnit.objects.filter(year=year, group='B').order_by('-PCT')
     return render(request, 'standing.html', locals())
 
-def teams(request, teamid=None, itemtype=None):
-    teams = models.TeamUnit.objects.all().order_by('id')
+def teams(request, year=None, teamid=None, itemtype=None):
+    if request.method == 'POST':
+        return redirect('/teams/' + request.POST['year'] + '/' + request.POST['team'] + '/players/')
 
+    games = models.GameUnit.objects.all().order_by('date')
+    years = []
+    for game in games:
+        if game.year not in years:
+            years.append(game.year)
+
+    if year == None:
+        teams = models.TeamUnit.objects.filter(year=max(years)).order_by('id')
+        return redirect('/teams/' + str(max(years)) + '/' + str(teams[0].id) + '/players/')
+
+    years.sort()
+
+    #teams = models.TeamUnit.objects.all().order_by('id')
+    teams = models.TeamUnit.objects.filter(year=year).order_by('id')
+    """
     if teamid == None:
         return redirect('/teams/' + str(teams[0].id) + '/players/')
     else:
-        if itemtype == 'players':
-            players = models.PlayerUnit.objects.filter(team__id=teamid)
-        elif itemtype == 'hitters':
-            hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid)
-        elif itemtype == 'fielders':
-            fielders = models.PlayerFielderUnit.objects.filter(player__team__id=teamid)
-        elif itemtype == 'picatchers':
-            catchers = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid)
-            units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid)
-            pitchers = []
-            for player in units:
-                pitchers.append({'model': player, 'innf': player.inn3 % 3})
+    """
+    if itemtype == 'players':
+        players = models.PlayerUnit.objects.filter(team__id=teamid)
+    elif itemtype == 'hitters':
+        hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid)
+    elif itemtype == 'fielders':
+        fielders = models.PlayerFielderUnit.objects.filter(player__team__id=teamid)
+    elif itemtype == 'picatchers':
+        catchers = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid)
+        units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid)
+        pitchers = []
+        for player in units:
+            pitchers.append({'model': player, 'innf': player.inn3 % 3})
 
-    if request.method == 'POST':
-        return redirect('/teams/' + request.POST['team'] + '/players/')
     return render(request, 'teams.html', locals())
 
 def player(request, playerid=None):
