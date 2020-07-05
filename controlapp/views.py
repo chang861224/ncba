@@ -144,8 +144,8 @@ def schedule(request, year=None):
     games = models.GameUnit.objects.filter(year=year).order_by('date')
     return render(request, 'schedule.html', locals())
 
-def box(request, gameid=None):
-    game = models.GameUnit.objects.get(id=gameid)
+def box(request, year=None, datestr=None):
+    game = models.GameUnit.objects.get(year=year, date=datetime.datetime.strptime(datestr, '%Y-%m-%d'))
     score = models.ScoreUnit.objects.get(game__id=game.id)
     hitters = models.HitterUnit.objects.filter(number__id=game.id).order_by('id')
     pitchers = models.PitcherUnit.objects.filter(number__id=game.id).order_by('id')
@@ -167,11 +167,11 @@ def box(request, gameid=None):
         elif fielder.player.team.id == game.home.id:
             HErr += fielder.E
 
-    WP = models.PitcherUnit.objects.filter(number__id=gameid, conseq='W')
-    LP = models.PitcherUnit.objects.filter(number__id=gameid, conseq='L')
-    SV = models.PitcherUnit.objects.filter(number__id=gameid, conseq='S')
-    HO = models.PitcherUnit.objects.filter(number__id=gameid, conseq='H')
-    BS = models.PitcherUnit.objects.filter(number__id=gameid, conseq='BS')
+    WP = models.PitcherUnit.objects.filter(number__id=game.id, conseq='W')
+    LP = models.PitcherUnit.objects.filter(number__id=game.id, conseq='L')
+    SV = models.PitcherUnit.objects.filter(number__id=game.id, conseq='S')
+    HO = models.PitcherUnit.objects.filter(number__id=game.id, conseq='H')
+    BS = models.PitcherUnit.objects.filter(number__id=game.id, conseq='BS')
     return render(request, 'box.html', locals())
 
 def standing(request):

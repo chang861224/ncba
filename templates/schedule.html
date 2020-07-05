@@ -62,7 +62,7 @@
 				{% endif %}
 				{% if game.finish %}
 				<td>
-					<a href='/box/{{game.id}}/'>BOX</a>
+					<a href='/box/{{game.year}}/{{game.date.year}}-{{game.date.month}}-{{game.date.day}}'>BOX</a>
 
 					{% if game.album != '' %}
 					<a href='{{game.album}}' target='_blank'>相簿連結</a>
