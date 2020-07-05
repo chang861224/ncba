@@ -30,6 +30,7 @@ urlpatterns = [
     path('schedule/<int:year>/', views.schedule),
     path('box/<int:year>/<str:datestr>/<int:number>/', views.box),
     path('standing/', views.standing),
+    path('standing/<int:year>/', views.standing),
     path('teams/', views.teams),
     path('teams/<int:teamid>/<str:itemtype>/', views.teams),
     path('player/<int:playerid>/', views.player),

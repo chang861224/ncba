@@ -141,6 +141,7 @@ def schedule(request, year=None):
     if year == None:
         return redirect('/schedule/' + str(max(years)) + '/')
 
+    years.sort()
     games = models.GameUnit.objects.filter(year=year).order_by('date')
     return render(request, 'schedule.html', locals())
 
@@ -174,7 +175,20 @@ def box(request, year=None, datestr=None, number=None):
     BS = models.PitcherUnit.objects.filter(number__id=game.id, conseq='BS')
     return render(request, 'box.html', locals())
 
-def standing(request):
+def standing(request, year=None):
+    if request.method == 'POST':
+        return redirect('/standing/' + request.POST['year'] + '/')
+
+    games = models.GameUnit.objects.all().order_by('date')
+    years = []
+    for game in games:
+        if game.year not in years:
+            years.append(game.year)
+
+    if year == None:
+        return redirect('/standing/' + str(max(years)) + '/')
+
+    years.sort()
     groupA = models.TeamUnit.objects.filter(group='A').order_by('-PCT')
     groupB = models.TeamUnit.objects.filter(group='B').order_by('-PCT')
     return render(request, 'standing.html', locals())
