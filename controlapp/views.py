@@ -141,7 +141,7 @@ def schedule(request, year=None):
     if year == None:
         return redirect('/schedule/' + str(max(years)) + '/')
 
-    years.sort()
+    years.sort(reverse=True)
     games = models.GameUnit.objects.filter(year=year).order_by('date')
     return render(request, 'schedule.html', locals())
 
@@ -188,14 +188,14 @@ def standing(request, year=None):
     if year == None:
         return redirect('/standing/' + str(max(years)) + '/')
 
-    years.sort()
+    years.sort(reverse=True)
     groupA = models.TeamUnit.objects.filter(year=year, group='A').order_by('-PCT')
     groupB = models.TeamUnit.objects.filter(year=year, group='B').order_by('-PCT')
     return render(request, 'standing.html', locals())
 
 def teams(request, year=None, teamid=None, itemtype=None):
     if request.method == 'POST':
-        return redirect('/teams/' + request.POST['year'] + '/' + request.POST['team'] + '/players/')
+        return redirect('/teams/' + request.POST['year'] + '/' + request.POST['team'] + '/' + itemtype + '/')
 
     games = models.GameUnit.objects.all().order_by('date')
     years = []
@@ -207,15 +207,9 @@ def teams(request, year=None, teamid=None, itemtype=None):
         teams = models.TeamUnit.objects.filter(year=max(years)).order_by('id')
         return redirect('/teams/' + str(max(years)) + '/' + str(teams[0].id) + '/players/')
 
-    years.sort()
-
-    #teams = models.TeamUnit.objects.all().order_by('id')
+    years.sort(reverse=True)
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
-    """
-    if teamid == None:
-        return redirect('/teams/' + str(teams[0].id) + '/players/')
-    else:
-    """
+
     if itemtype == 'players':
         players = models.PlayerUnit.objects.filter(team__id=teamid)
     elif itemtype == 'hitters':
@@ -228,7 +222,6 @@ def teams(request, year=None, teamid=None, itemtype=None):
         pitchers = []
         for player in units:
             pitchers.append({'model': player, 'innf': player.inn3 % 3})
-
     return render(request, 'teams.html', locals())
 
 def player(request, playerid=None):
@@ -271,7 +264,7 @@ def rank(request, year=None):
     if year == None:
         return redirect('/rank/' + str(max(years)) + '/')
 
-    years.sort()
+    years.sort(reverse=True)
 
     AVG3 = models.PlayerHitterUnit.objects.filter(player__team__year=year, AB__gte=7).order_by('-AVG')
     if len(AVG3) > 3:

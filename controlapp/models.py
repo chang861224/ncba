@@ -20,6 +20,7 @@ class PlayerUnit(models.Model):
     dept = models.CharField(max_length=100, null=False)
     number = models.IntegerField(default=0)
     bt = models.CharField(max_length=50, null=False)
+    umpire = models.BooleanField(default=False)
     def __str__(self):
         return str(self.team.year) + '_' + self.team.team + '_' + self.name
 
