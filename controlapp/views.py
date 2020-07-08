@@ -60,7 +60,7 @@ def homepage(request):
     return redirect('/index/')
 
 def index(request):
-    person()
+    #person()
     try:
         game = models.GameUnit.objects.get(date=datetime.date.today(), postpone=False)
         try:
