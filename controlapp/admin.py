@@ -2,6 +2,7 @@ from django.contrib import admin
 from controlapp import models
 
 admin.site.register(models.TeamUnit)
+admin.site.register(models.PersonUnit)
 admin.site.register(models.PlayerUnit)
 admin.site.register(models.GameUnit)
 admin.site.register(models.OrderGuestUnit)

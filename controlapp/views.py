@@ -11,6 +11,18 @@ import datetime
 
 page = 1
 
+def person():
+    people = models.PlayerUnit.objects.all()
+
+    for person in people:
+        try:
+            unit = models.PersonUnit.objects.get(studentID=person.studentID)
+            print('Exist_' + unit.name + '_' + unit.studentID)
+        except:
+            unit = models.PersonUnit.objects.create(name=person.name, studentID=person.studentID)
+            unit.save()
+            print('Create_' + unit.name + '_' + unit.studentID)
+
 def register(request):
     message = ''
     
@@ -48,6 +60,7 @@ def homepage(request):
     return redirect('/index/')
 
 def index(request):
+    person()
     try:
         game = models.GameUnit.objects.get(date=datetime.date.today(), postpone=False)
         try:

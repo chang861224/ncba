@@ -13,6 +13,12 @@ class TeamUnit(models.Model):
     def __str__(self):
         return str(self.year) + '_' + self.team
 
+class PersonUnit(models.Model):
+    name = models.CharField(max_length=100, null=False)
+    studentID = models.CharField(max_length=20, null=False)
+    def __str__(self):
+        return self.name + '_' + self.studentID
+
 class PlayerUnit(models.Model):
     team = models.ForeignKey('TeamUnit', on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False)
