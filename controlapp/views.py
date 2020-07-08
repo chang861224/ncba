@@ -10,7 +10,7 @@ import math
 import datetime
 
 page = 1
-
+"""
 def person():
     people = models.PlayerUnit.objects.all()
 
@@ -22,7 +22,7 @@ def person():
             unit = models.PersonUnit.objects.create(name=person.name, studentID=person.studentID)
             unit.save()
             print('Create_' + unit.name + '_' + unit.studentID)
-
+"""
 def register(request):
     message = ''
     
