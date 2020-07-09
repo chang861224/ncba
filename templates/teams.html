@@ -60,7 +60,7 @@
 				</tr>
 				{% for player in players %}
 				<tr>
-					<td><a href='/player/{{player.id}}/'>{{ player.name }}</a></td>
+					<td><a href='/player/{{player.id}}/'>{{ player.player.name }}</a></td>
 					<td>{{ player.team.team }}</td>
 					<td>{{ player.number }}</td>
 					<td>{{ player.dept }}</td>
@@ -98,7 +98,7 @@
 				</tr>
 				{% for player in hitters %}
 				<tr>
-					<td><a href='/player/{{player.player.id}}/'>{{ player.player.name }}</a></td>
+					<td><a href='/player/{{player.player.id}}/'>{{ player.player.player.name }}</a></td>
 					<td>{{ player.PA }}</td>
 					<td>{{ player.AB }}</td>
 					<td>{{ player.RBI }}</td>
@@ -137,7 +137,7 @@
 				</tr>
 				{% for player in fielders %}
 				<tr>
-					<td><a href='/player/{{player.player.id}}/'>{{ player.player.name }}</a></td>
+					<td><a href='/player/{{player.player.id}}/'>{{ player.player.player.name }}</a></td>
 					<td>{{ player.pos }}</td>
 					<td>{{ player.PO }}</td>
 					<td>{{ player.A }}</td>
@@ -184,7 +184,7 @@
 				</tr>
 				{% for player in pitchers %}
 				<tr>
-					<td><a href='/player/{{player.model.player.id}}/'>{{ player.model.player.name }}</a></td>
+					<td><a href='/player/{{player.model.player.id}}/'>{{ player.model.player.player.name }}</a></td>
 					<td>{{ player.model.W }}</td>
 					<td>{{ player.model.L }}</td>
 					<td>{{ player.model.HO }}</td>
@@ -230,7 +230,7 @@
 				</tr>
 				{% for player in catchers %}
 				<tr>
-					<td><a href='/player/{{player.player.id}}/'>{{ player.player.name }}</a></td>
+					<td><a href='/player/{{player.player.id}}/'>{{ player.player.player.name }}</a></td>
 					<td>{{ player.PB }}</td>
 					<td>{{ player.interference }}</td>
 					<td>{{ player.stolen }}</td>
