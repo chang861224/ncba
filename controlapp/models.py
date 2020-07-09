@@ -21,15 +21,13 @@ class PersonUnit(models.Model):
 
 class PlayerUnit(models.Model):
     team = models.ForeignKey('TeamUnit', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, null=False)
-    studentID = models.CharField(max_length=20, null=False)
     player = models.ForeignKey('PersonUnit', on_delete=models.CASCADE, null=True)
     dept = models.CharField(max_length=100, null=False)
     number = models.IntegerField(default=0)
     bt = models.CharField(max_length=50, null=False)
     umpire = models.BooleanField(default=False)
     def __str__(self):
-        return str(self.team.year) + '_' + self.team.team + '_' + self.name
+        return str(self.team.year) + '_' + self.team.team + '_' + self.player.name
 
 class GameUnit(models.Model):
     year = models.IntegerField(default=108)
