@@ -433,9 +433,9 @@ def logout(request):
 def option(request):
     return render(request, 'option.html', locals())
 
-def teamadd(request):
+def teamadd(request, year=None):
     message = ''
-    teams = models.TeamUnit.objects.all().order_by('id')
+    teams = models.TeamUnit.objects.filter(year=year).order_by('id')
 
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -444,10 +444,10 @@ def teamadd(request):
             captain1 = request.POST['captain1']
             captain2 = request.POST['captain2']
 
-            unit = models.TeamUnit.objects.create(team=team, group=group, captain1=captain1, captain2=captain2)
+            unit = models.TeamUnit.objects.create(year=year, team=team, group=group, captain1=captain1, captain2=captain2)
             unit.save()
             message = '球隊 ' + team + ' 登錄成功'
-            return redirect('/teamadd/')
+            return redirect('/teamadd/' + str(year) + '/')
     else:
         return redirect('/option/')
     return render(request, 'teamadd.html', locals())
@@ -462,7 +462,7 @@ def teamedit(request, teamid=None):
             team.captain1 = request.POST['captain1']
             team.captain2 = request.POST['captain2']
             team.save()
-            return redirect('/teamadd/')
+            return redirect('/teamadd/' + str(team.year) + '/')
     else:
         return redirect('/option/')
     return render(request, 'teamedit.html', locals())
@@ -470,18 +470,19 @@ def teamedit(request, teamid=None):
 def teamdelete(request, teamid=None):
     if request.user.is_authenticated:
         team = models.TeamUnit.objects.get(id=teamid)
+        year = team.year
         team.delete()
-        return redirect('/teamadd/')
+        return redirect('/teamadd/' + str(year) + '/')
     return redirect('/option/')
 
-def playeradd(request, teamid=None):
-    teams = models.TeamUnit.objects.all().order_by('id')
+def playeradd(request, year=None, teamid=None):
+    teams = models.TeamUnit.objects.filter(year=year).order_by('id')
 
     if request.user.is_authenticated:
         if teamid == None:
             if request.method == 'POST':
-                team = models.TeamUnit.objects.get(team=request.POST['team'])
-                return redirect('/playeradd/' + str(team.id) + '/')
+                team = models.TeamUnit.objects.get(id=int(request.POST['team']))
+                return redirect('/playeradd/' + str(year) + '/' + str(team.id) + '/')
         else:
             team = models.TeamUnit.objects.get(id=teamid)
             players = models.PlayerUnit.objects.filter(team__id=teamid).order_by('id')
@@ -495,7 +496,7 @@ def playeradd(request, teamid=None):
 
                 unit = models.PlayerUnit.objects.create(team=team, name=name, studentID=studentID, dept=dept, number=number, bt=bt)
                 unit.save()
-                return redirect('/playeradd/' + str(teamid) + '/')
+                return redirect('/playeradd/' + str(year) + '/' + str(teamid) + '/')
     else:
         return redirect('/option/')
     return render(request, 'playeradd.html', locals())
@@ -520,9 +521,9 @@ def playeredit(request, edittype=None, playerid=None):
         return redirect('/option/')
     return render(request, 'playeredit.html', locals())
 
-def gameadd(request):
-    teams = models.TeamUnit.objects.all().order_by('id')
-    games = models.GameUnit.objects.all().order_by('date')
+def gameadd(request, year=None):
+    teams = models.TeamUnit.objects.filter(year=year).order_by('id')
+    games = models.GameUnit.objects.filter(year=year).order_by('date')
 
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -542,9 +543,9 @@ def gameadd(request):
                 playoff = True
             ps = request.POST.get('PS', '')
 
-            unit = models.GameUnit.objects.create(number=number, date=date, guest=guest, home=home, umpire1=umpire1, umpire2=umpire2, umpire3=umpire3, playoff=playoff, ps=ps)
+            unit = models.GameUnit.objects.create(year=year, number=number, date=date, guest=guest, home=home, umpire1=umpire1, umpire2=umpire2, umpire3=umpire3, playoff=playoff, ps=ps)
             unit.save()
-            return redirect('/gameadd/')
+            return redirect('/gameadd/' + str(year) + '/')
     else:
         return redirect('/option/')
     return render(request, 'gameadd.html', locals())
@@ -552,6 +553,7 @@ def gameadd(request):
 def gameedit(request, gameid=None, edittype=None):
     if request.user.is_authenticated:
         game = models.GameUnit.objects.get(id=gameid)
+        year = game.year
         datestr = str(game.date)
 
         if edittype == 'postpone':
@@ -562,7 +564,7 @@ def gameedit(request, gameid=None, edittype=None):
             game.postpone = True
             game.ps = request.POST.get('PS', '')
             game.save()
-            return redirect('/gameadd/')
+            return redirect('/gameadd/' + str(year) + '/')
         elif edittype == 'delete':
             try:
                 score = models.ScoreUnit.objects.get(game__id=gameid)
@@ -570,7 +572,7 @@ def gameedit(request, gameid=None, edittype=None):
                 score = models.ScoreUnit.objects.create(game=game)
             score.delete()
             game.delete()
-            return redirect('/gameadd/')
+            return redirect('/gameadd/' + str(year) + '/')
         elif edittype == 'edit':
             teams = models.TeamUnit.objects.all().order_by('id')
             
@@ -600,7 +602,7 @@ def gameedit(request, gameid=None, edittype=None):
                 game.album = request.POST['album']
                 game.ps = request.POST['PS']
                 game.save()
-                return redirect('/gameadd/')
+                return redirect('/gameadd/' + str(year) + '/')
     else:
         return redirect('/option/')
     return render(request, 'gameedit.html', locals())

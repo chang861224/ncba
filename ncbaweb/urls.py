@@ -52,17 +52,17 @@ urlpatterns = [
     path('option/', views.option),
 
     # Teams management
-    path('teamadd/', views.teamadd),
+    path('teamadd/<int:year>/', views.teamadd),
     path('teamedit/<int:teamid>/', views.teamedit),
     path('teamdelete/<int:teamid>/', views.teamdelete),
     
     # Players management
-    path('playeradd/', views.playeradd),
-    path('playeradd/<str:teamid>/', views.playeradd),
+    path('playeradd/<int:year>/', views.playeradd),
+    path('playeradd/<int:year>/<str:teamid>/', views.playeradd),
     path('playeredit/<str:edittype>/<int:playerid>/', views.playeredit),
     
     # Games management
-    path('gameadd/', views.gameadd),
+    path('gameadd/<int:year>/', views.gameadd),
     path('gameedit/<int:gameid>/<str:edittype>/', views.gameedit),
     path('gamenotplay/<int:gameid>/', views.gamenotplay),
 

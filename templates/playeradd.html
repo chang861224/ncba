@@ -16,7 +16,7 @@
 			<p>
 			<select name="team">
 				{% for team in teams %}
-				<option value='{{team.team}}'>{{ team.team }}</option>
+				<option value='{{team.id}}'>{{ team.team }}</option>
 				{% endfor %}
 			</select>
 			<input type="submit">
@@ -69,8 +69,8 @@
 				</td>
 				<td>{{ player.team }}</td>
 				<td>{{ player.number }}</td>
-				<td>{{ player.name }}</td>
-				<td>{{ player.studentID }}</td>
+				<td>{{ player.player.name }}</td>
+				<td>{{ player.player.studentID }}</td>
 				<td>{{ player.dept }}</td>
 				<td>{{ player.bt }}</td>
 			</tr>
