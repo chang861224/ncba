@@ -28,9 +28,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup1.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -97,9 +97,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup2.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -166,9 +166,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup3.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -235,9 +235,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup4.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -304,9 +304,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup5.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -373,9 +373,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup6.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -442,9 +442,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup7.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -511,9 +511,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup8.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -580,9 +580,9 @@
 								<option value=''></option>
 								{% for player in players %}
 								{% if player.id == lineup9.player %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -648,9 +648,9 @@
 				<select name='SP'>
 					{% for player in players %}
 					{% if player.id == lineupSP.player %}
-					<option value='{{player.id}}' selected>{{ player.name }}</option>
+					<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 					{% else %}
-					<option value='{{player.id}}'>{{ player.name }}</option>
+					<option value='{{player.id}}'>{{ player.player.name }}</option>
 					{% endif %}
 					{% endfor %}
 				</select>
@@ -675,9 +675,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution1 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -694,9 +694,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution2 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -713,9 +713,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution3 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -732,9 +732,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution4 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -751,9 +751,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution5 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -770,9 +770,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution6 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -789,9 +789,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution7 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -808,9 +808,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution8 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>
@@ -827,9 +827,9 @@
 
 								{% for player in players %}
 								{% if player.id == substitution9 %}
-								<option value='{{player.id}}' selected>{{ player.name }}</option>
+								<option value='{{player.id}}' selected>{{ player.player.name }}</option>
 								{% else %}
-								<option value='{{player.id}}'>{{ player.name }}</option>
+								<option value='{{player.id}}'>{{ player.player.name }}</option>
 								{% endif %}
 								{% endfor %}
 							</select>

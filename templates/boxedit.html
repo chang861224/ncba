@@ -18,16 +18,16 @@
 					<select name='player'>
 						{% for player in players1 %}
 						{% if player.id == box.player.id %}
-						<option value='{{player.id}}' selected>{{ player.team }}_{{ player.name }}</option>
+						<option value='{{player.id}}' selected>{{ player.team.team }}_{{ player.player.name }}</option>
 						{% else %}
-						<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+						<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 						{% endif %}
 						{% endfor %}
 						{% for player in players2 %}
 						{% if player.id == box.player.id %}
-						<option value='{{player.id}}' selected>{{ player.team }}_{{ player.name }}</option>
+						<option value='{{player.id}}' selected>{{ player.team.team }}_{{ player.player.name }}</option>
 						{% else %}
-						<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+						<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 						{% endif %}
 						{% endfor %}
 					</select>

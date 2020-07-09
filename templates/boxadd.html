@@ -133,10 +133,10 @@
 						<select name='{{item}}{{i}}'>
 							<option value='' selected></option>
 							{% for player in players1 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 							{% for player in players2 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 						</select>
 					</td>
@@ -172,10 +172,10 @@
 						<select name='{{item}}{{i}}'>
 							<option value=''></option>
 							{% for player in players1 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 							{% for player in players2 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 						</select>
 					</td>
@@ -233,10 +233,10 @@
 						<select name='{{item}}{{i}}'>
 							<option value=''></option>
 							{% for player in players1 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 							{% for player in players2 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 						</select>
 					</td>
@@ -286,10 +286,10 @@
 						<select name='{{item}}{{i}}'>
 							<option value='' selected></option>
 							{% for player in players1 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 							{% for player in players2 %}
-							<option value='{{player.id}}'>{{ player.team }}_{{ player.name }}</option>
+							<option value='{{player.id}}'>{{ player.team.team }}_{{ player.player.name }}</option>
 							{% endfor %}
 						</select>
 					</td>
@@ -346,7 +346,7 @@
 					<a href='/boxedit/{{gameid}}/{{itemtype}}/{{player.id}}/edit/'>編輯</a>
 					<a href='/boxedit/{{gameid}}/{{itemtype}}/{{player.id}}/delete/'>刪除</a>
 				</td>
-				<td>{{ player.player.name }}</td>
+				<td>{{ player.player.player.name }}</td>
 				{% if itemtype == 'hitter' %}
 				<td>{{ player.PA }}</td>
 				<td>{{ player.AB }}</td>

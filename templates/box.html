@@ -125,19 +125,19 @@
 
 		<div class='box conseq'>
 			{% for player in WP %}
-			<span><strong>勝利投手</strong>：{{ player.player.name }}</span><br>
+			<span><strong>勝利投手</strong>：{{ player.player.player.name }}</span><br>
 			{% endfor %}
 			{% for player in LP %}
-			<span><strong>敗戰投手</strong>：{{ player.player.name }}</span><br>
+			<span><strong>敗戰投手</strong>：{{ player.player.player.name }}</span><br>
 			{% endfor %}
 			{% for player in HO %}
-			<span><strong>中繼成功</strong>：{{ player.player.name }}</span><br>
+			<span><strong>中繼成功</strong>：{{ player.player.player.name }}</span><br>
 			{% endfor %}
 			{% for player in SV %}
-			<span><strong>救援成功</strong>：{{ player.player.name }}</span><br>
+			<span><strong>救援成功</strong>：{{ player.player.player.name }}</span><br>
 			{% endfor %}
 			{% for player in BS %}
-			<span><strong>救援失敗</strong>：{{ player.player.name }}</span><br>
+			<span><strong>救援失敗</strong>：{{ player.player.player.name }}</span><br>
 			{% endfor %}
 		</div>
 
@@ -159,7 +159,7 @@
 					{% for hitter in hitters %}
 					{% if hitter.player.team.id == game.guest.id %}
 					<tr>
-						<td>{{ hitter.player.name }}</td>
+						<td>{{ hitter.player.player.name }}</td>
 						<td>{{ hitter.AB }}</td>
 						<td>{{ hitter.H }}</td>
 						<td>{{ hitter.RBI }}</td>
@@ -186,7 +186,7 @@
 					{% for pitcher in pitchers %}
 					{% if pitcher.player.team.id == game.guest.id %}
 					<tr>
-						<td>{{ pitcher.player.name }}</td>
+						<td>{{ pitcher.player.player.name }}</td>
 						<td>{{ pitcher.inn_int }} {{pitcher.inn_float }}/3</td>
 						<td>{{ pitcher.TPAF }}</td>
 						<td>{{ pitcher.H }}</td>
@@ -217,7 +217,7 @@
 					{% for hitter in hitters %}
 					{% if hitter.player.team.id == game.home.id %}
 					<tr>
-						<td>{{ hitter.player.name }}</td>
+						<td>{{ hitter.player.player.name }}</td>
 						<td>{{ hitter.AB }}</td>
 						<td>{{ hitter.H }}</td>
 						<td>{{ hitter.RBI }}</td>
@@ -244,7 +244,7 @@
 					{% for pitcher in pitchers %}
 					{% if pitcher.player.team.id == game.home.id %}
 					<tr>
-						<td>{{ pitcher.player.name }}</td>
+						<td>{{ pitcher.player.player.name }}</td>
 						<td>{{ pitcher.inn_int }} {{pitcher.inn_float }}/3</td>
 						<td>{{ pitcher.TPAF }}</td>
 						<td>{{ pitcher.H }}</td>
