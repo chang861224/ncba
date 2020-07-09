@@ -11,6 +11,18 @@ import datetime
 
 page = 1
 
+def combine():
+    players = models.PlayerUnit.objects.all()
+
+    for player in players:
+        if player.player:
+            print(player.name + '_' + player.studentID + ' -> ' + 'Process Already!!')
+        else:
+            person = models.PersonUnit.objects.get(studentID=player.studentID)
+            player.player = person
+            player.save()
+            print(player.name + '_' + player.studentID + ' -> ' + 'Process Done!!')
+
 def register(request):
     message = ''
     
@@ -48,6 +60,7 @@ def homepage(request):
     return redirect('/index/')
 
 def index(request):
+    combine()
     try:
         game = models.GameUnit.objects.get(date=datetime.date.today(), postpone=False)
         try:
