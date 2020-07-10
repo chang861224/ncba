@@ -13,8 +13,8 @@
 		<form action='.' method='POST'>
 			{% csrf_token %}
 			<p>球隊：{{ player.team }}</p>
-			<p>姓名：<input name="name" value='{{player.name}}' required></p>
-			<p>學號：<input name='student_id' value='{{player.studentID}}' required></p>
+			<p>姓名：<input name="name" value='{{player.player.name}}' required></p>
+			<p>學號：{{ player.player.studentID }}</p>
 			<p>系級：<input name="dept" value='{{player.dept}}' required></p>
 			<p>背號：<input name="number" type='number' value='{{player.number}}' min='0' max='99' required></p>
 			<p>投打：

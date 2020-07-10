@@ -211,7 +211,7 @@ def teams(request, year=None, teamid=None, itemtype=None):
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
 
     if itemtype == 'players':
-        players = models.PlayerUnit.objects.filter(team__id=teamid)
+        players = models.PlayerUnit.objects.filter(team__year=year, team__id=teamid)
     elif itemtype == 'hitters':
         hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid)
     elif itemtype == 'fielders':
@@ -488,13 +488,24 @@ def playeradd(request, year=None, teamid=None):
             players = models.PlayerUnit.objects.filter(team__id=teamid).order_by('id')
 
             if request.method == 'POST':
-                name = request.POST['name']
-                studentID = request.POST['student_id']
+                if request.POST['student_id_old'] != '':
+                    player = models.PersonUnit.objects.get(studentID=request.POST['student_id_old'])
+                    player.studentID = request.POST['student_id']
+                    player.save()
+
+                try:
+                    player = models.PersonUnit.objects.get(studentID=request.POST['student_id'])
+                    player.name = request.POST['name']
+                    player.save()
+                except:
+                    player = models.PersonUnit.objects.create(name=request.POST['name'], studentID=request.POST['student_id'])
+                    player.save()
+
                 dept = request.POST['dept']
                 number = request.POST['number']
                 bt = request.POST['bt']
 
-                unit = models.PlayerUnit.objects.create(team=team, name=name, studentID=studentID, dept=dept, number=number, bt=bt)
+                unit = models.PlayerUnit.objects.create(team=team, player=player, dept=dept, number=number, bt=bt, umpire=False)
                 unit.save()
                 return redirect('/playeradd/' + str(year) + '/' + str(teamid) + '/')
     else:
@@ -504,19 +515,19 @@ def playeradd(request, year=None, teamid=None):
 def playeredit(request, edittype=None, playerid=None):
     if request.user.is_authenticated:
         player = models.PlayerUnit.objects.get(id=playerid)
-        teamid = player.team.id
+        team = player.team
 
         if edittype == 'delete':
             player.delete()
-            return redirect('/playeradd/' + str(teamid) + '/')
+            return redirect('/playeradd/' + str(team.year) + '/' + str(team.id) + '/')
         elif edittype == 'edit':
             if request.method == 'POST':
-                player.name = request.POST['name']
+                player.player.name = request.POST['name']
                 player.dept = request.POST['dept']
                 player.number = request.POST['number']
                 player.bt = request.POST['bt']
                 player.save()
-                return redirect('/playeradd/' + str(teamid) + '/')
+                return redirect('/playeradd/' + str(team.year) + '/' + str(team.id) + '/')
     else:
         return redirect('/option/')
     return render(request, 'playeredit.html', locals())
@@ -574,7 +585,7 @@ def gameedit(request, gameid=None, edittype=None):
             game.delete()
             return redirect('/gameadd/' + str(year) + '/')
         elif edittype == 'edit':
-            teams = models.TeamUnit.objects.all().order_by('id')
+            teams = models.TeamUnit.objects.filter(year=year).order_by('id')
             
             if request.method == 'POST':
                 game.number = request.POST['number']
@@ -663,141 +674,143 @@ def gamenotplay(request, gameid=None):
         return redirect('/boxadd/')
     return redirect('/option/')
 
+def lineuplist(request, year=None):
+    if request.user.is_authenticated:
+        games = models.GameUnit.objects.filter(year=year, postpone=False).order_by('date')
+        return render(request, 'lineuplist.html', locals())
+    return redirect('/option/')
+
 def lineup(request, gameid=None):
     if request.user.is_authenticated:
-        if gameid == None:
-            games = models.GameUnit.objects.filter(postpone=False).order_by('date')
-            return render(request, 'lineuplist.html', locals())
-        else:
-            game = models.GameUnit.objects.get(id=gameid)
-            try:
-                guest = models.OrderGuestUnit.objects.get(game__id=gameid)
+        game = models.GameUnit.objects.get(id=gameid)
+        try:
+            guest = models.OrderGuestUnit.objects.get(game__id=gameid)
 
-                guestLineup = []
-                guestLineup.append({'order': 1, 'number': guest.first.split('_')[1], 'name': guest.first.split('_')[2], 'pos': guest.first.split('_')[3]})
-                guestLineup.append({'order': 2, 'number': guest.second.split('_')[1], 'name': guest.second.split('_')[2], 'pos': guest.second.split('_')[3]})
-                guestLineup.append({'order': 3, 'number': guest.third.split('_')[1], 'name': guest.third.split('_')[2], 'pos': guest.third.split('_')[3]})
-                guestLineup.append({'order': 4, 'number': guest.fourth.split('_')[1], 'name': guest.fourth.split('_')[2], 'pos': guest.fourth.split('_')[3]})
-                guestLineup.append({'order': 5, 'number': guest.fifth.split('_')[1], 'name': guest.fifth.split('_')[2], 'pos': guest.fifth.split('_')[3]})
-                guestLineup.append({'order': 6, 'number': guest.sixth.split('_')[1], 'name': guest.sixth.split('_')[2], 'pos': guest.sixth.split('_')[3]})
-                guestLineup.append({'order': 7, 'number': guest.seventh.split('_')[1], 'name': guest.seventh.split('_')[2], 'pos': guest.seventh.split('_')[3]})
-                guestLineup.append({'order': 8, 'number': guest.eighth.split('_')[1], 'name': guest.eighth.split('_')[2], 'pos': guest.eighth.split('_')[3]})
-                guestLineup.append({'order': 9, 'number': guest.nineth.split('_')[1], 'name': guest.nineth.split('_')[2], 'pos': guest.nineth.split('_')[3]})
-                guestSP = {'number': guest.SP.split('_')[1], 'name': guest.SP.split('_')[2]}
-                
-                guestSubstitution = []
-                
-                if guest.substitute1 != None:
-                    guestSubstitution.append({'number': guest.substitute1.split('_')[1], 'name': guest.substitute1.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute2 != None:
-                    guestSubstitution.append({'number': guest.substitute2.split('_')[1], 'name': guest.substitute2.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute3 != None:
-                    guestSubstitution.append({'number': guest.substitute3.split('_')[1], 'name': guest.substitute3.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute4 != None:
-                    guestSubstitution.append({'number': guest.substitute4.split('_')[1], 'name': guest.substitute4.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute5 != None:
-                    guestSubstitution.append({'number': guest.substitute5.split('_')[1], 'name': guest.substitute5.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute6 != None:
-                    guestSubstitution.append({'number': guest.substitute6.split('_')[1], 'name': guest.substitute6.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute7 != None:
-                    guestSubstitution.append({'number': guest.substitute7.split('_')[1], 'name': guest.substitute7.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute8 != None:
-                    guestSubstitution.append({'number': guest.substitute8.split('_')[1], 'name': guest.substitute8.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-                
-                if guest.substitute9 != None:
-                    guestSubstitution.append({'number': guest.substitute9.split('_')[1], 'name': guest.substitute9.split('_')[2]})
-                else:
-                    guestSubstitution.append(None)
-            except:
-                guest = None
-            try:
-                home = models.OrderHomeUnit.objects.get(game__id=gameid)
-
-                homeLineup = []
-                homeLineup.append({'order': 1, 'number': home.first.split('_')[1], 'name': home.first.split('_')[2], 'pos': home.first.split('_')[3]})
-                homeLineup.append({'order': 2, 'number': home.second.split('_')[1], 'name': home.second.split('_')[2], 'pos': home.second.split('_')[3]})
-                homeLineup.append({'order': 3, 'number': home.third.split('_')[1], 'name': home.third.split('_')[2], 'pos': home.third.split('_')[3]})
-                homeLineup.append({'order': 4, 'number': home.fourth.split('_')[1], 'name': home.fourth.split('_')[2], 'pos': home.fourth.split('_')[3]})
-                homeLineup.append({'order': 5, 'number': home.fifth.split('_')[1], 'name': home.fifth.split('_')[2], 'pos': home.fifth.split('_')[3]})
-                homeLineup.append({'order': 6, 'number': home.sixth.split('_')[1], 'name': home.sixth.split('_')[2], 'pos': home.sixth.split('_')[3]})
-                homeLineup.append({'order': 7, 'number': home.seventh.split('_')[1], 'name': home.seventh.split('_')[2], 'pos': home.seventh.split('_')[3]})
-                homeLineup.append({'order': 8, 'number': home.eighth.split('_')[1], 'name': home.eighth.split('_')[2], 'pos': home.eighth.split('_')[3]})
-                homeLineup.append({'order': 9, 'number': home.nineth.split('_')[1], 'name': home.nineth.split('_')[2], 'pos': home.nineth.split('_')[3]})
-                homeSP = {'number': home.SP.split('_')[1], 'name': home.SP.split('_')[2]}
-
-                homeSubstitution = []
-
-                if home.substitute1 != None:
-                    homeSubstitution.append({'number': home.substitute1.split('_')[1], 'name': home.substitute1.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute2 != None:
-                    homeSubstitution.append({'number': home.substitute2.split('_')[1], 'name': home.substitute2.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute3 != None:
-                    homeSubstitution.append({'number': home.substitute3.split('_')[1], 'name': home.substitute3.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute4 != None:
-                    homeSubstitution.append({'number': home.substitute4.split('_')[1], 'name': home.substitute4.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute5 != None:
-                    homeSubstitution.append({'number': home.substitute5.split('_')[1], 'name': home.substitute5.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute6 != None:
-                    homeSubstitution.append({'number': home.substitute6.split('_')[1], 'name': home.substitute6.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute7 != None:
-                    homeSubstitution.append({'number': home.substitute7.split('_')[1], 'name': home.substitute7.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute8 != None:
-                    homeSubstitution.append({'number': home.substitute8.split('_')[1], 'name': home.substitute8.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-
-                if home.substitute9 != None:
-                    homeSubstitution.append({'number': home.substitute9.split('_')[1], 'name': home.substitute9.split('_')[2]})
-                else:
-                    homeSubstitution.append(None)
-            except:
-                home = None
+            guestLineup = []
+            guestLineup.append({'order': 1, 'number': guest.first.split('_')[1], 'name': guest.first.split('_')[2], 'pos': guest.first.split('_')[3]})
+            guestLineup.append({'order': 2, 'number': guest.second.split('_')[1], 'name': guest.second.split('_')[2], 'pos': guest.second.split('_')[3]})
+            guestLineup.append({'order': 3, 'number': guest.third.split('_')[1], 'name': guest.third.split('_')[2], 'pos': guest.third.split('_')[3]})
+            guestLineup.append({'order': 4, 'number': guest.fourth.split('_')[1], 'name': guest.fourth.split('_')[2], 'pos': guest.fourth.split('_')[3]})
+            guestLineup.append({'order': 5, 'number': guest.fifth.split('_')[1], 'name': guest.fifth.split('_')[2], 'pos': guest.fifth.split('_')[3]})
+            guestLineup.append({'order': 6, 'number': guest.sixth.split('_')[1], 'name': guest.sixth.split('_')[2], 'pos': guest.sixth.split('_')[3]})
+            guestLineup.append({'order': 7, 'number': guest.seventh.split('_')[1], 'name': guest.seventh.split('_')[2], 'pos': guest.seventh.split('_')[3]})
+            guestLineup.append({'order': 8, 'number': guest.eighth.split('_')[1], 'name': guest.eighth.split('_')[2], 'pos': guest.eighth.split('_')[3]})
+            guestLineup.append({'order': 9, 'number': guest.nineth.split('_')[1], 'name': guest.nineth.split('_')[2], 'pos': guest.nineth.split('_')[3]})
+            guestSP = {'number': guest.SP.split('_')[1], 'name': guest.SP.split('_')[2]}
             
-            return render(request, 'lineup.html', locals())
+            guestSubstitution = []
+            
+            if guest.substitute1 != None:
+                guestSubstitution.append({'number': guest.substitute1.split('_')[1], 'name': guest.substitute1.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute2 != None:
+                guestSubstitution.append({'number': guest.substitute2.split('_')[1], 'name': guest.substitute2.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute3 != None:
+                guestSubstitution.append({'number': guest.substitute3.split('_')[1], 'name': guest.substitute3.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute4 != None:
+                guestSubstitution.append({'number': guest.substitute4.split('_')[1], 'name': guest.substitute4.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute5 != None:
+                guestSubstitution.append({'number': guest.substitute5.split('_')[1], 'name': guest.substitute5.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute6 != None:
+                guestSubstitution.append({'number': guest.substitute6.split('_')[1], 'name': guest.substitute6.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute7 != None:
+                guestSubstitution.append({'number': guest.substitute7.split('_')[1], 'name': guest.substitute7.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute8 != None:
+                guestSubstitution.append({'number': guest.substitute8.split('_')[1], 'name': guest.substitute8.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+            
+            if guest.substitute9 != None:
+                guestSubstitution.append({'number': guest.substitute9.split('_')[1], 'name': guest.substitute9.split('_')[2]})
+            else:
+                guestSubstitution.append(None)
+        except:
+            guest = None
+        try:
+            home = models.OrderHomeUnit.objects.get(game__id=gameid)
+
+            homeLineup = []
+            homeLineup.append({'order': 1, 'number': home.first.split('_')[1], 'name': home.first.split('_')[2], 'pos': home.first.split('_')[3]})
+            homeLineup.append({'order': 2, 'number': home.second.split('_')[1], 'name': home.second.split('_')[2], 'pos': home.second.split('_')[3]})
+            homeLineup.append({'order': 3, 'number': home.third.split('_')[1], 'name': home.third.split('_')[2], 'pos': home.third.split('_')[3]})
+            homeLineup.append({'order': 4, 'number': home.fourth.split('_')[1], 'name': home.fourth.split('_')[2], 'pos': home.fourth.split('_')[3]})
+            homeLineup.append({'order': 5, 'number': home.fifth.split('_')[1], 'name': home.fifth.split('_')[2], 'pos': home.fifth.split('_')[3]})
+            homeLineup.append({'order': 6, 'number': home.sixth.split('_')[1], 'name': home.sixth.split('_')[2], 'pos': home.sixth.split('_')[3]})
+            homeLineup.append({'order': 7, 'number': home.seventh.split('_')[1], 'name': home.seventh.split('_')[2], 'pos': home.seventh.split('_')[3]})
+            homeLineup.append({'order': 8, 'number': home.eighth.split('_')[1], 'name': home.eighth.split('_')[2], 'pos': home.eighth.split('_')[3]})
+            homeLineup.append({'order': 9, 'number': home.nineth.split('_')[1], 'name': home.nineth.split('_')[2], 'pos': home.nineth.split('_')[3]})
+            homeSP = {'number': home.SP.split('_')[1], 'name': home.SP.split('_')[2]}
+
+            homeSubstitution = []
+
+            if home.substitute1 != None:
+                homeSubstitution.append({'number': home.substitute1.split('_')[1], 'name': home.substitute1.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute2 != None:
+                homeSubstitution.append({'number': home.substitute2.split('_')[1], 'name': home.substitute2.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute3 != None:
+                homeSubstitution.append({'number': home.substitute3.split('_')[1], 'name': home.substitute3.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute4 != None:
+                homeSubstitution.append({'number': home.substitute4.split('_')[1], 'name': home.substitute4.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute5 != None:
+                homeSubstitution.append({'number': home.substitute5.split('_')[1], 'name': home.substitute5.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute6 != None:
+                homeSubstitution.append({'number': home.substitute6.split('_')[1], 'name': home.substitute6.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute7 != None:
+                homeSubstitution.append({'number': home.substitute7.split('_')[1], 'name': home.substitute7.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute8 != None:
+                homeSubstitution.append({'number': home.substitute8.split('_')[1], 'name': home.substitute8.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+
+            if home.substitute9 != None:
+                homeSubstitution.append({'number': home.substitute9.split('_')[1], 'name': home.substitute9.split('_')[2]})
+            else:
+                homeSubstitution.append(None)
+        except:
+            home = None
+        
+        return render(request, 'lineup.html', locals())
     return redirect('/option/')
 
 def album(request, gameid=None):

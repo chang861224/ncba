@@ -67,7 +67,7 @@ urlpatterns = [
     path('gamenotplay/<int:gameid>/', views.gamenotplay),
 
     # Lineup list
-    path('lineup/', views.lineup),
+    path('lineuplist/<int:year>/', views.lineuplist),
     path('lineup/<int:gameid>/', views.lineup),
 
     # Album url management

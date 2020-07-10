@@ -43,6 +43,7 @@
 				<option value="右投兩打">右投兩打</option>
 				<option value="左投兩打">左投兩打</option>
 			</select></p>
+			<p>原學號：<input name="student_id_old"></p>
 			
 			<p><input type="submit"><input type='reset'></p>
 		</form>
@@ -67,7 +68,7 @@
 					<a href='/playeredit/edit/{{player.id}}/'>編輯</a>
 					<a href='/playeredit/delete/{{player.id}}'>刪除</a>
 				</td>
-				<td>{{ player.team }}</td>
+				<td>{{ player.team.team }}</td>
 				<td>{{ player.number }}</td>
 				<td>{{ player.player.name }}</td>
 				<td>{{ player.player.studentID }}</td>
