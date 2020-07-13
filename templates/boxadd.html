@@ -57,7 +57,7 @@
 					</tr>
 					<tr>
 						<td>
-							{{ score.game.guest }}
+							{{ score.game.guest.team }}
 						</td>
 						<td>
 							<input name='guest1' type='number' value='{{score.guest1}}' min='0' style='width: 30px;'>
@@ -83,7 +83,7 @@
 					</tr>
 					<tr>
 						<td>
-							{{ score.game.home }}
+							{{ score.game.home.team }}
 						</td>
 						<td>
 							<input name='home1' type='number' value='{{score.home1}}' min='0' style='width: 30px;'>
@@ -114,7 +114,7 @@
 				<input type='reset'>
 				</p>
 			</form>
-			<p><a href='/gamenotplay/{{game.id}}/'>比賽尚未進行</a></p>
+			<p><a href='/gamenotplay/{{year}}/{{game.id}}/'>比賽尚未進行</a></p>
 		</div>
 		{% elif itemtype == 'hitter' %}
 		<form action='.' method='POST'>

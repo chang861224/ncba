@@ -651,7 +651,7 @@ def addup(teamid=None):
         team.PCT = None
     team.save()
 
-def gamenotplay(request, gameid=None):
+def gamenotplay(request, year=None, gameid=None):
     if request.user.is_authenticated:
         game = models.GameUnit.objects.get(id=gameid)
 
@@ -671,7 +671,7 @@ def gamenotplay(request, gameid=None):
 
         addup(game.guest.id)
         addup(game.home.id)
-        return redirect('/boxadd/')
+        return redirect('/boxadd/' + str(year) + '/')
     return redirect('/option/')
 
 def lineuplist(request, year=None):
@@ -827,15 +827,15 @@ def album(request, gameid=None):
         return redirect('/option/')
     return render(request, 'albumlist.html', locals())
 
-def boxadd(request, gameid=None, itemtype=None):
+def boxadd(request, year=None, gameid=None, itemtype=None):
     if request.user.is_authenticated:
         if gameid == None:
-            games = models.GameUnit.objects.filter(postpone=False).order_by('date')
+            games = models.GameUnit.objects.filter(year=year, postpone=False).order_by('date')
 
             if request.method == 'POST':
                 game = request.POST['gameid']
                 edittype = request.POST['item']
-                return redirect('/boxadd/' + game + '/' + edittype + '/')
+                return redirect('/boxadd/' + str(year) + '/' + game + '/' + edittype + '/')
         else:
             game = models.GameUnit.objects.get(id=gameid)
             players1 = models.PlayerUnit.objects.filter(team__id=game.guest.id).order_by('id')
@@ -895,7 +895,7 @@ def boxadd(request, gameid=None, itemtype=None):
 
                     addup(game.guest.id)
                     addup(game.home.id)
-                    return redirect('/boxadd/')
+                    return redirect('/boxadd/' + str(year) + '/')
             elif itemtype == 'hitter':
                 titles = ['姓名', '打席', '打數', '打點', '得分', '安打', '二安', '三安', '全壘打', '壘打數',
                         '雙殺打', '犧短', '犧飛', '四死球', '三振', '盜壘', '盜壘刺', '殘壘']
@@ -953,7 +953,7 @@ def boxadd(request, gameid=None, itemtype=None):
                                     playerscore.OBP = (playerscore.H + playerscore.Walks) / (playerscore.AB + playerscore.Walks + playerscore.SF)
 
                                 playerscore.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif itemtype == 'pitcher':
                 titles = ['姓名', '勝負', '局數(整)', '局數(分)', '面對打席', '面對打數', '投球數', '完投', '完封', '無四死',
                         '被安打', '被全壘打', '犧牲短打', '犧牲飛球', '四壞球', '敬遠', '觸身球', '奪三振', '暴投', '犯規',
@@ -1038,7 +1038,7 @@ def boxadd(request, gameid=None, itemtype=None):
                                     playerscore.OBA = (playerscore.H + playerscore.BB + playerscore.IBB + playerscore.DB) / playerscore.TPAF
 
                                 playerscore.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif itemtype == 'fielder':
                 titles = ['姓名', '守備位置', '刺殺', '助殺', '失誤', '雙殺參與']
                 items = ['player', 'pos', 'PO', 'A', 'E', 'DP']
@@ -1075,7 +1075,7 @@ def boxadd(request, gameid=None, itemtype=None):
                                     playerscore.FLD = (playerscore.PO + playerscore.A) / (playerscore.PO + playerscore.A + playerscore.E)
 
                                 playerscore.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif itemtype == 'catcher':
                 titles = ['姓名', '捕逸', '妨礙打擊', '被盜壘', '盜壘阻殺']
                 items = ['player', 'PB', 'interference', 'stolen', 'CS']
@@ -1112,7 +1112,7 @@ def boxadd(request, gameid=None, itemtype=None):
                                     playerscore.CSP = playerscore.CS / playerscore.stolen
 
                                 playerscore.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(year) + '/' + str(gameid) + '/' + itemtype + '/')
     else:
         return redirect('/option/')
     return render(request, 'boxadd.html', locals())
@@ -1160,7 +1160,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
                 playerscore.save()
                 box.delete()
-                return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif edittype == 'edit':
                 if request.method == 'POST':
                     playerscore.PA = playerscore.PA - box.PA + int(request.POST['PA'])
@@ -1213,7 +1213,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
                     box.CS = request.POST['CS']
                     box.LOB = request.POST['LOB']
                     box.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
         elif itemtype == 'pitcher':
             box = models.PitcherUnit.objects.get(id=boxid)
             playerscore = models.PlayerPitcherUnit.objects.get(player__id=box.player.id)
@@ -1271,7 +1271,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
                 playerscore.save()
                 box.delete()
-                return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif edittype == 'edit':
                 if request.method == 'POST':
                     if box.conseq == 'W' and request.POST['conseq'] != 'W':
@@ -1373,7 +1373,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
                     box.R = request.POST['R']
                     box.ER = request.POST['ER']
                     box.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
         elif itemtype == 'fielder':
             box = models.FielderUnit.objects.get(id=boxid)
             playerscore = models.PlayerFielderUnit.objects.get(player__id=box.player.id, pos=box.pos)
@@ -1391,7 +1391,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
                 playerscore.save()
                 box.delete()
-                return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif edittype == 'edit':
                 if request.method == 'POST':
                     playerscore.PO -= box.PO
@@ -1429,7 +1429,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
                         playerscore1.FLD = None
 
                     playerscore1.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
         elif itemtype == 'catcher':
             box = models.CatcherUnit.objects.get(id=boxid)
             playerscore = models.PlayerCatcherUnit.objects.get(player__id=box.player.id)
@@ -1447,7 +1447,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
                 playerscore.save()
                 box.delete()
-                return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif edittype == 'edit':
                 if request.method == 'POST':
                     playerscore.PB = playerscore.PB - box.PB + int(request.POST['PB'])
@@ -1467,7 +1467,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
                     box.stolen = request.POST['stolen']
                     box.CS = request.POST['CS']
                     box.save()
-                    return redirect('/boxadd/' + str(gameid) + '/' + itemtype + '/')
+                    return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
     else:
         return redirect('/option/')
     return render(request, 'boxedit.html', locals())

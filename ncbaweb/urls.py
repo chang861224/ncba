@@ -64,7 +64,7 @@ urlpatterns = [
     # Games management
     path('gameadd/<int:year>/', views.gameadd),
     path('gameedit/<int:gameid>/<str:edittype>/', views.gameedit),
-    path('gamenotplay/<int:gameid>/', views.gamenotplay),
+    path('gamenotplay/<int:year>/<int:gameid>/', views.gamenotplay),
 
     # Lineup list
     path('lineuplist/<int:year>/', views.lineuplist),
@@ -75,8 +75,8 @@ urlpatterns = [
     path('album/<int:gameid>/', views.album),
     
     # Game boxes management
-    path('boxadd/', views.boxadd),
-    path('boxadd/<int:gameid>/<str:itemtype>/', views.boxadd),
+    path('boxadd/<int:year>/', views.boxadd),
+    path('boxadd/<int:year>/<int:gameid>/<str:itemtype>/', views.boxadd),
     path('boxedit/<int:gameid>/<str:itemtype>/<int:boxid>/<str:edittype>/', views.boxedit),
     
     # News management
