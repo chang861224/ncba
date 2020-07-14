@@ -505,7 +505,13 @@ def playeradd(request, year=None, teamid=None):
                 number = request.POST['number']
                 bt = request.POST['bt']
 
-                unit = models.PlayerUnit.objects.create(team=team, player=player, dept=dept, number=number, bt=bt, umpire=False)
+                checklist = models.PlayerUnit.objects.filter(player=player, umpire=True)
+                if len(checklist) == 0:
+                    umpire = False
+                else:
+                    umpire = True
+
+                unit = models.PlayerUnit.objects.create(team=team, player=player, dept=dept, number=number, bt=bt, umpire=umpire)
                 unit.save()
                 return redirect('/playeradd/' + str(year) + '/' + str(teamid) + '/')
     else:
