@@ -224,31 +224,49 @@ def teams(request, year=None, teamid=None, itemtype=None):
             pitchers.append({'model': player, 'innf': player.inn3 % 3})
     return render(request, 'teams.html', locals())
 
-def player(request, playerid=None):
-    player = models.PlayerUnit.objects.get(id=playerid)
+def player(request, personid=None):
+    person = models.PersonUnit.objects.get(id=personid)
+    seasons = models.PlayerUnit.objects.filter(player=person).order_by('team__year')
 
-    try:
-        hitter = models.PlayerHitterUnit.objects.get(player__id=playerid)
-    except:
-        hitter = None
-
-    try:
-        pitcher = models.PlayerPitcherUnit.objects.get(player__id=playerid)
-        inn1 = pitcher.inn3 + 1
-        inn2 = pitcher.inn3 + 2
-    except:
-        pitcher = None
-    
-    try:
-        fielders = models.PlayerFielderUnit.objects.filter(player__id=playerid)
-    except:
-        fielders = None
-    
-    try:
-        catcher = models.PlayerCatcherUnit.objects.get(player__id=playerid)
-    except:
-        catcher = None
-
+    hitters = models.PlayerHitterUnit.objects.filter(player__player=person).order_by('player__team__year')
+    fielders = models.PlayerFielderUnit.objects.filter(player__player=person).order_by('player__team__year')
+    catchers = models.PlayerCatcherUnit.objects.filter(player__player=person).order_by('player__team__year')
+    pitcherlist = models.PlayerPitcherUnit.objects.filter(player__player=person).order_by('player__team__year')
+    pitchers = []
+    for p in pitcherlist:
+        pitchers.append({
+            'year': p.player.team.year,
+            'W': p.W,
+            'L': p.L,
+            'HO': p.HO,
+            'S': p.S,
+            'BS': p.BS,
+            'inn3': p.inn3,
+            'inn1': p.inn3 + 1,
+            'inn2': p.inn3 + 2,
+            'TPAF': p.TPAF,
+            'TBF': p.TBF,
+            'P': p.P,
+            'CG': p.CG,
+            'SHO': p.SHO,
+            'no_walks': p.no_walks,
+            'H': p.H,
+            'HR': p.HR,
+            'SH': p.SH,
+            'SF': p.SF,
+            'BB': p.BB,
+            'IBB': p.IBB,
+            'DB': p.DB,
+            'K': p.K,
+            'WP': p.WP,
+            'BK': p.BK,
+            'R': p.R,
+            'ER': p.ER,
+            'ERA': p.ERA,
+            'WHIP': p.WHIP,
+            'AVG': p.AVG,
+            'OBA': p.OBA
+        })
     return render(request, 'player.html', locals())
 
 def rank(request, year=None):

@@ -2,33 +2,37 @@
 {% load static %}
 
 {% block title %}
-<title>政大棒球聯盟 NCBA - {{ player.name }}</title>
+<title>政大棒球聯盟 NCBA - {{ person.name }}</title>
 {% endblock %}
 
 {% block content %}
 <fieldset class='field'>
-	<legend class='fieldset_title'>{{ player.name }}</legend>
+	<legend class='fieldset_title'>{{ person.name }}</legend>
 
 	<div class='index'>
 		<div class='player detail'>
 			<table class='player'>
 				<tr>
+					<th>年度</th>
 					<th>球隊</td>
 					<th>背號</th>
 					<th>系級</th>
-					<th>學號</th>
 					<th>投打</th>
 				</tr>
+
+                {% for player in seasons %}
 				<tr>
+					<td>{{ player.team.year }}</td>
 					<td>{{ player.team.team }}</td>
 					<td>{{ player.number }}</td>
 					<td>{{ player.dept }}</td>
-					<td>{{ player.studentID }}</td>
 					<td>{{ player.bt }}</td>
 				</tr>
+                {% endfor %}
+
 			</table>
 		</div>
-		{% if hitter != None %}
+
 		<div class='player detail'>
 			<p class='title'>打擊數據</p>
 		</div>
@@ -36,7 +40,8 @@
 		<div class='player detail'>
 			<table class='hitter'>
 				<tr>
-					<th>打席</td>
+                    <th>年度</th>
+					<th>打席</th>
 					<th>打數</th>
 					<th>打點</th>
 					<th>得分</th>
@@ -57,7 +62,10 @@
 					<th>上壘率</th>
 					<th>長打率</th>
 				</tr>
+
+                {% for hitter in hitters %}
 				<tr>
+                    <td>{{ hitter.player.team.year }}</td>
 					<td>{{ hitter.PA }}</td>
 					<td>{{ hitter.AB }}</td>
 					<td>{{ hitter.RBI }}</td>
@@ -79,10 +87,11 @@
 					<td>{{ hitter.OBP | floatformat:3 }}</td>
 					<td>{{ hitter.SLG | floatformat:3 }}</td>
 				</tr>
+                {% endfor %}
+
 			</table>
 		</div>
-		{% endif %}
-		{% if pitcher != None %}
+
 		<div class='player detail'>
 			<p class='title'>投球數據</p>
 		</div>
@@ -90,7 +99,8 @@
 		<div class='player detail'>
 			<table class='pitcher'>
 				<tr>
-					<th>勝</td>
+                    <th>年度</th>
+					<th>勝</th>
 					<th>敗</th>
 					<th>中繼成功</th>
 					<th>救援成功</th>
@@ -119,7 +129,10 @@
 					<th>被打擊率</th>
 					<th>被上壘率</th>
 				</tr>
+
+		        {% for pitcher in pitchers %}
 				<tr>
+                    <td>{{ pitcher.year }}</td>
 					<td>{{ pitcher.W }}</td>
 					<td>{{ pitcher.L }}</td>
 					<td>{{ pitcher.HO }}</td>
@@ -127,11 +140,12 @@
 					<td>{{ pitcher.BS }}</td>
 					<td>
 						{% widthratio pitcher.inn3 3 1 %}
+
 						{% if pitcher.inn3|divisibleby:3 %}
 						0/3
-						{% elif inn1|divisibleby:3 %}
+						{% elif pitcher.inn1|divisibleby:3 %}
 						2/3
-						{% elif inn2|divisibleby:3 %}
+						{% elif pitcher.inn2|divisibleby:3 %}
 						1/3
 						{% endif %}
 					</td>
@@ -158,10 +172,11 @@
 					<td>{{ pitcher.AVG | floatformat:3 }}</td>
 					<td>{{ pitcher.OBA | floatformat:3 }}</td>
 				</tr>
+		        {% endfor %}
+
 			</table>
 		</div>
-		{% endif %}
-		{% if fielders != None %}
+
 		<div class='player detail'>
 			<p class='title'>守備數據</p>
 		</div>
@@ -169,15 +184,18 @@
 		<div class='player detail'>
 			<table class='fielder'>
 				<tr>
-					<th>守備位置</td>
+					<th>年度</th>
+					<th>守備位置</th>
 					<th>刺殺</th>
 					<th>助殺</th>
 					<th>失誤</th>
 					<th>雙殺參與</th>
 					<th>守備率</th>
 				</tr>
+
 				{% for fielder in fielders %}
 				<tr>
+                    <td>{{ fielder.player.team.year }}</td>
 					<td>{{ fielder.pos }}</td>
 					<td>{{ fielder.PO }}</td>
 					<td>{{ fielder.A }}</td>
@@ -186,10 +204,10 @@
 					<td>{{ fielder.FLD | floatformat:3 }}</td>
 				</tr>
 				{% endfor %}
+
 			</table>
 		</div>
-		{% endif %}
-		{% if catcher != None %}
+
 		<div class='player detail'>
 			<p class='title'>蹲捕數據</p>
 		</div>
@@ -197,22 +215,27 @@
 		<div class='player detail'>
 			<table class='catcher'>
 				<tr>
-					<th>捕逸</td>
+					<th>年度</th>
+					<th>捕逸</th>
 					<th>妨礙打擊</th>
 					<th>被盜壘</th>
 					<th>盜壘阻殺</th>
 					<th>阻殺率</th>
 				</tr>
+
+                {% for catcher in catchers %}
 				<tr>
+					<td>{{ catcher.player.team.year }}</td>
 					<td>{{ catcher.PB }}</td>
 					<td>{{ catcher.interference }}</td>
 					<td>{{ catcher.stolen }}</td>
 					<td>{{ catcher.CS }}</td>
 					<td>{{ catcher.CSP | floatformat:3 }}</td>
 				</tr>
+                {% endfor %}
+
 			</table>
 		</div>
-		{% endif %}
 	</div>
 </fieldset>
 {% endblock %}

@@ -1307,15 +1307,19 @@ BASE LAYOUT
 	width: 350%;
 }
 .index .player.list .player th,
-.index .player.list .player td,
+.index .player.list .player td{
+    width: 20%;
+}
 .index .player.list .catcher th,
 .index .player.list .catcher td{
 	width: 16.666666%;
 }
-.index .player.detail .player th,
-.index .player.detail .player td,
 .index .player.detail .catcher th,
 .index .player.detail .catcher td{
+    width: 16.666666%;
+}
+.index .player.detail .player th,
+.index .player.detail .player td{
 	width: 20%;
 }
 .index .player.list .hitter th,
@@ -1324,7 +1328,7 @@ BASE LAYOUT
 }
 .index .player.detail .hitter th,
 .index .player.detail .hitter td{
-	width: 5%;
+	width: 4.761904%;
 }
 .index .player.list .pitcher th,
 .index .player.list .pitcher td{
@@ -1332,7 +1336,7 @@ BASE LAYOUT
 }
 .index .player.detail .pitcher th,
 .index .player.detail .pitcher td{
-	width: 3.571428%;
+	width: 3.448275%;
 }
 .index .player.list .fielder th,
 .index .player.list .fielder td{
@@ -1340,7 +1344,7 @@ BASE LAYOUT
 }
 .index .player.detail .fielder th,
 .index .player.detail .fielder td{
-	width: 16.666666%;
+	width: 14.285714%;
 }
 @media screen and (min-width: 640px){
 	.index .player.list,
@@ -1374,8 +1378,9 @@ BASE LAYOUT
 		width: 261%;
 	}
 	.index .player.detail .pitcher{
-		width: 252%;
+		width: 290%;
 	}
+    /*
 	.index .player.list .player th,
 	.index .player.list .player td,
 	.index .player.list .catcher th,
@@ -1412,6 +1417,7 @@ BASE LAYOUT
 	.index .player.detail .fielder td{
 		width: 16.666666%;
 	}
+    */
 }
 .index .rank.item{
 	width: 100%;

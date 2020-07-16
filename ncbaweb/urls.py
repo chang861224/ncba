@@ -33,7 +33,7 @@ urlpatterns = [
     path('standing/<int:year>/', views.standing),
     path('teams/', views.teams),
     path('teams/<int:year>/<int:teamid>/<str:itemtype>/', views.teams),
-    path('player/<int:playerid>/', views.player),
+    path('player/<int:personid>/', views.player),
     path('rank/', views.rank),
     path('rank/<int:year>/', views.rank),
     path('activity/', views.activity),

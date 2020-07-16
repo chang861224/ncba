@@ -116,7 +116,7 @@ class ScoreUnit(models.Model):
     home6 = models.IntegerField(null=True)
     home7 = models.IntegerField(null=True)
     def __str__(self):
-        return str(self.game.number) + '_' + self.game.guest.team + 'vs.' + self.game.home.team
+        return '(' + str(self.game.year) + ') -> ' + str(self.game.number) + '_' + self.game.guest.team + 'vs.' + self.game.home.team
 
 class HitterUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -139,7 +139,7 @@ class HitterUnit(models.Model):
     CS = models.IntegerField(default=0)
     LOB = models.IntegerField(default=0)
     def __str__(self):
-        return str(self.number.number) + '_' + self.player.name
+        return '(' + str(self.player.team.year) + ') -> ' + str(self.number.number) + '_' + self.player.player.name
 
 class PitcherUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -166,7 +166,7 @@ class PitcherUnit(models.Model):
     R = models.IntegerField(default=0)
     ER = models.IntegerField(default=0)
     def __str__(self):
-        return str(self.number.number) + '_' + self.player.name
+        return '(' + str(self.player.team.year) + ') -> ' + str(self.number.number) + '_' + self.player.player.name
 
 class FielderUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -177,7 +177,7 @@ class FielderUnit(models.Model):
     E = models.IntegerField(default=0)
     DP = models.IntegerField(default=0)
     def __str__(self):
-        return str(self.number.number) + '_' + self.player.name + '_' + self.pos
+        return '(' + str(self.player.team.year) + ') -> ' + str(self.number.number) + '_' + self.player.player.name + '_' + self.pos
 
 class CatcherUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -187,7 +187,7 @@ class CatcherUnit(models.Model):
     stolen = models.IntegerField(default=0)
     CS = models.IntegerField(default=0)
     def __str__(self):
-        return str(self.number.number) + '_' + self.player.name
+        return '(' + str(self.player.team.year) + ') -> ' + str(self.number.number) + '_' + self.player.player.name
 
 class PlayerHitterUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -212,7 +212,7 @@ class PlayerHitterUnit(models.Model):
     OBP = models.FloatField(null=True)
     SLG = models.FloatField(null=True)
     def __str__(self):
-        return self.player.team.team + '_' + self.player.name
+        return '(' + str(self.player.team.year) + ')' + self.player.team.team + '_' + self.player.player.name
 
 class PlayerPitcherUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -245,7 +245,7 @@ class PlayerPitcherUnit(models.Model):
     AVG = models.FloatField(null=True)
     OBA = models.FloatField(null=True)
     def __str__(self):
-        return self.player.team.team + '_' + self.player.name
+        return '(' + str(self.player.team.year) + ')' + self.player.team.team + '_' + self.player.player.name
 
 class PlayerFielderUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -256,7 +256,7 @@ class PlayerFielderUnit(models.Model):
     DP = models.IntegerField(default=0)
     FLD = models.FloatField(null=True)
     def __str__(self):
-        return self.player.team.team + '_' + self.player.name + '_' + self.pos
+        return '(' + str(self.player.team.year) + ')' + self.player.team.team + '_' + self.player.player.name + '-' + self.pos
 
 class PlayerCatcherUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
@@ -266,7 +266,7 @@ class PlayerCatcherUnit(models.Model):
     CS = models.IntegerField(default=0)
     CSP = models.FloatField(null=True)
     def __str__(self):
-        return self.player.team.team + '_' + self.player.name
+        return '(' + str(self.player.team.year) + ')' + self.player.team.team + '_' + self.player.player.name
 
 class NewsUnit(models.Model):
     title = models.CharField(max_length=100, null=False)
