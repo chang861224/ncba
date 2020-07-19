@@ -132,7 +132,7 @@ def schedule(request, year=None):
     if request.method == 'POST':
         return redirect('/schedule/' + request.POST['year'] + '/')
 
-    games = models.GameUnit.objects.all().order_by('date')
+    games = models.GameUnit.objects.all().order_by('-date')
     years = []
     for game in games:
         if game.year not in years:
@@ -179,7 +179,7 @@ def standing(request, year=None):
     if request.method == 'POST':
         return redirect('/standing/' + request.POST['year'] + '/')
 
-    games = models.GameUnit.objects.all().order_by('date')
+    games = models.GameUnit.objects.all().order_by('-date')
     years = []
     for game in games:
         if game.year not in years:
@@ -195,9 +195,9 @@ def standing(request, year=None):
 
 def teams(request, year=None, teamid=None, itemtype=None):
     if request.method == 'POST':
-        return redirect('/teams/' + request.POST['year'] + '/' + request.POST['team'] + '/' + itemtype + '/')
+        return redirect('/teams/' + str(year) + '/' + request.POST['team'] + '/' + itemtype + '/')
 
-    games = models.GameUnit.objects.all().order_by('date')
+    games = models.GameUnit.objects.all().order_by('-date')
     years = []
     for game in games:
         if game.year not in years:
@@ -209,6 +209,9 @@ def teams(request, year=None, teamid=None, itemtype=None):
 
     years.sort(reverse=True)
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
+
+    if teamid == None:
+        return redirect('/teams/' + str(year) + '/' + str(teams[0].id) + '/players/')
 
     if itemtype == 'players':
         players = models.PlayerUnit.objects.filter(team__year=year, team__id=teamid)
@@ -273,7 +276,7 @@ def rank(request, year=None):
     if request.method == 'POST':
         return redirect('/rank/' + request.POST['year'] + '/')
 
-    games = models.GameUnit.objects.all().order_by('date')
+    games = models.GameUnit.objects.all().order_by('-date')
     years = []
     for game in games:
         if game.year not in years:

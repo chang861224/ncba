@@ -216,10 +216,23 @@ BASE LAYOUT
 	padding: 10px;
 	border: solid 1px;
 }
+.side{
+    padding: 10px 0;
+    border: solid 1px;
+    text-align: center;
+}
 @media screen and (min-width: 640px){
 	.field{
 		padding: 20px;
 	}
+    .sidebar.field{
+        width: 78%;
+        float: right;
+    }
+    .sidebar.side{
+        width: 15%;
+        float: left;
+    }
 }
 
 .fieldset_title{
@@ -1310,6 +1323,10 @@ BASE LAYOUT
 .index .player.list .player td{
     width: 20%;
 }
+.index .player.detail .player th,
+.index .player.detail .player td{
+	width: 20%;
+}
 .index .player.list .catcher th,
 .index .player.list .catcher td{
 	width: 16.666666%;
@@ -1317,10 +1334,6 @@ BASE LAYOUT
 .index .player.detail .catcher th,
 .index .player.detail .catcher td{
     width: 16.666666%;
-}
-.index .player.detail .player th,
-.index .player.detail .player td{
-	width: 20%;
 }
 .index .player.list .hitter th,
 .index .player.list .hitter td{
@@ -1352,7 +1365,9 @@ BASE LAYOUT
 		width: 100%;
 	}
 	.index .player.list th,
-	.index .player.detail th,
+	.index .player.detail th{
+        font-size: 14px;
+    }
 	.index .player.list td,
 	.index .player.detail td{
 		font-size: 16px;
@@ -1380,44 +1395,6 @@ BASE LAYOUT
 	.index .player.detail .pitcher{
 		width: 290%;
 	}
-    /*
-	.index .player.list .player th,
-	.index .player.list .player td,
-	.index .player.list .catcher th,
-	.index .player.list .catcher td{
-		width: 16.666666%;
-	}
-	.index .player.detail .player th,
-	.index .player.detail .player td,
-	.index .player.detail .catcher th,
-	.index .player.detail .catcher td{
-		width: 20%;
-	}
-	.index .player.list .hitter th,
-	.index .player.list .hitter td{
-		width: 4.761904%;
-	}
-	.index .player.detail .hitter th,
-	.index .player.detail .hitter td{
-		width: 5%;
-	}
-	.index .player.list .pitcher th,
-	.index .player.list .pitcher td{
-		width: 3.448275%;
-	}
-	.index .player.detail .pitcher th,
-	.index .player.detail .pitcher td{
-		width: 3.571428%;
-	}
-	.index .player.list .fielder th,
-	.index .player.list .fielder td{
-		width: 14.285714%;
-	}
-	.index .player.detail .fielder th,
-	.index .player.detail .fielder td{
-		width: 16.666666%;
-	}
-    */
 }
 .index .rank.item{
 	width: 100%;
