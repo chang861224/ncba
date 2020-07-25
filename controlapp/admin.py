@@ -4,6 +4,7 @@ from controlapp import models
 admin.site.register(models.TeamUnit)
 admin.site.register(models.PersonUnit)
 admin.site.register(models.PlayerUnit)
+admin.site.register(models.TransferUnit)
 admin.site.register(models.GameUnit)
 admin.site.register(models.OrderGuestUnit)
 admin.site.register(models.OrderHomeUnit)

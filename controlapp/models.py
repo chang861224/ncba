@@ -13,6 +13,12 @@ class TeamUnit(models.Model):
     def __str__(self):
         return str(self.year) + '_' + self.team
 
+class TransferUnit(models.Model):
+    originalID = models.CharField(max_length=20, null=False)
+    newID = models.CharField(max_length=20, null=False)
+    def __str__(self):
+        return self.originalID + ' -> ' + self.newID
+
 class PersonUnit(models.Model):
     name = models.CharField(max_length=100, null=False)
     studentID = models.CharField(max_length=20, null=False)

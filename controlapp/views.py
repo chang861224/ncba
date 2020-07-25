@@ -228,13 +228,22 @@ def teams(request, year=None, teamid=None, itemtype=None):
     return render(request, 'teams.html', locals())
 
 def player(request, personid=None):
-    person = models.PersonUnit.objects.get(id=personid)
-    seasons = models.PlayerUnit.objects.filter(player=person).order_by('team__year')
+    player = models.PersonUnit.objects.get(id=personid)
+    IDs = [player.studentID]
+    for ID in IDs:
+        for p in models.TransferUnit.objects.filter(Q(originalID=ID) | Q(newID=ID)):
+            if p.originalID not in IDs:
+                IDs.append(p.originalID)
+            if p.newID not in IDs:
+                IDs.append(p.newID)
+    IDs.sort()
 
-    hitters = models.PlayerHitterUnit.objects.filter(player__player=person).order_by('player__team__year')
-    fielders = models.PlayerFielderUnit.objects.filter(player__player=person).order_by('player__team__year')
-    catchers = models.PlayerCatcherUnit.objects.filter(player__player=person).order_by('player__team__year')
-    pitcherlist = models.PlayerPitcherUnit.objects.filter(player__player=person).order_by('player__team__year')
+    person = models.PersonUnit.objects.filter(studentID__in=IDs).order_by('studentID')
+    seasons = models.PlayerUnit.objects.filter(player__in=person).order_by('team__year')
+    hitters = models.PlayerHitterUnit.objects.filter(player__player__in=person).order_by('player__team__year')
+    fielders = models.PlayerFielderUnit.objects.filter(player__player__in=person).order_by('player__team__year')
+    catchers = models.PlayerCatcherUnit.objects.filter(player__player__in=person).order_by('player__team__year')
+    pitcherlist = models.PlayerPitcherUnit.objects.filter(player__player__in=person).order_by('player__team__year')
     pitchers = []
     for p in pitcherlist:
         pitchers.append({
@@ -510,9 +519,21 @@ def playeradd(request, year=None, teamid=None):
 
             if request.method == 'POST':
                 if request.POST['student_id_old'] != '':
-                    player = models.PersonUnit.objects.get(studentID=request.POST['student_id_old'])
-                    player.studentID = request.POST['student_id']
-                    player.save()
+                    try:
+                        unit = models.TransferUnit.objects.get(originalID=request.POST['student_id_old'])
+                        unit.newID = request.POST['student_id']
+                        unit.save()
+                    except:
+                        unit = models.TransferUnit.objects.create(originalID=request.POST['student_id_old'], newID=request.POST['student_id'])
+                        unit.save()
+                else:
+                    try:
+                        unit = models.TransferUnit.objects.get(originalID=request.POST['student_id'])
+                        unit.newID = request.POST['student_id']
+                        unit.save()
+                    except:
+                        unit = models.TransferUnit.objects.create(originalID=request.POST['student_id'], newID=request.POST['student_id'])
+                        unit.save()
 
                 try:
                     player = models.PersonUnit.objects.get(studentID=request.POST['student_id'])
