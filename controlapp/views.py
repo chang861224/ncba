@@ -36,7 +36,7 @@ def register(request):
                 user.save()
 
                 if request.POST['username'].split('_')[0] == 'team':
-                    group = Group.objects.get(name='teams')
+                    group = Group.objects.get(name='team')
                 else:
                     group = Group.objects.get(name='guest')
                 
