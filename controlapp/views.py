@@ -1165,6 +1165,37 @@ def boxadd(request, year=None, gameid=None, itemtype=None):
         return redirect('/option/')
     return render(request, 'boxadd.html', locals())
 
+def delhitterscore(playerscore, box):
+    playerscore.PA -= box.PA
+    playerscore.AB -= box.AB
+    playerscore.RBI -= box.RBI
+    playerscore.R -= box.R
+    playerscore.H -= box.H
+    playerscore.TwoBH -= box.TwoBH
+    playerscore.ThreeBH -= box.ThreeBH
+    playerscore.HR -= box.HR
+    playerscore.TB -= box.TB
+    playerscore.DP -= box.DP
+    playerscore.SH -= box.SH
+    playerscore.SF -= box.SF
+    playerscore.Walks -= box.Walks
+    playerscore.SO -= box.SO
+    playerscore.SB -= box.SB
+    playerscore.CS -= box.CS
+    playerscore.LOB -= box.LOB
+
+def delfielderscore(playerscore, box):
+    playerscore.PO -= box.PO
+    playerscore.A -= box.A
+    playerscore.E -= box.E
+    playerscore.DP -= box.DP
+
+def delcatcherscore(playerscore, box):
+    playerscore.PB -= box.PB
+    playerscore.interference -= box.interference
+    playerscore.stolen -= box.stolen
+    playerscore.CS -= box.CS
+
 def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
     if request.user.is_authenticated:
         game = models.GameUnit.objects.get(id=gameid)
@@ -1176,6 +1207,8 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
             playerscore = models.PlayerHitterUnit.objects.get(player__id=box.player.id)
 
             if edittype == 'delete':
+                delhitterscore(playerscore, box)
+                """
                 playerscore.PA -= box.PA
                 playerscore.AB -= box.AB
                 playerscore.RBI -= box.RBI
@@ -1193,6 +1226,7 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
                 playerscore.SB -= box.SB
                 playerscore.CS -= box.CS
                 playerscore.LOB -= box.LOB
+                """
 
                 if playerscore.AB != 0:
                     playerscore.AVG = playerscore.H / playerscore.AB
@@ -1427,10 +1461,13 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
             playerscore = models.PlayerFielderUnit.objects.get(player__id=box.player.id, pos=box.pos)
 
             if edittype == 'delete':
+                delfielderscore(playerscore, box)
+                """
                 playerscore.PO -= box.PO
                 playerscore.A -= box.A
                 playerscore.E -= box.E
                 playerscore.DP -= box.DP
+                """
 
                 if playerscore.PO + playerscore.A + playerscore.E != 0:
                     playerscore.FLD = (playerscore.PO + playerscore.A) / (playerscore.PO + playerscore.A + playerscore.E)
@@ -1442,10 +1479,13 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
                 return redirect('/boxadd/' + str(game.year) + '/' + str(gameid) + '/' + itemtype + '/')
             elif edittype == 'edit':
                 if request.method == 'POST':
+                    delfielderscore(playerscore, box)
+                    """
                     playerscore.PO -= box.PO
                     playerscore.A -= box.A
                     playerscore.E -= box.E
                     playerscore.DP -= box.DP
+                    """
 
                     if playerscore.PO + playerscore.A + playerscore.E != 0:
                         playerscore.FLD = (playerscore.PO + playerscore.A) / (playerscore.PO + playerscore.A + playerscore.E)
@@ -1483,10 +1523,13 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
             playerscore = models.PlayerCatcherUnit.objects.get(player__id=box.player.id)
 
             if edittype == 'delete':
+                delcatcherscore(playerscore, box)
+                """
                 playerscore.PB -= box.PB
                 playerscore.interference -= box.interference
                 playerscore.stolen -= box.stolen
                 playerscore.CS -= box.CS
+                """
 
                 if playerscore.stolen != 0:
                     playerscore.CSP = playerscore.CS / playerscore.stolen
