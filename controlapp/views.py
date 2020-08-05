@@ -428,6 +428,23 @@ def mailvote(request, eventid=None, randomkey=None):
         return render(request, 'urlnotexist.html', locals())
     return render(request, 'mailconfirm.html', locals())
 
+def umpire(request, year=None):
+    if request.method == 'POST':
+        return redirect('/umpire/' + request.POST['year'] + '/')
+
+    games = models.GameUnit.objects.all().order_by('-date')
+    years = []
+    for game in games:
+        if game.year not in years:
+            years.append(game.year)
+
+    if year == None:
+        return redirect('/umpire/' + str(max(years)) + '/')
+
+    years.sort(reverse=True)
+    umpires = models.PlayerUnit.objects.filter(team__year=year, umpire=True).order_by('team__id')
+    return render(request, 'umpire.html', locals())
+
 def login(request):
     message = ''
 

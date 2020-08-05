@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟 NCBA - 壘審名單</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>壘審名單</legend>
+
+	<div class='index'>
+        <div class='select'>
+            <form action='.' method='POST'>
+                {% csrf_token %}
+                學年度：
+                <select name='year'>
+                    {% for y in years %}
+                    {% if y == year %}
+                    <option value='{{y}}' selected>{{ y }}</option>
+                    {% else %}
+                    <option value='{{y}}'>{{ y }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <input type='submit'>
+            </form>
+        </div>
+
+        <div class='umpire list'>
+            <table class='umpire'>
+                <tr>
+                    <th>隊伍</th>
+                    <th>姓名</th>
+                    <th>學號</th>
+                </tr>
+
+                {% for umpire in umpires %}
+                <tr>
+                    <td>{{ umpire.team.team }}</td>
+                    <td>{{ umpire.player.name }}</td>
+                    <td>{{ umpire.player.studentID }}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+	</div>
+</fieldset>
+{% endblock %}

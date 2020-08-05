@@ -40,6 +40,8 @@ urlpatterns = [
     path('activity/', views.activity),
     path('activity/<int:eventid>/', views.activity),
     path('repeatvote/', views.repeatvote),
+    path('umpire/', views.umpire),
+    path('umpire/<int:year>/', views.umpire),
 
     # Email verification
     path('mail/vote/<int:eventid>/<str:randomkey>/', views.mailvote),
