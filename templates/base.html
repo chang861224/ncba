@@ -45,9 +45,13 @@
 				{% if request.user.is_authenticated %}
 
 				{% if 'auth.member' in request.user.get_all_permissions %}
+                <p class='login'>[ 聯盟成員 ]</p>
 				<p class='login'>[ <a href='/option/'>會員操作選項</a> ]</p>
 				{% elif 'auth.team' in request.user.get_all_permissions %}
+                <p class='login'>[ 球隊 ]</p>
 				<p class='login'>[ <a href='/orderlist/{{request.user.get_short_name}}/'>先發名單登錄</a> ]</p>
+				{% elif 'auth.guest' in request.user.get_all_permissions %}
+                <p class='login'>[ 訪客 ]</p>
 				{% endif %}
 				
 				<p class='login'>[ <a href='/logout/'>登出</a> ]</p>

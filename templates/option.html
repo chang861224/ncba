@@ -10,7 +10,10 @@
 	<legend class='fieldset_title'>請選擇操作項目</legend>
 
 	<div class='optionPage'>
+
 	{% if request.user.is_authenticated %}
+
+    {% if 'auth.member' in request.user.get_all_permissions %}
 	<p><a href='/teamadd/109/'>球隊登錄</a></p>
 	<p><a href='/playeradd/109/'>球員登錄</a></p>
 	<p><a href='/gameadd/109/'>賽程管理</a></p>
@@ -19,9 +22,14 @@
 	<p><a href='/album/'>相簿連結</a></p>
 	<p><a href='/allnews/'>文章管理</a></p>
 	<p><a href='/allevents/'>活動管理</a></p>
+    {% else %}
+    <p>很抱歉！網頁發生錯誤！<a href='/index/' style='text-decoration: underline; font-weight: bold;'>請點此</a>返回首頁！</p>
+    {% endif %}
+
 	{% else %}
 	尚未登入！請先登入再進行操作！
 	{% endif %}
+
 	</div>
 </fieldset>
 {% endblock %}

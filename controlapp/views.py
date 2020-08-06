@@ -484,7 +484,7 @@ def teamadd(request, year=None):
     message = ''
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
 
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if request.method == 'POST':
             team = request.POST['team']
             group = request.POST['group']
@@ -500,7 +500,7 @@ def teamadd(request, year=None):
     return render(request, 'teamadd.html', locals())
 
 def teamedit(request, teamid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         team = models.TeamUnit.objects.get(id=teamid)
 
         if request.method == 'POST':
@@ -515,7 +515,7 @@ def teamedit(request, teamid=None):
     return render(request, 'teamedit.html', locals())
 
 def teamdelete(request, teamid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         team = models.TeamUnit.objects.get(id=teamid)
         year = team.year
         team.delete()
@@ -525,7 +525,7 @@ def teamdelete(request, teamid=None):
 def playeradd(request, year=None, teamid=None):
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
 
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if teamid == None:
             if request.method == 'POST':
                 team = models.TeamUnit.objects.get(id=int(request.POST['team']))
@@ -578,7 +578,7 @@ def playeradd(request, year=None, teamid=None):
     return render(request, 'playeradd.html', locals())
 
 def playeredit(request, edittype=None, playerid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         player = models.PlayerUnit.objects.get(id=playerid)
         team = player.team
 
@@ -601,7 +601,7 @@ def gameadd(request, year=None):
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
     games = models.GameUnit.objects.filter(year=year).order_by('date')
 
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if request.method == 'POST':
             number = request.POST['number']
             # Date process BEGIN
@@ -627,7 +627,7 @@ def gameadd(request, year=None):
     return render(request, 'gameadd.html', locals())
 
 def gameedit(request, gameid=None, edittype=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         game = models.GameUnit.objects.get(id=gameid)
         year = game.year
         datestr = str(game.date)
@@ -717,7 +717,7 @@ def addup(teamid=None):
     team.save()
 
 def gamenotplay(request, year=None, gameid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         game = models.GameUnit.objects.get(id=gameid)
 
         game.regular = True
@@ -740,13 +740,13 @@ def gamenotplay(request, year=None, gameid=None):
     return redirect('/option/')
 
 def lineuplist(request, year=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         games = models.GameUnit.objects.filter(year=year, postpone=False).order_by('date')
         return render(request, 'lineuplist.html', locals())
     return redirect('/option/')
 
 def lineup(request, gameid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         game = models.GameUnit.objects.get(id=gameid)
         try:
             guest = models.OrderGuestUnit.objects.get(game__id=gameid)
@@ -879,7 +879,7 @@ def lineup(request, gameid=None):
     return redirect('/option/')
 
 def album(request, gameid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if gameid == None:
             games = models.GameUnit.objects.filter(postpone=False).order_by('date')
         else:
@@ -893,7 +893,7 @@ def album(request, gameid=None):
     return render(request, 'albumlist.html', locals())
 
 def boxadd(request, year=None, gameid=None, itemtype=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if gameid == None:
             games = models.GameUnit.objects.filter(year=year, postpone=False).order_by('date')
 
@@ -1214,7 +1214,7 @@ def delcatcherscore(playerscore, box):
     playerscore.CS -= box.CS
 
 def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         game = models.GameUnit.objects.get(id=gameid)
         players1 = models.PlayerUnit.objects.filter(team__id=game.guest.id).order_by('id')
         players2 = models.PlayerUnit.objects.filter(team__id=game.home.id).order_by('id')
@@ -1225,25 +1225,6 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
             if edittype == 'delete':
                 delhitterscore(playerscore, box)
-                """
-                playerscore.PA -= box.PA
-                playerscore.AB -= box.AB
-                playerscore.RBI -= box.RBI
-                playerscore.R -= box.R
-                playerscore.H -= box.H
-                playerscore.TwoBH -= box.TwoBH
-                playerscore.ThreeBH -= box.ThreeBH
-                playerscore.HR -= box.HR
-                playerscore.TB -= box.TB
-                playerscore.DP -= box.DP
-                playerscore.SH -= box.SH
-                playerscore.SF -= box.SF
-                playerscore.Walks -= box.Walks
-                playerscore.SO -= box.SO
-                playerscore.SB -= box.SB
-                playerscore.CS -= box.CS
-                playerscore.LOB -= box.LOB
-                """
 
                 if playerscore.AB != 0:
                     playerscore.AVG = playerscore.H / playerscore.AB
@@ -1479,12 +1460,6 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
             if edittype == 'delete':
                 delfielderscore(playerscore, box)
-                """
-                playerscore.PO -= box.PO
-                playerscore.A -= box.A
-                playerscore.E -= box.E
-                playerscore.DP -= box.DP
-                """
 
                 if playerscore.PO + playerscore.A + playerscore.E != 0:
                     playerscore.FLD = (playerscore.PO + playerscore.A) / (playerscore.PO + playerscore.A + playerscore.E)
@@ -1497,12 +1472,6 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
             elif edittype == 'edit':
                 if request.method == 'POST':
                     delfielderscore(playerscore, box)
-                    """
-                    playerscore.PO -= box.PO
-                    playerscore.A -= box.A
-                    playerscore.E -= box.E
-                    playerscore.DP -= box.DP
-                    """
 
                     if playerscore.PO + playerscore.A + playerscore.E != 0:
                         playerscore.FLD = (playerscore.PO + playerscore.A) / (playerscore.PO + playerscore.A + playerscore.E)
@@ -1541,12 +1510,6 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
 
             if edittype == 'delete':
                 delcatcherscore(playerscore, box)
-                """
-                playerscore.PB -= box.PB
-                playerscore.interference -= box.interference
-                playerscore.stolen -= box.stolen
-                playerscore.CS -= box.CS
-                """
 
                 if playerscore.stolen != 0:
                     playerscore.CSP = playerscore.CS / playerscore.stolen
@@ -1581,14 +1544,14 @@ def boxedit(request, gameid=None, itemtype=None, boxid=None, edittype=None):
     return render(request, 'boxedit.html', locals())
 
 def allnews(request):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         newslist = models.NewsUnit.objects.all().order_by('-date')
     else:
         return redirect('/option/')
     return render(request, 'allnews.html', locals())
 
 def newsadd(request):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if request.method == 'POST':
             title = request.POST['title']
             # Date process begin
@@ -1610,7 +1573,7 @@ def newsadd(request):
     return render(request, 'newsadd.html', locals())
 
 def newsedit(request, newsid=None, edittype=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if edittype == 'delete':
             news = models.NewsUnit.objects.get(id=newsid)
             news.delete()
@@ -1639,13 +1602,13 @@ def newsedit(request, newsid=None, edittype=None):
     return render(request, 'newsedit.html', locals())
 
 def orderlist(request, teamid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.team'):
         games = models.GameUnit.objects.filter(Q(postpone=False) & (Q(guest__id=teamid) | Q(home__id=teamid))).order_by('date')
         return render(request, 'orderlist.html', locals())
     return redirect('/optoin/')
 
 def order(request, gameid=None, team=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.team'):
         game = models.GameUnit.objects.get(id=gameid)
         now = datetime.datetime.now()
 
@@ -1854,14 +1817,14 @@ def order(request, gameid=None, team=None):
     return redirect('/optoin/')
 
 def allevents(request):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         events = models.EventUnit.objects.all().order_by('-id')
     else:
         return redirect('/option/')
     return render(request, 'allevents.html', locals())
 
 def eventadd(request):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if request.method == 'POST':
             title = request.POST['title']
             startDate = datetime.datetime.strptime(request.POST['startDate'], '%Y-%m-%d').date()
@@ -1883,7 +1846,7 @@ def eventadd(request):
     return render(request, 'eventadd.html', locals())
 
 def eventedit(request, eventid=None, edittype=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         if edittype == 'delete':
             event = models.EventUnit.objects.get(id=eventid)
             event.delete()
@@ -1916,7 +1879,7 @@ def eventedit(request, eventid=None, edittype=None):
     return render(request, 'eventedit.html', locals())
 
 def itemadd(request, eventid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         event = models.EventUnit.objects.get(id=eventid)
         items = models.OptionUnit.objects.filter(event__id=eventid)
 
@@ -1932,7 +1895,7 @@ def itemadd(request, eventid=None):
     return render(request, 'itemadd.html', locals())
 
 def itemedit(request, eventid=None, itemid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         item = models.OptionUnit.objects.get(id=itemid)
 
         if request.method == 'POST':
@@ -1945,7 +1908,7 @@ def itemedit(request, eventid=None, itemid=None):
     return render(request, 'itemedit.html', locals())
 
 def itemdelete(request, eventid=None, itemid=None):
-    if request.user.is_authenticated:
+    if request.user.has_perm('auth.member'):
         item = models.OptionUnit.objects.get(id=itemid)
         item.delete()
         return redirect('/itemadd/' + str(eventid) + '/')
