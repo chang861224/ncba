@@ -18,6 +18,7 @@
 					<th>背號</th>
 					<th>系級</th>
 					<th>投打</th>
+                    <th>壘審</th>
 				</tr>
 
                 {% for player in seasons %}
@@ -27,6 +28,12 @@
 					<td>{{ player.number }}</td>
 					<td>{{ player.dept }}</td>
 					<td>{{ player.bt }}</td>
+
+                    <td>
+                    {% if player.umpire %}
+                    〇
+                    {% endif %}
+                    </td>
 				</tr>
                 {% endfor %}
 
