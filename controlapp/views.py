@@ -442,7 +442,7 @@ def umpire(request, year=None):
         return redirect('/umpire/' + str(max(years)) + '/')
 
     years.sort(reverse=True)
-    umpires = models.PlayerUnit.objects.filter(team__year=year, umpire=True).order_by('team__id')
+    umpires = models.PlayerUnit.objects.filter(team__year=year, umpire=True).order_by('team__id', 'player__studentID')
     return render(request, 'umpire.html', locals())
 
 def login(request):
