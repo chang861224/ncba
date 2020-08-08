@@ -598,10 +598,7 @@ def gameadd(request, year=None):
     if request.user.has_perm('auth.member'):
         if request.method == 'POST':
             number = request.POST['number']
-            # Date process BEGIN
-            dateRes = request.POST['game_date'].split('-')
-            date = datetime.date(int(dateRes[0]), int(dateRes[1]), int(dateRes[2]))
-            # Date process END
+            date = datetime.datetime.strptime(request.POST['game_date'], '%Y-%m-%d')
             guest = models.TeamUnit.objects.get(id=int(request.POST['guest']))
             home = models.TeamUnit.objects.get(id=int(request.POST['home']))
             umpire1 = request.POST['umpire1']
@@ -648,10 +645,7 @@ def gameedit(request, gameid=None, edittype=None):
             
             if request.method == 'POST':
                 game.number = request.POST['number']
-                # Date process BEGIN
-                dateRes = request.POST['game_date'].split('-')
-                game.date = datetime.date(int(dateRes[0]), int(dateRes[1]), int(dateRes[2]))
-                # Date process END
+                game.date = datetime.datetime.strptime(request.POST['game_date'], '%Y-%m-%d')
                 game.guest = models.TeamUnit.objects.get(id=int(request.POST['guest']))
                 game.home = models.TeamUnit.objects.get(id=int(request.POST['home']))
                 game.umpire1 = request.POST['umpire1']
