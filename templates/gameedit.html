@@ -12,7 +12,7 @@
 	<div class='form game'>
 		<form action='.' method="POST">
 			{% csrf_token %}
-			<p>場次編號：<input name="number" type='number' value='{{game.number}}'></p>
+			<p>場次編號：<input name="number" type='number' value='{{game.number}}'>（明星賽請填學年度）</p>
 			<p>日　　期：<input name="game_date" type='date' value='{{datestr}}' placeholder="YYYY-MM-DD"></p>
 			<p>先　　攻：
 			<select name="guest">
@@ -74,9 +74,15 @@
 			{% if game.playoff %}
 			<input name='type' type='radio' value='regular'>例行賽
 			<input name='type' type='radio' value='playoff' checked>季後賽
+			<input name='type' type='radio' value='allstar'>明星賽
+			{% elif game.allstar %}
+			<input name='type' type='radio' value='regular'>例行賽
+			<input name='type' type='radio' value='playoff'>季後賽
+			<input name='type' type='radio' value='allstar' checked>明星賽
 			{% else %}
 			<input name='type' type='radio' value='regular' checked>例行賽
 			<input name='type' type='radio' value='playoff'>季後賽
+			<input name='type' type='radio' value='allstar'>明星賽
 			{% endif %}
 			</p>
 			<p>狀　　態：

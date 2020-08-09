@@ -45,6 +45,7 @@ class GameUnit(models.Model):
     umpire2 = models.CharField(max_length=50, default='')
     umpire3 = models.CharField(max_length=50, default='')
     playoff = models.BooleanField(default=False)
+    allstar = models.BooleanField(default=False)
     regular = models.BooleanField(default=True)
     postpone = models.BooleanField(default=False)
     finish = models.BooleanField(default=False)

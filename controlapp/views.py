@@ -214,14 +214,14 @@ def teams(request, year=None, teamid=None, itemtype=None):
         return redirect('/teams/' + str(year) + '/' + str(teams[0].id) + '/players/')
 
     if itemtype == 'players':
-        players = models.PlayerUnit.objects.filter(team__year=year, team__id=teamid)
+        players = models.PlayerUnit.objects.filter(team__year=year, team__id=teamid).order_by('player__studentID')
     elif itemtype == 'hitters':
-        hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid)
+        hitters = models.PlayerHitterUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
     elif itemtype == 'fielders':
-        fielders = models.PlayerFielderUnit.objects.filter(player__team__id=teamid)
+        fielders = models.PlayerFielderUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
     elif itemtype == 'picatchers':
-        catchers = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid)
-        units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid)
+        catchers = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
+        units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
         pitchers = []
         for player in units:
             pitchers.append({'model': player, 'innf': player.inn3 % 3})
@@ -604,13 +604,18 @@ def gameadd(request, year=None):
             umpire1 = request.POST['umpire1']
             umpire2 = request.POST['umpire2']
             umpire3 = request.POST['umpire3']
-            if request.POST['type'] != 'playoff':
-                playoff = False
-            else:
+            if request.POST['type'] == 'playoff':
                 playoff = True
+                allstar = False
+            elif request.POST['type'] == 'allstar':
+                playoff = False
+                allstar = True
+            else:
+                playoff = False
+                allstar = False
             ps = request.POST.get('PS', '')
 
-            unit = models.GameUnit.objects.create(year=year, number=number, date=date, guest=guest, home=home, umpire1=umpire1, umpire2=umpire2, umpire3=umpire3, playoff=playoff, ps=ps)
+            unit = models.GameUnit.objects.create(year=year, number=number, date=date, guest=guest, home=home, umpire1=umpire1, umpire2=umpire2, umpire3=umpire3, playoff=playoff, allstar=allstar, ps=ps)
             unit.save()
             return redirect('/gameadd/' + str(year) + '/')
     else:
@@ -651,10 +656,15 @@ def gameedit(request, gameid=None, edittype=None):
                 game.umpire1 = request.POST['umpire1']
                 game.umpire2 = request.POST['umpire2']
                 game.umpire3 = request.POST['umpire3']
-                if request.POST['type'] != 'playoff':
-                    game.playoff = False
-                else:
+                if request.POST['type'] == 'playoff':
                     game.playoff = True
+                    game.allstar = False
+                elif request.POST['type'] == 'allstar':
+                    game.playoff = False
+                    game.allstar = True
+                else:
+                    game.playoff = False
+                    game.allstar = False
                 if request.POST['status'] == 'regular':
                     game.regular = True
                     game.postpone = False

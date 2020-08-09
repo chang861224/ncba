@@ -42,10 +42,13 @@
 				<td>
 					{% if game.playoff %}
 					季
+					{{ game.number }}
+                    {% elif game.allstar %}
+                    明星
 					{% else %}
 					例
-					{% endif %}
 					{{ game.number }}
+					{% endif %}
 				</td>
 				<td>{{ game.date }}</td>
 				<td>{{ game.guest.team }}</td>
