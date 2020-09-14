@@ -465,7 +465,7 @@ def login(request):
 
                     # PLAYER ADD
                     team = models.TeamUnit.objects.get(id=int(username.split('_')[1]))
-                    return redirect('/playeradd/' + team.year + '/' + team.id + '/')
+                    return redirect('/playeradd/' + str(team.year) + '/' + str(team.id) + '/')
                 elif request.user.has_perm('auth.member'):
                     return redirect('/option/')
                 else:
@@ -530,7 +530,7 @@ def teamdelete(request, teamid=None):
 def playeradd(request, year=None, teamid=None):
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
 
-    if request.user.has_perm('auth.member'):
+    if request.user.has_perm('auth.member') or request.user.has_perm('auth.team'):
         if teamid == None:
             if request.method == 'POST':
                 team = models.TeamUnit.objects.get(id=int(request.POST['team']))
