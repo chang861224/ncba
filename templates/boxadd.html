@@ -20,6 +20,8 @@
 				{% if game.regular or game.finish %}
 				{% if game.playoff %}
 				<option value='{{game.id}}'>季{{ game.number }}</option>
+				{% elif game.allstar %}
+				<option value='{{game.id}}'>明星</option>
 				{% else %}
 				<option value='{{game.id}}'>例{{ game.number }}</option>
 				{% endif %}

@@ -460,7 +460,12 @@ def login(request):
                 request.session.set_expiry(18000)
                 #if username.split('_')[0] == 'team':
                 if request.user.has_perm('auth.team') and request.user.is_superuser == False:
-                    return redirect('/orderlist/' + username.split('_')[1] + '/')
+                    # ORDER LIST
+                    #return redirect('/orderlist/' + username.split('_')[1] + '/')
+
+                    # PLAYER ADD
+                    team = models.TeamUnit.objects.get(id=int(username.split('_')[1]))
+                    return redirect('/playeradd/' + team.year + '/' + team.id + '/')
                 elif request.user.has_perm('auth.member'):
                     return redirect('/option/')
                 else:
