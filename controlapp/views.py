@@ -179,11 +179,12 @@ def standing(request, year=None):
     if request.method == 'POST':
         return redirect('/standing/' + request.POST['year'] + '/')
 
-    games = models.GameUnit.objects.all().order_by('-date')
+    #games = models.GameUnit.objects.all().order_by('-date')
+    teams = models.TeamUnit.objects.all().order_by('id')
     years = []
-    for game in games:
-        if game.year not in years:
-            years.append(game.year)
+    for team in teams:
+        if team.year not in years:
+            years.append(team.year)
 
     if year == None:
         return redirect('/standing/' + str(max(years)) + '/')
@@ -197,11 +198,12 @@ def teams(request, year=None, teamid=None, itemtype=None):
     if request.method == 'POST':
         return redirect('/teams/' + str(year) + '/' + request.POST['team'] + '/' + itemtype + '/')
 
-    games = models.GameUnit.objects.all().order_by('-date')
+    #games = models.GameUnit.objects.all().order_by('-date')
+    teams = models.TeamUnit.objects.all().order_by('id')
     years = []
-    for game in games:
-        if game.year not in years:
-            years.append(game.year)
+    for team in teams:
+        if team.year not in years:
+            years.append(team.year)
 
     if year == None:
         teams = models.TeamUnit.objects.filter(year=max(years)).order_by('id')
@@ -285,11 +287,12 @@ def rank(request, year=None):
     if request.method == 'POST':
         return redirect('/rank/' + request.POST['year'] + '/')
 
-    games = models.GameUnit.objects.all().order_by('-date')
+    #games = models.GameUnit.objects.all().order_by('-date')
+    teams = models.TeamUnit.objects.all().order_by('id')
     years = []
-    for game in games:
-        if game.year not in years:
-            years.append(game.year)
+    for team in teams:
+        if team.year not in years:
+            years.append(team.year)
 
     if year == None:
         return redirect('/rank/' + str(max(years)) + '/')
@@ -432,11 +435,12 @@ def umpire(request, year=None):
     if request.method == 'POST':
         return redirect('/umpire/' + request.POST['year'] + '/')
 
-    games = models.GameUnit.objects.all().order_by('-date')
+    #games = models.GameUnit.objects.all().order_by('-date')
+    teams = models.TeamUnit.objects.all().order_by('id')
     years = []
-    for game in games:
-        if game.year not in years:
-            years.append(game.year)
+    for team in teams:
+        if team.year not in years:
+            years.append(team.year)
 
     if year == None:
         return redirect('/umpire/' + str(max(years)) + '/')
