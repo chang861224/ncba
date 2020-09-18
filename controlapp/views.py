@@ -577,7 +577,7 @@ def playeradd(request, year=None, teamid=None):
     return render(request, 'playeradd.html', locals())
 
 def playeredit(request, edittype=None, playerid=None):
-    if request.user.has_perm('auth.member'):
+    if request.user.has_perm('auth.member') or request.user.has_perm('auth.team'):
         player = models.PlayerUnit.objects.get(id=playerid)
         team = player.team
 
