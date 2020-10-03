@@ -1636,88 +1636,88 @@ def order(request, gameid=None, team=None):
             if request.method == 'POST':
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting1']))
-                    first = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position1']
+                    first = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position1']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting2']))
-                    second = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position2']
+                    second = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position2']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting3']))
-                    third = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position3']
+                    third = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position3']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting4']))
-                    fourth = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position4']
+                    fourth = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position4']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting5']))
-                    fifth = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position5']
+                    fifth = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position5']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting6']))
-                    sixth = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position6']
+                    sixth = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position6']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting7']))
-                    seventh = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position7']
+                    seventh = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position7']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting8']))
-                    eighth = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position8']
+                    eighth = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position8']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['starting9']))
-                    nineth = str(player.id) + '_' + str(player.number) + '_' + player.name + '_' + request.POST['position9']
+                    nineth = str(player.id) + '_' + str(player.number) + '_' + player.player.name + '_' + request.POST['position9']
 
                     player = models.PlayerUnit.objects.get(id=int(request.POST['SP']))
-                    SP = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    SP = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     return redirect('/order/' + str(gameid) + '/' + team + '/')
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute1']))
-                    substitute1 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute1 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute1 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute2']))
-                    substitute2 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute2 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute2 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute3']))
-                    substitute3 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute3 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute3 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute4']))
-                    substitute4 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute4 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute4 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute5']))
-                    substitute5 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute5 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute5 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute6']))
-                    substitute6 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute6 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute6 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute7']))
-                    substitute7 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute7 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute7 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute8']))
-                    substitute8 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute8 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute8 = None
 
                 try:
                     player = models.PlayerUnit.objects.get(id=int(request.POST['substitute9']))
-                    substitute9 = str(player.id) + '_' + str(player.number) + '_' + player.name
+                    substitute9 = str(player.id) + '_' + str(player.number) + '_' + player.player.name
                 except:
                     substitute9 = None
 
