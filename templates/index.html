@@ -14,7 +14,7 @@
 		{% if game.finish %}
 		<div class='team'><a href='/box/{{game.id}}/'>{{ game.guest }} {{ game.guestScore }} : {{ game.homeScore }} {{ game.home }}</a></div>
 		{% else %}
-		<div class='team'>{{ game.guest }} vs. {{ game.home }}</div>
+		<div class='team'>{{ game.guest.team }} vs. {{ game.home.team }}</div>
 
 		<div class='order'>
 			<table class='starting'>
