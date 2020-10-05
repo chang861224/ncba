@@ -12,7 +12,7 @@
 	<div class='index'>
 		{% if game != None %}
 		{% if game.finish %}
-		<div class='team'><a href='/box/{{game.id}}/'>{{ game.guest }} {{ game.guestScore }} : {{ game.homeScore }} {{ game.home }}</a></div>
+		<div class='team'><a href='/box/{{game.year}}/{{game.date.year}}-{{game.date.month}}-{{game.date.day}}/{{game.number}}/'>{{ game.guest.team }} {{ game.guestScore }} : {{ game.homeScore }} {{ game.home.team }}</a></div>
 		{% else %}
 		<div class='team'>{{ game.guest.team }} vs. {{ game.home.team }}</div>
 
