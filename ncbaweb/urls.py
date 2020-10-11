@@ -74,8 +74,8 @@ urlpatterns = [
     path('lineup/<int:gameid>/', views.lineup),
 
     # Album url management
-    path('album/', views.album),
-    path('album/<int:gameid>/', views.album),
+    path('album/<int:year>', views.album),
+    path('album/<int:year>/<int:gameid>/', views.album),
     
     # Game boxes management
     path('boxadd/<int:year>/', views.boxadd),

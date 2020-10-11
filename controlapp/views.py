@@ -881,16 +881,16 @@ def lineup(request, gameid=None):
         return render(request, 'lineup.html', locals())
     return redirect('/option/')
 
-def album(request, gameid=None):
+def album(request, year=None, gameid=None):
     if request.user.has_perm('auth.member'):
         if gameid == None:
-            games = models.GameUnit.objects.filter(postpone=False).order_by('date')
+            games = models.GameUnit.objects.filter(year=year, postpone=False).order_by('date')
         else:
             if request.method == 'POST':
                 game = models.GameUnit.objects.get(id=gameid)
                 game.album = request.POST['album']
                 game.save()
-                return redirect('/album/')
+                return redirect('/album/109/')
     else:
         return redirect('/option/')
     return render(request, 'albumlist.html', locals())
