@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>政大棒球聯盟NCBA - 數據下載</title>
+{% endblock %}
+
+{% block content %}
+<fieldset class='field'>
+	<legend class='fieldset_title'>數據下載</legend>
+
+	<div class='form downloadlink'>
+        {% for year in years %}
+        <p><a href='/data_download/{{year}}/players/'>{{ year }}學年度 球員登錄名單</a></p>
+        <p><a href='/data_download/{{year}}/hitters/'>{{ year }}學年度 聯盟打擊數據</a></p>
+        <p><a href='/data_download/{{year}}/pitchers/'>{{ year }}學年度 聯盟投手數據</a></p>
+        <p><a href='/data_download/{{year}}/catchers/'>{{ year }}學年度 聯盟捕手數據</a></p>
+        <p><a href='/data_download/{{year}}/fielders/'>{{ year }}學年度 聯盟守備數據</a></p>
+        {% endfor %}
+	</div>
+</fieldset>
+{% endblock %}
+

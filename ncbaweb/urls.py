@@ -102,5 +102,7 @@ urlpatterns = [
     path('itemdelete/<int:eventid>/<int:itemid>/', views.itemdelete),
 
     # CSV file download
-    path('download/<int:teamid>/<str:itemtype>/', views.download_csv),
+    path('download/<int:teamid>/<str:itemtype>/', views.download_csv),      # Customer Download Data
+    path('data/', views.download_data),                                 # Member Download Data
+    path('data_download/<int:year>/<str:itemtype>/', views.download_data),
 ]

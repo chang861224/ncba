@@ -345,13 +345,15 @@ BASE LAYOUT
 }
 .form.player,
 .form.game,
-.form.box{
+.form.box,
+.form.downloadlink{
 	width: 100%;
 	overflow-x: auto;
 }
 .form.player p,
 .form.game p,
-.form.box p{
+.form.box p,
+.form.downloadlink p{
 	padding: 3px 0;
 }
 .form.box p{
