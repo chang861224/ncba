@@ -8,6 +8,7 @@ from controlapp import models, sendmail
 import random, string
 import math
 import datetime
+import csv
 
 page = 1
 
@@ -224,7 +225,7 @@ def teams(request, year=None, teamid=None, itemtype=None):
         units = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
         pitchers = []
         for player in units:
-            pitchers.append({'model': player, 'innf': player.inn3 % 3})
+            pitchers.append({'model': player, 'innt': player.inn3 // 3, 'innf': player.inn3 % 3})
     return render(request, 'teams.html', locals())
 
 def player(request, personid=None):
@@ -1916,4 +1917,127 @@ def itemdelete(request, eventid=None, itemid=None):
         item.delete()
         return redirect('/itemadd/' + str(eventid) + '/')
     return redirect('/option/')
+
+def download_csv(request, teamid=None, itemtype=None):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="filename.csv"'
+
+    writer = csv.writer(response)
+
+    if itemtype == 'players':
+        players = models.PlayerUnit.objects.filter(team__id=teamid).order_by('player__studentID')
+        writer.writerow(['姓名', '系級', '球隊', '背號', '投打'])
+
+        for player in players:
+            lst = list()
+            lst.append(player.player.name)
+            lst.append(player.dept)
+            lst.append(player.team.team)
+            lst.append(player.number)
+            lst.append(player.bt)
+            writer.writerow(lst)
+
+    if itemtype == 'hitters':
+        players = models.PlayerHitterUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
+        titles = ['姓名', '打席', '打數', '打點', '得分', '安打', '二安', '三安', '全壘打', '壘打數',
+                '雙殺打', '犧短', '犧飛', '四死球', '三振', '盜壘', '盜壘刺', '殘壘', '打擊率', '上壘率',
+                '盜壘成功率']
+        writer.writerow(titles)
+
+        for player in players:
+            lst = list()
+            lst.append(player.player.player.name)
+            lst.append(player.PA)
+            lst.append(player.AB)
+            lst.append(player.RBI)
+            lst.append(player.R)
+            lst.append(player.H)
+            lst.append(player.TwoBH)
+            lst.append(player.ThreeBH)
+            lst.append(player.HR)
+            lst.append(player.TB)
+            lst.append(player.DP)
+            lst.append(player.SH)
+            lst.append(player.SF)
+            lst.append(player.Walks)
+            lst.append(player.SO)
+            lst.append(player.SB)
+            lst.append(player.CS)
+            lst.append(player.LOB)
+            lst.append(player.AVG)
+            lst.append(player.OBP)
+            lst.append(player.SLG)
+            writer.writerow(lst)
+
+    if itemtype == 'picatchers':
+        players = models.PlayerPitcherUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
+        titles = ['姓名', '勝', '敗', '中繼點', '救援成功', '救援失敗', '局數', '面對打席', '面對打數', '投球數',
+                '完投', '完封', '無四死', '被安打', '被全壘打', '犧牲短打', '犧牲飛球', '四壞球', '敬遠', '觸身球',
+                '奪三振', '暴投', '犯規', '失分', '責失分', '防禦率', 'WHIP', '被打擊率', '被上壘率']
+        writer.writerow(titles)
+
+        for player in players:
+            lst = list()
+            lst.append(player.player.player.name)
+            lst.append(player.W)
+            lst.append(player.L)
+            lst.append(player.HO)
+            lst.append(player.S)
+            lst.append(player.BS)
+            lst.append(player.inn3 // 3 + (player.inn3 % 3) / 10)
+#            lst.append(player.inn3)
+            lst.append(player.TPAF)
+            lst.append(player.TBF)
+            lst.append(player.P)
+            lst.append(player.CG)
+            lst.append(player.SHO)
+            lst.append(player.no_walks)
+            lst.append(player.H)
+            lst.append(player.HR)
+            lst.append(player.SH)
+            lst.append(player.SF)
+            lst.append(player.BB)
+            lst.append(player.IBB)
+            lst.append(player.DB)
+            lst.append(player.K)
+            lst.append(player.WP)
+            lst.append(player.BK)
+            lst.append(player.R)
+            lst.append(player.ER)
+            lst.append(player.ERA)
+            lst.append(player.WHIP)
+            lst.append(player.AVG)
+            lst.append(player.OBA)
+            writer.writerow(lst)
+
+        players = models.PlayerCatcherUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
+        titles = ['姓名', '捕逸', '妨礙打擊', '被盜壘', '盜壘阻殺', '阻殺率']
+        writer.writerow(titles)
+
+        for player in players:
+            lst = list()
+            lst.append(player.player.player.name)
+            lst.append(player.PB)
+            lst.append(player.interference)
+            lst.append(player.stolen)
+            lst.append(player.CS)
+            lst.append(player.CSP)
+            writer.writerow(lst)
+
+    if itemtype == 'fielders':
+        players = models.PlayerFielderUnit.objects.filter(player__team__id=teamid).order_by('player__player__studentID')
+        titles = ['姓名', '守備位置', '刺殺', '助殺', '失誤', '雙殺參與', '守備率']
+        writer.writerow(titles)
+
+        for player in players:
+            lst = list()
+            lst.append(player.player.player.name)
+            lst.append(player.pos)
+            lst.append(player.PO)
+            lst.append(player.A)
+            lst.append(player.E)
+            lst.append(player.DP)
+            lst.append(player.FLD)
+            writer.writerow(lst)
+    return response
 

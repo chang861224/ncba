@@ -1359,6 +1359,11 @@ BASE LAYOUT
 .index .player.detail .fielder td{
 	width: 14.285714%;
 }
+.index .download-btn{
+    width: 100%;
+    text-align: right;
+    text-decoration: underline;
+}
 @media screen and (min-width: 640px){
 	.index .player.list,
 	.index .player.detail{

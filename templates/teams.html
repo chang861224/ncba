@@ -181,7 +181,8 @@
 					<td>{{ player.model.HO }}</td>
 					<td>{{ player.model.S }}</td>
 					<td>{{ player.model.BS }}</td>
-					<td>{% widthratio player.model.inn3 3 1 %} {{ player.innf }}/3</td>
+					<!--td>{% widthratio player.model.inn3 3 1 %} {{ player.innf }}/3</td-->
+					<td>{{ player.innt }} {{ player.innf }}/3</td>
 					<td>{{ player.model.TPAF }}</td>
 					<td>{{ player.model.TBF }}</td>
 					<td>{{ player.model.P }}</td>
@@ -232,6 +233,10 @@
 			</table>
 		</div>
 		{% endif %}
+
+        <div class='download-btn'>
+            <a href='/download/{{teamid}}/{{itemtype}}/'>下載數據</a>
+        </div>
 	</div>
 </fieldset>
 {% endblock %}

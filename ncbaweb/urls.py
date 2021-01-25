@@ -101,4 +101,6 @@ urlpatterns = [
     path('itemedit/<int:eventid>/<int:itemid>/', views.itemedit),
     path('itemdelete/<int:eventid>/<int:itemid>/', views.itemdelete),
 
+    # CSV file download
+    path('download/<int:teamid>/<str:itemtype>/', views.download_csv),
 ]
