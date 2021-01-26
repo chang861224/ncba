@@ -2048,6 +2048,21 @@ def download_data(request, year=None, itemtype=None):
 
             writer = csv.writer(response)
 
+            if itemtype == 'games':
+                games = models.GameUnit.objects.filter(year=year, postpone=False).order_by('date')
+
+                for game in games:
+                    writer.writerow([game.year, game.number, game.date])
+
+                    scores = models.ScoreUnit.objects.filter(game__id=game.id)
+
+                    for score in scores:
+                        writer.writerow(['球隊', 1, 2, 3, 4, 5, 6, 7, 'R'])
+                        writer.writerow([game.guest.team, score.guest1, score.guest2, score.guest3, score.guest4, score.guest5, score.guest6, score.guest7, game.guestScore])
+                        writer.writerow([game.home.team, score.home1, score.home2, score.home3, score.home4, score.home5, score.home6, score.home7, game.homeScore])
+
+                    writer.writerow([])
+
             if itemtype == 'players':
                 players = models.PlayerUnit.objects.filter(team__year=year).order_by('team__id', 'player__studentID')
                 writer.writerow(['姓名', '系級', '球隊', '背號', '投打'])
