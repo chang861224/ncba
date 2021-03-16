@@ -151,7 +151,7 @@ class HitterUnit(models.Model):
 class PitcherUnit(models.Model):
     player = models.ForeignKey('PlayerUnit', on_delete=models.CASCADE)
     number = models.ForeignKey('GameUnit', on_delete=models.CASCADE)
-    conseq = models.CharField(max_length=10, default='')
+    conseq = models.CharField(max_length=10, default='', null=True)
     inn_int = models.IntegerField(default=0)
     inn_float = models.IntegerField(default=0)
     TPAF = models.IntegerField(default=0)
