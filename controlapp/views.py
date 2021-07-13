@@ -990,7 +990,7 @@ def boxadd(request, year=None, gameid=None, itemtype=None):
                                     SO=data[14], SB=data[15], CS=data[16], LOB=data[17])
                             unit.save()
 
-                            if game.playoff == False:
+                            if game.playoff == False or (game.playoff == True and game.number <= 4):
                                 try:
                                     playerscore = models.PlayerHitterUnit.objects.get(player__id=player.id)
                                 except:
@@ -1057,7 +1057,7 @@ def boxadd(request, year=None, gameid=None, itemtype=None):
                                     BK=data[19], R=data[20], ER=data[21])
                             unit.save()
 
-                            if game.playoff == False:
+                            if game.playoff == False or (game.playoff == True and game.number <= 4):
                                 try:
                                     playerscore = models.PlayerPitcherUnit.objects.get(player__id=player.id)
                                 except:
@@ -1129,7 +1129,7 @@ def boxadd(request, year=None, gameid=None, itemtype=None):
                                     E=data[4], DP=data[5])
                             unit.save()
                             
-                            if game.playoff == False:
+                            if game.playoff == False or (game.playoff == True and game.number <= 4):
                                 try:
                                     playerscore = models.PlayerFielderUnit.objects.get(player__id=player.id, pos=data[1])
                                 except:
@@ -1166,7 +1166,7 @@ def boxadd(request, year=None, gameid=None, itemtype=None):
                                     CS=data[4])
                             unit.save()
                             
-                            if game.playoff == False:
+                            if game.playoff == False or (game.playoff == True and game.number <= 4):
                                 try:
                                     playerscore = models.PlayerCatcherUnit.objects.get(player__id=player.id)
                                 except:
