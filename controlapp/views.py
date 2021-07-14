@@ -1397,9 +1397,9 @@ def fielder_score_update(year=None):
 
         for player in players:
             updated_score = {
-                "PO": 0, "A": 0, "E": 0, "DP": 0, "FLD": 0
+                "PO": 0, "A": 0, "E": 0, "DP": 0, "FLD": None
             }
-            units = models.CatcherUnit.objects.filter(
+            units = models.FielderUnit.objects.filter(
                     Q(player__id=player.player.id) & 
                     Q(pos=player.pos) & 
                     (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4)))
