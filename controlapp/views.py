@@ -1199,7 +1199,6 @@ def hitter_score_update(year=None):
             print("Player:", player.player.team.team, player.player.player.name)
             for idx, unit in enumerate(units):
                 print(idx, unit.player.player.name)
-            return
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
