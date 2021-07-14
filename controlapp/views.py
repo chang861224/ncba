@@ -210,6 +210,9 @@ def teams(request, year=None, teamid=None, itemtype=None):
 
     years.sort(reverse=True)
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
+    
+    # DEBUG
+    hitter_score_update(year=year)
 
     if teamid == None:
         return redirect('/teams/' + str(year) + '/' + str(teams[0].id) + '/players/')
@@ -1185,6 +1188,18 @@ def boxadd(request, year=None, gameid=None, itemtype=None):
     else:
         return redirect('/option/')
     return render(request, 'boxadd.html', locals())
+    
+def hitter_score_update(year=None):
+    if year != None:
+        players = models.PlayerHitterUnit.objects.filter(player__team__year=year)
+
+        for player in players:
+            units = models.HitterUnit.objects.filter(player__id=player.id)
+            
+            print("Player:", player.player.team.team, player.player.player.name)
+            for idx, unit in enumerate(units):
+                print(idx, unit.player.player.name)
+            return
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
