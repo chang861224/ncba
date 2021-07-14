@@ -212,7 +212,10 @@ def teams(request, year=None, teamid=None, itemtype=None):
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
     
     # DEBUG
-    hitter_score_update(year=year)
+    #hitter_score_update(year=year)
+    pitcher_score_update(year=year)
+    #catcher_score_update(year=year)
+    #fielder_score_update(year=year)
 
     if teamid == None:
         return redirect('/teams/' + str(year) + '/' + str(teams[0].id) + '/players/')
@@ -1257,6 +1260,100 @@ def hitter_score_update(year=None):
             player.SLG = updated_score["SLG"]
             player.OBP = updated_score["OBP"]
             player.save()
+    
+def pitcher_score_update(year=None):
+    if year != None:
+        players = models.PlayerPitcherUnit.objects.filter(player__team__year=year)
+
+        for player in players:
+            updated_score = {
+                "W": 0, "L": 0, "HO": 0, "S": 0, "BS": 0,
+                "inn3": 0, "TPAF": 0, "TBF": 0, "P": 0, "CG": 0,
+                "SHO": 0, "no_walks": 0, "H": 0, "HR": 0, "SH": 0,
+                "SF": 0, "BB": 0, "IBB": 0, "DB": 0, "K": 0,
+                "WP": 0, "BK": 0, "R": 0, "ER": 0, "ERA": None,
+                "WHIP": None, "AVG": None, "OBA": None
+            }
+            units = models.PitcherUnit.objects.filter(
+                    Q(player__id=player.player.id) & 
+                    (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4)))
+                    )
+
+            for unit in units:
+                if unit.conseq == "W":
+                    updated_score["W"] += 1
+                if unit.conseq == "L":
+                    updated_score["L"] += 1
+                if unit.conseq == "HO":
+                    updated_score["HO"] += 1
+                if unit.conseq == "S":
+                    updated_score["S"] += 1
+                if unit.conseq == "BS":
+                    updated_score["BS"] += 1
+                updated_score["inn3"] = unit.inn_int * 3 + unit.inn_float
+                updated_score["TPAF"] = unit.TPAF
+                updated_score["TBF"] = unit.TBF
+                updated_score["P"] = unit.P
+                if unit.CG == True:
+                    updated_score["CG"] += 1
+                if unit.SHO == True:
+                    updated_score["SHO"] += 1
+                if unit.no_walks == True:
+                    updated_score["no_walks"] += 1
+                updated_score["H"] = unit.H
+                updated_score["HR"] = unit.HR
+                updated_score["SH"] = unit.SH
+                updated_score["SF"] = unit.SF
+                updated_score["BB"] = unit.BB
+                updated_score["IBB"] = unit.IBB
+                updated_score["DB"] = unit.DB
+                updated_score["K"] = unit.K
+                updated_score["WP"] = unit.WP
+                updated_score["BK"] = unit.BK
+                updated_score["R"] = unit.R
+                updated_score["ER"] = unit.ER
+
+                try:
+                    updated_score["ERA"] = updated_score["ER"] * 5 / (updated_score["inn3"] / 3)
+                    updated_score["WHIP"] = (updated_score["H"] + updated_score["BB"]) / (updated_score["inn3"] / 3)
+                except:
+                    updated_score["ERA"] = None
+                    updated_score["WHIP"] = None
+
+                try:
+                    updated_score["AVG"] = updated_score["H"] / updated_score["TBF"] 
+                except:
+                    updated_score["AVG"] = None
+
+                try:
+                    updated_score["OBA"] = (updated_score["H"] + updated_score["BB"] + updated_score["IBB"] + updated_score["DB"]) / updated_score["TPAF"]
+                except:
+                    updated_score["OBA"] = None
+
+            print(player.player.player.name, updated_score)
+            """
+            player.PA = updated_score["PA"]
+            player.AB = updated_score["AB"]
+            player.RBI = updated_score["RBI"]
+            player.R = updated_score["R"]
+            player.H = updated_score["H"]
+            player.TwoBH = updated_score["TwoBH"]
+            player.ThreeBH = updated_score["ThreeBH"]
+            player.HR = updated_score["HR"]
+            player.TB = updated_score["TB"]
+            player.DP = updated_score["DP"]
+            player.SH = updated_score["SH"]
+            player.SF = updated_score["SF"]
+            player.Walks = updated_score["Walks"]
+            player.SO = updated_score["SO"]
+            player.SB = updated_score["SB"]
+            player.CS = updated_score["CS"]
+            player.LOB = updated_score["LOB"]
+            player.AVG = updated_score["AVG"]
+            player.SLG = updated_score["SLG"]
+            player.OBP = updated_score["OBP"]
+            player.save()
+            """
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
