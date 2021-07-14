@@ -1406,7 +1406,6 @@ def fielder_score_update(year=None):
                     )
 
             for unit in units:
-                print(unit.player.player.name)
                 updated_score["PO"] += unit.PO
                 updated_score["A"] += unit.A
                 updated_score["E"] += unit.E
@@ -1417,15 +1416,12 @@ def fielder_score_update(year=None):
             except:
                 updated_score["FLD"] = None
 
-            print(player.player.player.name, player.pos, updated_score)
-            """
-            player.PB = updated_score["PB"]
-            player.interference = updated_score["interference"]
-            player.stolen = updated_score["stolen"]
-            player.CS = updated_score["CS"]
-            player.CSP = updated_score["CSP"]
+            player.PO = updated_score["PO"]
+            player.A = updated_score["A"]
+            player.E = updated_score["E"]
+            player.DP = updated_score["DP"]
+            player.FLD = updated_score["FLD"]
             player.save()
-            """
     
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
