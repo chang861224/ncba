@@ -214,8 +214,8 @@ def teams(request, year=None, teamid=None, itemtype=None):
     # DEBUG
     #hitter_score_update(year=year)
     #pitcher_score_update(year=year)
-    catcher_score_update(year=year)
-    #fielder_score_update(year=year)
+    #catcher_score_update(year=year)
+    fielder_score_update(year=year)
 
     if teamid == None:
         return redirect('/teams/' + str(year) + '/' + str(teams[0].id) + '/players/')
@@ -1390,6 +1390,42 @@ def catcher_score_update(year=None):
             player.CS = updated_score["CS"]
             player.CSP = updated_score["CSP"]
             player.save()
+    
+def fielder_score_update(year=None):
+    if year != None:
+        players = models.PlayerFielderUnit.objects.filter(player__team__year=year)
+
+        for player in players:
+            updated_score = {
+                "PO": 0, "A": 0, "E": 0, "DP": 0, "FLD": 0
+            }
+            units = models.CatcherUnit.objects.filter(
+                    Q(player__id=player.player.id) & 
+                    Q(pos=player.pos) & 
+                    (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4)))
+                    )
+
+            for unit in units:
+                print(unit.player.player.name)
+                updated_score["PO"] += unit.PO
+                updated_score["A"] += unit.A
+                updated_score["E"] += unit.E
+                updated_score["DP"] += unit.DP
+
+            try:
+                updated_score["FLD"] = (updated_score["PO"] + updated_score["A"]) / (updated_score["PO"] + updated_score["A"] + updated_score["E"])
+            except:
+                updated_score["FLD"] = None
+
+            print(player.player.player.name, player.pos, updated_score)
+            """
+            player.PB = updated_score["PB"]
+            player.interference = updated_score["interference"]
+            player.stolen = updated_score["stolen"]
+            player.CS = updated_score["CS"]
+            player.CSP = updated_score["CSP"]
+            player.save()
+            """
     
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
