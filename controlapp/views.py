@@ -1230,6 +1230,19 @@ def hitter_score_update(year=None):
                 updated_score["CS"] += unit.CS
                 updated_score["LOB"] += unit.LOB
 
+            try:
+                AVG = updated_score["H"] / updated_score["AB"]
+                SLG = updated_score["TB"] / updated_score["AB"]
+            except:
+                AVG = None
+                SLG= None
+
+            try:
+                OBP = (updated_score["H"] + updated_score["Walks"]) / (updated_score["AB"] + updated_score["Walks"] + updated_score["SF"])
+            except:
+                OBP = None
+
+            """
             if updated_score["AB"] != 0:
                 AVG = updated_score["H"] / updated_score["AB"]
                 SLG = updated_score["TB"] / updated_score["AB"]
@@ -1241,6 +1254,7 @@ def hitter_score_update(year=None):
                 OBP = (updated_score["H"] + updated_score["Walks"]) / (updated_score["AB"] + updated_score["Walks"] + updated_score["SF"])
             else:
                 OBP = None
+            """
 
             print(player.player.player.name, original_score)
             print(player.player.player.name, updated_score)
