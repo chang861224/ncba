@@ -1384,12 +1384,15 @@ def catcher_score_update(year=None):
             except:
                 updated_score["CSP"] = None
 
+            print(player.player.player.name, updated_score)
+            """
             player.PB = updated_score["PA"]
             player.interference = updated_score["interference"]
             player.stolen = updated_score["stolen"]
             player.CS = updated_score["CS"]
             player.CSP = updated_score["CSP"]
             player.save()
+            """
     
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
