@@ -1198,13 +1198,13 @@ def hitter_score_update(year=None):
                 "PA": player.PA, "AB": player.AB, "RBI": player.RBI, "R": player.R, "H": player.H,
                 "TwoBH": player.TwoBH, "ThreeBH": player.ThreeBH, "HR": player.HR, "TB": player.TB, "DP": player.DP,
                 "SH": player.SH, "SF": player.SH, "Walks": player.Walks, "SO": player.SO, "SB": player.SB,
-                "CS": player.CS, "LOB": player.LOB
+                "CS": player.CS, "LOB": player.LOB, "AVG": player.AVG, "SLG": player.SLG, "OBP": player.OBP
             }
             updated_score = {
                 "PA": 0, "AB": 0, "RBI": 0, "R": 0, "H": 0,
                 "TwoBH": 0, "ThreeBH": 0, "HR": 0, "TB": 0, "DP": 0,
                 "SH": 0, "SF": 0, "Walks": 0, "SO": 0, "SB": 0,
-                "CS": 0, "LOB": 0
+                "CS": 0, "LOB": 0, "AVG": None, "SLG": None, "OBP": None
             }
             units = models.HitterUnit.objects.filter(
                     Q(player__id=player.player.id) & 
@@ -1231,16 +1231,16 @@ def hitter_score_update(year=None):
                 updated_score["LOB"] += unit.LOB
 
             try:
-                AVG = updated_score["H"] / updated_score["AB"]
-                SLG = updated_score["TB"] / updated_score["AB"]
+                updated_score["AVG"] = updated_score["H"] / updated_score["AB"]
+                updated_score["SLG"] = updated_score["TB"] / updated_score["AB"]
             except:
-                AVG = None
-                SLG= None
+                updated_score["AVG"] = None
+                updated_score["SLG"]= None
 
             try:
-                OBP = (updated_score["H"] + updated_score["Walks"]) / (updated_score["AB"] + updated_score["Walks"] + updated_score["SF"])
+                updated_score["OBP"] = (updated_score["H"] + updated_score["Walks"]) / (updated_score["AB"] + updated_score["Walks"] + updated_score["SF"])
             except:
-                OBP = None
+                updated_score["OBP"] = None
 
             """
             if updated_score["AB"] != 0:
@@ -1258,9 +1258,6 @@ def hitter_score_update(year=None):
 
             print(player.player.player.name, original_score)
             print(player.player.player.name, updated_score)
-            print("AVG:", AVG)
-            print("SLG:", SLG)
-            print("OBP:", OBP)
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
