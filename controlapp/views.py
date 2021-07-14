@@ -1194,7 +1194,7 @@ def hitter_score_update(year=None):
         players = models.PlayerHitterUnit.objects.filter(player__team__year=year)
 
         for player in players:
-            units = models.HitterUnit.objects.filter(player__id=player.player.id)
+            units = models.HitterUnit.objects.filter(Q(player__id=player.player.id) & (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4))))
             
             print("Player:", player.player.team.team, player.player.player.name)
             for idx, unit in enumerate(units):
