@@ -1194,11 +1194,37 @@ def hitter_score_update(year=None):
         players = models.PlayerHitterUnit.objects.filter(player__team__year=year)
 
         for player in players:
-            units = models.HitterUnit.objects.filter(Q(player__id=player.player.id) & (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4))))
-            
-            print("Player:", player.player.team.team, player.player.player.name)
-            for idx, unit in enumerate(units):
-                print(idx, unit.player.player.name)
+            update_score = {
+                "PA": 0, "AB": 0, "RBI": 0, "R": 0, "H": 0,
+                "TwoBH": 0, "ThreeBH": 0, "HR": 0, "TB": 0, "DP": 0,
+                "SH": 0, "SF": 0, "Walks": 0, "SO": 0, "SB": 0,
+                "CS": 0, "LOB": 0
+            }
+            units = models.HitterUnit.objects.filter(
+                    Q(player__id=player.player.id) & 
+                    (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4)))
+                    )
+
+            for unit in units:
+                update_score["PA"] += unit.PA
+                update_score["AB"] += unit.AB
+                update_score["RBI"] += unit.RBI
+                update_score["R"] += unit.R
+                update_score["H"] += unit.H
+                update_score["TwoBH"] += unit.TwoBH
+                update_score["ThreeBH"] += unit.ThreeBH
+                update_score["HR"] += unit.HR
+                update_score["TB"] += unit.TB
+                update_score["DP"] += unit.DP
+                update_score["SH"] += unit.SH
+                update_score["SF"] += unit.SF
+                update_score["Walks"] += unit.Walks
+                update_score["SO"] += unit.SO
+                update_score["SB"] += unit.SB
+                update_score["CS"] += unit.CS
+                update_score["LOB"] += unit.LOB
+
+            print(player.player.player.name, update_score)
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
