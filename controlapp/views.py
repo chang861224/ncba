@@ -211,11 +211,11 @@ def teams(request, year=None, teamid=None, itemtype=None):
     years.sort(reverse=True)
     teams = models.TeamUnit.objects.filter(year=year).order_by('id')
     
-    # DEBUG
+    # UPDATE
     #hitter_score_update(year=year)
     #pitcher_score_update(year=year)
     #catcher_score_update(year=year)
-    fielder_score_update(year=year)
+    #fielder_score_update(year=year)
 
     if teamid == None:
         return redirect('/teams/' + str(year) + '/' + str(teams[0].id) + '/players/')
