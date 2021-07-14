@@ -1330,30 +1330,35 @@ def pitcher_score_update(year=None):
             except:
                 updated_score["OBA"] = None
 
-            print(player.player.player.name, updated_score)
-            """
-            player.PA = updated_score["PA"]
-            player.AB = updated_score["AB"]
-            player.RBI = updated_score["RBI"]
-            player.R = updated_score["R"]
+            player.W = updated_score["W"]
+            player.L = updated_score["L"]
+            player.HO = updated_score["HO"]
+            player.S = updated_score["S"]
+            player.BS = updated_score["BS"]
+            player.inn3 = updated_score["inn3"]
+            player.TPAF = updated_score["TPAF"]
+            player.TBF = updated_score["TBA"]
+            player.P = updated_score["P"]
+            player.CG = updated_score["CG"]
+            player.SHO = updated_score["SHO"]
+            player.no_walks = updated_score["no_walks"]
             player.H = updated_score["H"]
-            player.TwoBH = updated_score["TwoBH"]
-            player.ThreeBH = updated_score["ThreeBH"]
             player.HR = updated_score["HR"]
-            player.TB = updated_score["TB"]
-            player.DP = updated_score["DP"]
             player.SH = updated_score["SH"]
             player.SF = updated_score["SF"]
-            player.Walks = updated_score["Walks"]
-            player.SO = updated_score["SO"]
-            player.SB = updated_score["SB"]
-            player.CS = updated_score["CS"]
-            player.LOB = updated_score["LOB"]
+            player.BB = updated_score["BB"]
+            player.IBB = updated_score["IBB"]
+            player.DB = updated_score["DB"]
+            player.K = updated_score["K"]
+            player.WP = updated_score["WP"]
+            player.BK = updated_score["BK"]
+            player.R = updated_score["R"]
+            player.ER = updated_score["ER"]
+            player.ERA = updated_score["ERA"]
+            player.WHIP = updated_score["WHIP"]
             player.AVG = updated_score["AVG"]
-            player.SLG = updated_score["SLG"]
-            player.OBP = updated_score["OBP"]
+            player.OBA = updated_score["OBA"]
             player.save()
-            """
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
