@@ -213,8 +213,8 @@ def teams(request, year=None, teamid=None, itemtype=None):
     
     # DEBUG
     #hitter_score_update(year=year)
-    pitcher_score_update(year=year)
-    #catcher_score_update(year=year)
+    #pitcher_score_update(year=year)
+    catcher_score_update(year=year)
     #fielder_score_update(year=year)
 
     if teamid == None:
@@ -1360,6 +1360,37 @@ def pitcher_score_update(year=None):
             player.OBA = updated_score["OBA"]
             player.save()
 
+def catcher_score_update(year=None):
+    if year != None:
+        players = models.PlayerCatcherUnit.objects.filter(player__team__year=year)
+
+        for player in players:
+            updated_score = {
+                "PB": 0, "interference": 0, "stolen": 0, "CS": 0, "CSP": None
+            }
+            units = models.CatcherUnit.objects.filter(
+                    Q(player__id=player.player.id) & 
+                    (Q(number__playoff=False) | (Q(number__playoff=True) & Q(number__number__lte=4)))
+                    )
+
+            for unit in units:
+                updated_score["PB"] += unit.PB
+                updated_score["interference"] += unit.interference
+                updated_score["stolen"] += unit.stolen
+                updated_score["CS"] += unit.CS
+
+            try:
+                updated_score["CSP"] = updated_score["CS"] / updated_score["stolen"]
+            except:
+                updated_score["CSP"] = None
+
+            player.PB = updated_score["PA"]
+            player.interference = updated_score["interference"]
+            player.stolen = updated_score["stolen"]
+            player.CS = updated_score["CS"]
+            player.CSP = updated_score["CSP"]
+            player.save()
+    
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
     playerscore.AB -= box.AB
