@@ -1290,45 +1290,45 @@ def pitcher_score_update(year=None):
                     updated_score["S"] += 1
                 if unit.conseq == "BS":
                     updated_score["BS"] += 1
-                updated_score["inn3"] = unit.inn_int * 3 + unit.inn_float
-                updated_score["TPAF"] = unit.TPAF
-                updated_score["TBF"] = unit.TBF
-                updated_score["P"] = unit.P
+                updated_score["inn3"] += (unit.inn_int * 3 + unit.inn_float)
+                updated_score["TPAF"] += unit.TPAF
+                updated_score["TBF"] += unit.TBF
+                updated_score["P"] += unit.P
                 if unit.CG == True:
                     updated_score["CG"] += 1
                 if unit.SHO == True:
                     updated_score["SHO"] += 1
                 if unit.no_walks == True:
                     updated_score["no_walks"] += 1
-                updated_score["H"] = unit.H
-                updated_score["HR"] = unit.HR
-                updated_score["SH"] = unit.SH
-                updated_score["SF"] = unit.SF
-                updated_score["BB"] = unit.BB
-                updated_score["IBB"] = unit.IBB
-                updated_score["DB"] = unit.DB
-                updated_score["K"] = unit.K
-                updated_score["WP"] = unit.WP
-                updated_score["BK"] = unit.BK
-                updated_score["R"] = unit.R
-                updated_score["ER"] = unit.ER
+                updated_score["H"] += unit.H
+                updated_score["HR"] += unit.HR
+                updated_score["SH"] += unit.SH
+                updated_score["SF"] += unit.SF
+                updated_score["BB"] += unit.BB
+                updated_score["IBB"] += unit.IBB
+                updated_score["DB"] += unit.DB
+                updated_score["K"] += unit.K
+                updated_score["WP"] += unit.WP
+                updated_score["BK"] += unit.BK
+                updated_score["R"] += unit.R
+                updated_score["ER"] += unit.ER
 
-                try:
-                    updated_score["ERA"] = updated_score["ER"] * 5 / (updated_score["inn3"] / 3)
-                    updated_score["WHIP"] = (updated_score["H"] + updated_score["BB"]) / (updated_score["inn3"] / 3)
-                except:
-                    updated_score["ERA"] = None
-                    updated_score["WHIP"] = None
+            try:
+                updated_score["ERA"] = updated_score["ER"] * 5 / (updated_score["inn3"] / 3)
+                updated_score["WHIP"] = (updated_score["H"] + updated_score["BB"]) / (updated_score["inn3"] / 3)
+            except:
+                updated_score["ERA"] = None
+                updated_score["WHIP"] = None
 
-                try:
-                    updated_score["AVG"] = updated_score["H"] / updated_score["TBF"] 
-                except:
-                    updated_score["AVG"] = None
+            try:
+                updated_score["AVG"] = updated_score["H"] / updated_score["TBF"] 
+            except:
+                updated_score["AVG"] = None
 
-                try:
-                    updated_score["OBA"] = (updated_score["H"] + updated_score["BB"] + updated_score["IBB"] + updated_score["DB"]) / updated_score["TPAF"]
-                except:
-                    updated_score["OBA"] = None
+            try:
+                updated_score["OBA"] = (updated_score["H"] + updated_score["BB"] + updated_score["IBB"] + updated_score["DB"]) / updated_score["TPAF"]
+            except:
+                updated_score["OBA"] = None
 
             print(player.player.player.name, updated_score)
             """
