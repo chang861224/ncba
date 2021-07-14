@@ -1194,12 +1194,6 @@ def hitter_score_update(year=None):
         players = models.PlayerHitterUnit.objects.filter(player__team__year=year)
 
         for player in players:
-            original_score = {
-                "PA": player.PA, "AB": player.AB, "RBI": player.RBI, "R": player.R, "H": player.H,
-                "TwoBH": player.TwoBH, "ThreeBH": player.ThreeBH, "HR": player.HR, "TB": player.TB, "DP": player.DP,
-                "SH": player.SH, "SF": player.SH, "Walks": player.Walks, "SO": player.SO, "SB": player.SB,
-                "CS": player.CS, "LOB": player.LOB, "AVG": player.AVG, "SLG": player.SLG, "OBP": player.OBP
-            }
             updated_score = {
                 "PA": 0, "AB": 0, "RBI": 0, "R": 0, "H": 0,
                 "TwoBH": 0, "ThreeBH": 0, "HR": 0, "TB": 0, "DP": 0,
@@ -1242,22 +1236,27 @@ def hitter_score_update(year=None):
             except:
                 updated_score["OBP"] = None
 
-            """
-            if updated_score["AB"] != 0:
-                AVG = updated_score["H"] / updated_score["AB"]
-                SLG = updated_score["TB"] / updated_score["AB"]
-            else:
-                AVG = None
-                SLG= None
-
-            if updated_score["AB"] + updated_score["Walks "]+ updated_score["SF"] != 0:
-                OBP = (updated_score["H"] + updated_score["Walks"]) / (updated_score["AB"] + updated_score["Walks"] + updated_score["SF"])
-            else:
-                OBP = None
-            """
-
-            print(player.player.player.name, original_score)
-            print(player.player.player.name, updated_score)
+            player.PA = updated_score["PA"]
+            player.AB = updated_score["AB"]
+            player.RBI = updated_score["RBI"]
+            player.R = updated_score["R"]
+            player.H = updated_score["H"]
+            player.TwoBH = updated_score["TwoBH"]
+            player.ThreeBH = updated_score["ThreeBH"]
+            player.HR = updated_score["HR"]
+            player.TB = updated_score["TB"]
+            player.DP = updated_score["DP"]
+            player.SH = updated_score["SH"]
+            player.SF = updated_score["SF"]
+            player.Walks = updated_score["Walks"]
+            player.SO = updated_score["SO"]
+            player.SB = updated_score["SB"]
+            player.CS = updated_score["CS"]
+            player.LOB = updated_score["LOB"]
+            player.AVG = updated_score["AVG"]
+            player.SLG = updated_score["SLG"]
+            player.OBP = updated_score["OBP"]
+            player.save()
 
 def delhitterscore(playerscore, box):
     playerscore.PA -= box.PA
