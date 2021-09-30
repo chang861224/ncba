@@ -468,10 +468,10 @@ def login(request):
                 #if username.split('_')[0] == 'team':
                 if request.user.has_perm('auth.team') and request.user.is_superuser == False:
                     # ORDER LIST
-                    return redirect('/orderlist/' + username.split('_')[1] + '/')
+                    #return redirect('/orderlist/' + username.split('_')[1] + '/')
 
                     # PLAYER ADD
-                    #team = models.TeamUnit.objects.get(id=int(username.split('_')[1]))
+                    team = models.TeamUnit.objects.get(id=int(username.split('_')[1]))
                     return redirect('/playeradd/' + str(team.year) + '/' + str(team.id) + '/')
                 elif request.user.has_perm('auth.member'):
                     return redirect('/option/')
