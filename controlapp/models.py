@@ -9,6 +9,7 @@ class TeamUnit(models.Model):
     G = models.IntegerField(default=0)
     W = models.IntegerField(default=0)
     L = models.IntegerField(default=0)
+    T = models.IntegerField(default=0)
     PCT = models.FloatField(null=True)
     def __str__(self):
         return str(self.year) + '_' + self.team
