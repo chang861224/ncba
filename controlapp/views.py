@@ -697,6 +697,7 @@ def addup(teamid=None):
     team = models.TeamUnit.objects.get(id=teamid)
     G = 0
     W = 0
+    T = 0
     L = 0
 
     games = models.GameUnit.objects.filter(guest__id=teamid, playoff=False, finish=True)
@@ -705,8 +706,10 @@ def addup(teamid=None):
         if game.guestScore != None and game.homeScore != None:
             if game.guestScore > game.homeScore:
                 W += 1
-            else:
+            elif game.guestScore < game.homeScore:
                 L += 1
+            else:
+                T += 1
 
     games = models.GameUnit.objects.filter(home__id=teamid, playoff=False, finish=True)
     G += len(games)
@@ -714,14 +717,17 @@ def addup(teamid=None):
         if game.guestScore != None and game.homeScore != None:
             if game.homeScore > game.guestScore:
                 W += 1
-            else:
+            elif game.homeScore < game.guestScore:
                 L += 1
+            else:
+                T += 1
 
     team.G = G
     team.W = W
+    team.T = T
     team.L = L
     if team.G != 0:
-        team.PCT = team.W / team.G
+        team.PCT = team.W / (team.W + team.L)
     else:
         team.PCT = None
     team.save()
