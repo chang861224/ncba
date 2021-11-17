@@ -1250,9 +1250,14 @@ BASE LAYOUT
 	font-size: 12px;
 	background-color: #70b9dd;
 }
-.index .group .standing th,
-.index .group .standing td{
+.index .group .standing th:first-child,
+.index .group .standing td:first-child{
 	width: 20%;
+	text-align: center;
+}
+.index .group .standing th:not(:first-child),
+.index .group .standing td:not(:first-child){
+	width: 16%;
 	text-align: center;
 }
 .index .group .standing td{
